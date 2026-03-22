@@ -14,7 +14,13 @@ export interface PBLSystemPromptConfig {
 }
 
 export function buildPBLSystemPrompt(config: PBLSystemPromptConfig): string {
-  const { projectTopic, projectDescription, targetSkills, issueCount = 3, language } = config;
+  const {
+    projectTopic,
+    projectDescription,
+    targetSkills,
+    issueCount = 3,
+    language: _language,
+  } = config;
 
   return `You are a Teaching Assistant (TA) on a Project-Based Learning platform. You are fully responsible for designing group projects for students based on the course information provided by the teacher.
 

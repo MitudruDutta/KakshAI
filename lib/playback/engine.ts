@@ -41,13 +41,6 @@ import { createLogger } from '@/lib/logger';
 
 const log = createLogger('PlaybackEngine');
 
-/**
- * If more than 30% of characters are CJK, treat the text as CJK language.
- * Intentionally low: mixed CJK text often contains punctuation,
- * numbers, and short Latin fragments.
- */
-const CJK_LANG_THRESHOLD = 0.3;
-
 export class PlaybackEngine {
   private scenes: Scene[] = [];
   private sceneIndex: number = 0;
@@ -632,8 +625,7 @@ export class PlaybackEngine {
     if (!voiceFound) {
       // No usable voice configured — detect text language so the browser
       // auto-selects an appropriate voice.
-      const cjkRatio =
-        (chunkText.match(/[\u4e00-\u9fff\u3400-\u4dbf]/g) || []).length / chunkText.length;
+      void chunkText;
       utterance.lang = 'en-US';
     }
 

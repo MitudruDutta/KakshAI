@@ -75,7 +75,7 @@ export function formatTeacherPersonaForPrompt(agents?: AgentInfo[]): string {
  * Format a single PdfImage description for prompt inclusion.
  * Includes dimension/aspect-ratio info when available.
  */
-export function formatImageDescription(img: PdfImage, language: string): string {
+export function formatImageDescription(img: PdfImage, _language: string): string {
   let dimInfo = '';
   if (img.width && img.height) {
     const ratio = (img.width / img.height).toFixed(2);
@@ -89,7 +89,7 @@ export function formatImageDescription(img: PdfImage, language: string): string 
  * Format a short image placeholder for vision mode.
  * Only ID + page + dimensions + aspect ratio (no description), since the model can see the actual image.
  */
-export function formatImagePlaceholder(img: PdfImage, language: string): string {
+export function formatImagePlaceholder(img: PdfImage, _language: string): string {
   let dimInfo = '';
   if (img.width && img.height) {
     const ratio = (img.width / img.height).toFixed(2);
