@@ -174,9 +174,7 @@ export async function POST(req: NextRequest) {
     const prompts = buildPrompt(PROMPT_IDS.REQUIREMENTS_TO_OUTLINES, {
       requirement: requirements.requirement,
       language: requirements.language,
-      pdfContent: pdfText
-        ? pdfText.substring(0, MAX_PDF_CONTENT_CHARS)
-        : 'None',
+      pdfContent: pdfText ? pdfText.substring(0, MAX_PDF_CONTENT_CHARS) : 'None',
       availableImages: availableImagesText,
       researchContext: researchContext || 'None',
       mediaGenerationPolicy,

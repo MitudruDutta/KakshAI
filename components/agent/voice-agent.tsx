@@ -7,14 +7,7 @@ import { useSettingsStore } from '@/lib/store/settings';
 import { clientTools } from '@/lib/elevenlabs/client-tools';
 import { buildSceneContextSummary } from '@/lib/elevenlabs/scene-context';
 import { cn } from '@/lib/utils';
-import {
-  Mic,
-  MicOff,
-  PhoneOff,
-  Phone,
-  Volume2,
-  Loader2,
-} from 'lucide-react';
+import { Mic, MicOff, PhoneOff, Phone, Volume2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface TranscriptEntry {
@@ -228,11 +221,7 @@ export function VoiceAgent() {
       {/* Controls */}
       <div className="flex items-center justify-center gap-3 border-t px-3 py-3">
         {!isConnected && !isConnecting ? (
-          <Button
-            onClick={startSession}
-            size="sm"
-            className="gap-2"
-          >
+          <Button onClick={startSession} size="sm" className="gap-2">
             <Phone className="h-4 w-4" />
             Start Voice Chat
           </Button>
@@ -245,11 +234,7 @@ export function VoiceAgent() {
               onClick={toggleMic}
               disabled={!isConnected}
             >
-              {isMicMuted ? (
-                <MicOff className="h-4 w-4" />
-              ) : (
-                <Mic className="h-4 w-4" />
-              )}
+              {isMicMuted ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
             </Button>
 
             <Button

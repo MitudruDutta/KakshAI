@@ -25,11 +25,7 @@
  * Add new TTS providers here as union members.
  * Keep in sync with TTS_PROVIDERS registry in constants.ts
  */
-export type TTSProviderId =
-  | 'openai-tts'
-  | 'azure-tts'
-  | 'elevenlabs-tts'
-  | 'browser-native-tts';
+export type TTSProviderId = 'openai-tts' | 'azure-tts' | 'elevenlabs-tts' | 'browser-native-tts';
 
 /**
  * Voice information for TTS

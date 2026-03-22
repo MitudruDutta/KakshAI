@@ -79,4 +79,3 @@ When you create issues:
 
 Your initial mode is **project_info**.`;
 }
-

@@ -241,7 +241,10 @@ export async function generateClassroom(
     if (firecrawlKey) {
       try {
         log.info('Running web search for requirement context...');
-        const searchResult = await searchWithFirecrawl({ query: requirement, apiKey: firecrawlKey });
+        const searchResult = await searchWithFirecrawl({
+          query: requirement,
+          apiKey: firecrawlKey,
+        });
         researchContext = formatSearchResultsAsContext(searchResult);
         if (researchContext) {
           log.info(`Web search returned ${searchResult.sources.length} sources`);

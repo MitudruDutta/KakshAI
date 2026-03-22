@@ -26,7 +26,8 @@ const log = createLogger('VerifyImageProvider');
 
 export async function POST(request: NextRequest) {
   try {
-    const providerId = (request.headers.get('x-image-provider') || 'nano-banana') as ImageProviderId;
+    const providerId = (request.headers.get('x-image-provider') ||
+      'nano-banana') as ImageProviderId;
     const model = request.headers.get('x-image-model') || undefined;
     const clientApiKey = request.headers.get('x-api-key') || undefined;
     const clientBaseUrl = request.headers.get('x-base-url') || undefined;

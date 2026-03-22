@@ -63,196 +63,193 @@ function ensureWhiteboard() {
  * Client tools configuration for useConversation.
  * Each tool receives parameters from the agent and returns a string result.
  */
-export const clientTools: Record<
-  string,
-  (parameters: Record<string, unknown>) => Promise<string>
-> = {
-  /**
-   * Search the web using Firecrawl.
-   * The agent can call this to look up information mid-conversation.
-   */
-  searchWeb: async (parameters: Record<string, unknown>): Promise<string> => {
-    const query = parameters.query as string;
-    if (!query) return 'No search query provided.';
+export const clientTools: Record<string, (parameters: Record<string, unknown>) => Promise<string>> =
+  {
+    /**
+     * Search the web using Firecrawl.
+     * The agent can call this to look up information mid-conversation.
+     */
+    searchWeb: async (parameters: Record<string, unknown>): Promise<string> => {
+      const query = parameters.query as string;
+      if (!query) return 'No search query provided.';
 
-    try {
-      const settings = useSettingsStore.getState();
-      const webSearchConfig = settings.webSearchProvidersConfig[settings.webSearchProviderId];
-      const res = await fetch('/api/web-search', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          query,
-          maxResults: 3,
-          apiKey: webSearchConfig?.apiKey || undefined,
-          baseUrl: webSearchConfig?.baseUrl || undefined,
-        }),
-      });
+      try {
+        const settings = useSettingsStore.getState();
+        const webSearchConfig = settings.webSearchProvidersConfig[settings.webSearchProviderId];
+        const res = await fetch('/api/web-search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            query,
+            maxResults: 3,
+            apiKey: webSearchConfig?.apiKey || undefined,
+            baseUrl: webSearchConfig?.baseUrl || undefined,
+          }),
+        });
 
-      if (!res.ok) return `Search failed with status ${res.status}`;
+        if (!res.ok) return `Search failed with status ${res.status}`;
 
-      const data = await res.json();
-      if (!data.success) return 'Search returned no results.';
+        const data = await res.json();
+        if (!data.success) return 'Search returned no results.';
 
-      const context = data.context || data.sources
-        ?.map(
-          (r: { title: string; content: string }) =>
-            `${r.title}: ${r.content?.slice(0, 300)}`,
-        )
-        .join('\n\n');
+        const context =
+          data.context ||
+          data.sources
+            ?.map(
+              (r: { title: string; content: string }) => `${r.title}: ${r.content?.slice(0, 300)}`,
+            )
+            .join('\n\n');
 
-      return context || 'No results found.';
-    } catch (error) {
-      return `Search error: ${error instanceof Error ? error.message : 'Unknown error'}`;
-    }
-  },
+        return context || 'No results found.';
+      } catch (error) {
+        return `Search error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      }
+    },
 
-  /**
-   * Navigate to a specific slide or direction.
-   * direction: "next", "prev", or a slide number (1-indexed).
-   */
-  navigateSlide: async (parameters: Record<string, unknown>): Promise<string> => {
-    const direction = parameters.direction as string;
-    const store = useStageStore.getState();
-    const { scenes, currentSceneId } = store;
+    /**
+     * Navigate to a specific slide or direction.
+     * direction: "next", "prev", or a slide number (1-indexed).
+     */
+    navigateSlide: async (parameters: Record<string, unknown>): Promise<string> => {
+      const direction = parameters.direction as string;
+      const store = useStageStore.getState();
+      const { scenes, currentSceneId } = store;
 
-    if (!scenes.length) return 'No slides available.';
+      if (!scenes.length) return 'No slides available.';
 
-    const currentIndex = currentSceneId
-      ? scenes.findIndex((s) => s.id === currentSceneId)
-      : -1;
+      const currentIndex = currentSceneId ? scenes.findIndex((s) => s.id === currentSceneId) : -1;
 
-    let targetIndex: number;
+      let targetIndex: number;
 
-    if (direction === 'next') {
-      targetIndex = Math.min(currentIndex + 1, scenes.length - 1);
-    } else if (direction === 'prev' || direction === 'previous') {
-      targetIndex = Math.max(currentIndex - 1, 0);
-    } else {
-      const num = parseInt(direction, 10);
-      if (isNaN(num)) return `Invalid direction: ${direction}`;
-      targetIndex = Math.max(0, Math.min(num - 1, scenes.length - 1));
-    }
-
-    const targetScene = scenes[targetIndex];
-    store.setCurrentSceneId(targetScene.id);
-
-    return `Navigated to slide ${targetIndex + 1}: "${targetScene.title}"`;
-  },
-
-  /**
-   * Draw a text explanation on the classroom whiteboard.
-   * The board is automatically opened if it is currently hidden.
-   */
-  drawOnWhiteboard: async (parameters: Record<string, unknown>): Promise<string> => {
-    const text = getStringParameter(parameters.text);
-    if (!text) return 'No whiteboard text provided.';
-
-    const x = clamp(
-      getNumberParameter(parameters.x, DEFAULT_WHITEBOARD_X),
-      0,
-      WHITEBOARD_WIDTH - 80,
-    );
-    const y = clamp(
-      getNumberParameter(parameters.y, DEFAULT_WHITEBOARD_Y),
-      0,
-      WHITEBOARD_HEIGHT - 48,
-    );
-    const width = clamp(
-      getNumberParameter(parameters.width, DEFAULT_WHITEBOARD_TEXT_WIDTH),
-      120,
-      WHITEBOARD_WIDTH - x,
-    );
-    const height = clamp(
-      getNumberParameter(parameters.height, DEFAULT_WHITEBOARD_TEXT_HEIGHT),
-      48,
-      WHITEBOARD_HEIGHT - y,
-    );
-    const fontSize = clamp(
-      getNumberParameter(parameters.fontSize, DEFAULT_WHITEBOARD_FONT_SIZE),
-      12,
-      42,
-    );
-    const color = getStringParameter(parameters.color) || DEFAULT_WHITEBOARD_TEXT_COLOR;
-
-    try {
-      const whiteboard = ensureWhiteboard();
-      const element: PPTTextElement = {
-        id: '',
-        type: 'text',
-        content: `<p style="font-size: ${fontSize}px;">${escapeWhiteboardText(text)}</p>`,
-        left: x,
-        top: y,
-        width,
-        height,
-        rotate: 0,
-        defaultFontName: 'Microsoft YaHei',
-        defaultColor: color,
-        textType: 'content',
-      };
-
-      const result = stageAPI.whiteboard.addElement(element, whiteboard.id);
-      if (!result.success) {
-        return `Failed to draw on the whiteboard: ${result.error || 'Unknown error'}`;
+      if (direction === 'next') {
+        targetIndex = Math.min(currentIndex + 1, scenes.length - 1);
+      } else if (direction === 'prev' || direction === 'previous') {
+        targetIndex = Math.max(currentIndex - 1, 0);
+      } else {
+        const num = parseInt(direction, 10);
+        if (isNaN(num)) return `Invalid direction: ${direction}`;
+        targetIndex = Math.max(0, Math.min(num - 1, scenes.length - 1));
       }
 
-      const preview = text.length > 60 ? `${text.slice(0, 57)}...` : text;
-      return `Added "${preview}" to the whiteboard at (${Math.round(x)}, ${Math.round(y)}).`;
-    } catch (error) {
-      return `Whiteboard error: ${error instanceof Error ? error.message : 'Unknown error'}`;
-    }
-  },
+      const targetScene = scenes[targetIndex];
+      store.setCurrentSceneId(targetScene.id);
 
-  /**
-   * Clear the current whiteboard contents.
-   */
-  clearWhiteboard: async (): Promise<string> => {
-    try {
-      const whiteboard = ensureWhiteboard();
-      if (whiteboard.elements.length === 0) {
-        return 'The whiteboard is already empty.';
+      return `Navigated to slide ${targetIndex + 1}: "${targetScene.title}"`;
+    },
+
+    /**
+     * Draw a text explanation on the classroom whiteboard.
+     * The board is automatically opened if it is currently hidden.
+     */
+    drawOnWhiteboard: async (parameters: Record<string, unknown>): Promise<string> => {
+      const text = getStringParameter(parameters.text);
+      if (!text) return 'No whiteboard text provided.';
+
+      const x = clamp(
+        getNumberParameter(parameters.x, DEFAULT_WHITEBOARD_X),
+        0,
+        WHITEBOARD_WIDTH - 80,
+      );
+      const y = clamp(
+        getNumberParameter(parameters.y, DEFAULT_WHITEBOARD_Y),
+        0,
+        WHITEBOARD_HEIGHT - 48,
+      );
+      const width = clamp(
+        getNumberParameter(parameters.width, DEFAULT_WHITEBOARD_TEXT_WIDTH),
+        120,
+        WHITEBOARD_WIDTH - x,
+      );
+      const height = clamp(
+        getNumberParameter(parameters.height, DEFAULT_WHITEBOARD_TEXT_HEIGHT),
+        48,
+        WHITEBOARD_HEIGHT - y,
+      );
+      const fontSize = clamp(
+        getNumberParameter(parameters.fontSize, DEFAULT_WHITEBOARD_FONT_SIZE),
+        12,
+        42,
+      );
+      const color = getStringParameter(parameters.color) || DEFAULT_WHITEBOARD_TEXT_COLOR;
+
+      try {
+        const whiteboard = ensureWhiteboard();
+        const element: PPTTextElement = {
+          id: '',
+          type: 'text',
+          content: `<p style="font-size: ${fontSize}px;">${escapeWhiteboardText(text)}</p>`,
+          left: x,
+          top: y,
+          width,
+          height,
+          rotate: 0,
+          defaultFontName: 'Microsoft YaHei',
+          defaultColor: color,
+          textType: 'content',
+        };
+
+        const result = stageAPI.whiteboard.addElement(element, whiteboard.id);
+        if (!result.success) {
+          return `Failed to draw on the whiteboard: ${result.error || 'Unknown error'}`;
+        }
+
+        const preview = text.length > 60 ? `${text.slice(0, 57)}...` : text;
+        return `Added "${preview}" to the whiteboard at (${Math.round(x)}, ${Math.round(y)}).`;
+      } catch (error) {
+        return `Whiteboard error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      }
+    },
+
+    /**
+     * Clear the current whiteboard contents.
+     */
+    clearWhiteboard: async (): Promise<string> => {
+      try {
+        const whiteboard = ensureWhiteboard();
+        if (whiteboard.elements.length === 0) {
+          return 'The whiteboard is already empty.';
+        }
+
+        const result = stageAPI.whiteboard.update({ elements: [] }, whiteboard.id);
+        if (!result.success) {
+          return `Failed to clear the whiteboard: ${result.error || 'Unknown error'}`;
+        }
+
+        return 'Cleared the whiteboard.';
+      } catch (error) {
+        return `Whiteboard error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      }
+    },
+
+    /**
+     * Get the content of the current slide for context.
+     * The agent can call this to understand what's being shown.
+     */
+    getCurrentSlideContent: async (): Promise<string> => {
+      const store = useStageStore.getState();
+      const scene = store.getCurrentScene();
+
+      if (!scene) return 'No slide is currently displayed.';
+
+      const parts: string[] = [`Slide: "${scene.title}"`];
+
+      const textElements = getSceneReadableText(scene);
+
+      if (textElements.length > 0) {
+        parts.push('Content: ' + textElements.join(' | '));
       }
 
-      const result = stageAPI.whiteboard.update({ elements: [] }, whiteboard.id);
-      if (!result.success) {
-        return `Failed to clear the whiteboard: ${result.error || 'Unknown error'}`;
+      const lectureNotes = getSceneLectureNotes(scene);
+      if (lectureNotes) {
+        parts.push('Lecture notes: ' + lectureNotes);
       }
 
-      return 'Cleared the whiteboard.';
-    } catch (error) {
-      return `Whiteboard error: ${error instanceof Error ? error.message : 'Unknown error'}`;
-    }
-  },
+      const { scenes } = store;
+      const idx = scenes.findIndex((s) => s.id === scene.id);
+      parts.push(`(Slide ${idx + 1} of ${scenes.length})`);
 
-  /**
-   * Get the content of the current slide for context.
-   * The agent can call this to understand what's being shown.
-   */
-  getCurrentSlideContent: async (): Promise<string> => {
-    const store = useStageStore.getState();
-    const scene = store.getCurrentScene();
-
-    if (!scene) return 'No slide is currently displayed.';
-
-    const parts: string[] = [`Slide: "${scene.title}"`];
-
-    const textElements = getSceneReadableText(scene);
-
-    if (textElements.length > 0) {
-      parts.push('Content: ' + textElements.join(' | '));
-    }
-
-    const lectureNotes = getSceneLectureNotes(scene);
-    if (lectureNotes) {
-      parts.push('Lecture notes: ' + lectureNotes);
-    }
-
-    const { scenes } = store;
-    const idx = scenes.findIndex((s) => s.id === scene.id);
-    parts.push(`(Slide ${idx + 1} of ${scenes.length})`);
-
-    return parts.join('\n');
-  },
-};
+      return parts.join('\n');
+    },
+  };
 
 clientTools.drawWhiteboard = clientTools.drawOnWhiteboard;

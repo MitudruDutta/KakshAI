@@ -160,9 +160,7 @@ export function VideoSettings({ selectedProviderId }: VideoSettingsProps) {
               autoCorrect="off"
               spellCheck={false}
               placeholder={
-                isServerConfigured
-                  ? t('settings.optionalOverride')
-                  : t('settings.enterApiKey')
+                isServerConfigured ? t('settings.optionalOverride') : t('settings.enterApiKey')
               }
               value={currentConfig?.apiKey || ''}
               onChange={(e) => handleApiKeyChange(e.target.value)}

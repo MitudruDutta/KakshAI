@@ -1041,7 +1041,7 @@ function generateDefaultPBLActions(_outline: SceneOutline): Action[] {
       id: `action_${nanoid(8)}`,
       type: 'speech',
       title: 'PBL Project Introduction',
-      text: 'Now let\'s begin a project-based learning activity. Choose your role, check the task board, and start collaborating on the project.',
+      text: "Now let's begin a project-based learning activity. Choose your role, check the task board, and start collaborating on the project.",
     },
   ];
 }
@@ -1176,7 +1176,7 @@ function generateDefaultQuizActions(_outline: SceneOutline): Action[] {
       id: `action_${nanoid(8)}`,
       type: 'speech',
       title: 'Quiz Introduction',
-      text: 'Now let\'s take a quick quiz to test what we\'ve learned.',
+      text: "Now let's take a quick quiz to test what we've learned.",
     },
   ];
 }
@@ -1190,7 +1190,7 @@ function generateDefaultInteractiveActions(_outline: SceneOutline): Action[] {
       id: `action_${nanoid(8)}`,
       type: 'speech',
       title: 'Interactive Guide',
-      text: 'Now let\'s explore this concept through an interactive visualization. Try interacting with the elements on the page and observe the changes.',
+      text: "Now let's explore this concept through an interactive visualization. Try interacting with the elements on the page and observe the changes.",
     },
   ];
 }

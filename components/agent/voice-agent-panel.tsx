@@ -18,11 +18,7 @@ interface VoiceAgentPanelProps {
   onOpenChat?: () => void;
 }
 
-export function VoiceAgentPanel({
-  textModeContent,
-  className,
-  onOpenChat,
-}: VoiceAgentPanelProps) {
+export function VoiceAgentPanel({ textModeContent, className, onOpenChat }: VoiceAgentPanelProps) {
   const elevenlabsApiKey = useSettingsStore((s) => s.elevenlabsApiKey);
   const elevenlabsAgentId = useSettingsStore((s) => s.elevenlabsAgentId);
   const setElevenLabsApiKey = useSettingsStore((s) => s.setElevenLabsApiKey);
@@ -56,11 +52,7 @@ export function VoiceAgentPanel({
         </p>
       </div>
       {onOpenChat && (
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={onOpenChat}
-        >
+        <Button size="sm" variant="outline" onClick={onOpenChat}>
           <MessageSquare className="mr-1.5 h-3.5 w-3.5" />
           Open Chat Panel
         </Button>
@@ -136,19 +128,15 @@ export function VoiceAgentPanel({
             />
           </div>
           <p className="text-[10px] text-muted-foreground">
-            Create an agent at elevenlabs.io/conversational-ai, then paste the Agent ID and API
-            key here, or set `ELEVENLABS_AGENT_ID` and `ELEVENLABS_API_KEY` on the server.
+            Create an agent at elevenlabs.io/conversational-ai, then paste the Agent ID and API key
+            here, or set `ELEVENLABS_AGENT_ID` and `ELEVENLABS_API_KEY` on the server.
           </p>
         </div>
       )}
 
       {/* Content area */}
       <div className="flex-1 overflow-hidden">
-        {mode === 'text' ? (
-          textModeContent ?? textFallback
-        ) : (
-          <VoiceAgent />
-        )}
+        {mode === 'text' ? (textModeContent ?? textFallback) : <VoiceAgent />}
       </div>
     </div>
   );

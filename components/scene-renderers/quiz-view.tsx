@@ -127,8 +127,7 @@ async function gradeShortAnswerQuestion(
       correct: null,
       status: 'incorrect',
       earned: Math.round(pts * 0.5),
-      aiComment:
-        'Grading service unavailable. Base score given.',
+      aiComment: 'Grading service unavailable. Base score given.',
     };
   }
 }

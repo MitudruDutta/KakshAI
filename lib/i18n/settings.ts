@@ -30,7 +30,8 @@ export const settingsHiIN = {
     testConnectionDesc: 'वर्तमान API कॉन्फ़िगरेशन का परीक्षण करें',
     testing: 'परीक्षण हो रहा है...',
     agentSettings: 'एजेंट सेटिंग्स',
-    agentSettingsDesc: 'बातचीत में भाग लेने वाले एजेंट चुनें। 1 = सिंगल एजेंट, कई = मल्टी-एजेंट सहयोग।',
+    agentSettingsDesc:
+      'बातचीत में भाग लेने वाले एजेंट चुनें। 1 = सिंगल एजेंट, कई = मल्टी-एजेंट सहयोग।',
     agentMode: 'एजेंट मोड',
     agentModePreset: 'प्रीसेट मोड',
     agentModeAuto: 'स्वतः उत्पन्न',
@@ -133,7 +134,8 @@ export const settingsHiIN = {
     deleteProviderConfirm: 'क्या आप इस प्रदाता को हटाना चाहते हैं?',
     cannotDeleteBuiltIn: 'बिल्ट-इन प्रदाता नहीं हटा सकते',
     resetToDefault: 'डिफ़ॉल्ट पर रीसेट करें',
-    resetToDefaultDescription: 'मॉडल सूची को डिफ़ॉल्ट पर रीसेट करें (API कुंजी और Base URL संरक्षित रहेंगे)',
+    resetToDefaultDescription:
+      'मॉडल सूची को डिफ़ॉल्ट पर रीसेट करें (API कुंजी और Base URL संरक्षित रहेंगे)',
     resetConfirmDescription:
       'यह सभी कस्टम मॉडल हटा देगा और डिफ़ॉल्ट सूची पुनर्स्थापित करेगा। API कुंजी और Base URL संरक्षित रहेंगे।',
     confirmReset: 'रीसेट पुष्टि',
@@ -210,7 +212,8 @@ export const settingsHiIN = {
     providerBrowserNative: 'Browser Native ASR',
     providerUnpdf: 'unpdf (Built-in)',
     providerMinerU: 'MinerU',
-    browserNativeTTSNote: 'ब्राउज़र नेटिव TTS को कॉन्फ़िगरेशन की आवश्यकता नहीं, सिस्टम बिल्ट-इन आवाज़ें उपयोग करता है',
+    browserNativeTTSNote:
+      'ब्राउज़र नेटिव TTS को कॉन्फ़िगरेशन की आवश्यकता नहीं, सिस्टम बिल्ट-इन आवाज़ें उपयोग करता है',
     testTTS: 'TTS परीक्षण',
     testASR: 'ASR परीक्षण',
     testSuccess: 'परीक्षण सफल',
@@ -369,17 +372,20 @@ export const settingsHiIN = {
     'lang_uk-UA': 'Українська (Україна)',
     pdfSettings: 'PDF पार्सिंग',
     pdfParsingSettings: 'PDF पार्सिंग सेटिंग्स',
-    pdfDescription: 'PDF पार्सिंग इंजन चुनें, टेक्स्ट एक्सट्रैक्शन, इमेज प्रोसेसिंग और टेबल रिकग्निशन सपोर्ट',
+    pdfDescription:
+      'PDF पार्सिंग इंजन चुनें, टेक्स्ट एक्सट्रैक्शन, इमेज प्रोसेसिंग और टेबल रिकग्निशन सपोर्ट',
     pdfProvider: 'PDF पार्सर',
     pdfFeatures: 'समर्थित सुविधाएं',
     pdfApiKey: 'API Key',
     pdfBaseUrl: 'Base URL',
-    mineruDescription: 'MinerU एक कमर्शियल PDF पार्सिंग सेवा है जो टेबल एक्सट्रैक्शन, फॉर्मूला रिकग्निशन और लेआउट एनालिसिस सपोर्ट करती है।',
+    mineruDescription:
+      'MinerU एक कमर्शियल PDF पार्सिंग सेवा है जो टेबल एक्सट्रैक्शन, फॉर्मूला रिकग्निशन और लेआउट एनालिसिस सपोर्ट करती है।',
     mineruApiKeyRequired: 'उपयोग से पहले MinerU वेबसाइट से API Key प्राप्त करें।',
     mineruWarning: 'चेतावनी',
     mineruCostWarning: 'MinerU एक कमर्शियल सेवा है, उपयोग पर शुल्क लग सकता है।',
     enterMinerUApiKey: 'MinerU API Key दर्ज करें',
-    mineruLocalDescription: 'MinerU लोकल डिप्लॉयमेंट सपोर्ट करता है। पहले MinerU सर्वर डिप्लॉय करें।',
+    mineruLocalDescription:
+      'MinerU लोकल डिप्लॉयमेंट सपोर्ट करता है। पहले MinerU सर्वर डिप्लॉय करें।',
     mineruServerAddress: 'लोकल MinerU सर्वर पता (जैसे: http://localhost:8080)',
     mineruApiKeyOptional: 'केवल सर्वर ऑथ सक्षम होने पर आवश्यक',
     optionalApiKey: 'वैकल्पिक API Key',
@@ -407,7 +413,8 @@ export const settingsHiIN = {
     imageGenerating: 'इमेज बनाई जा रही है...',
     imageGenerationFailed: 'इमेज जनरेशन विफल',
     enableVideoGeneration: 'AI वीडियो जनरेशन सक्षम करें',
-    videoGenerationDisabledHint: 'सक्षम होने पर, कोर्स जनरेशन के दौरान स्वचालित रूप से वीडियो बनेंगे',
+    videoGenerationDisabledHint:
+      'सक्षम होने पर, कोर्स जनरेशन के दौरान स्वचालित रूप से वीडियो बनेंगे',
     videoSettings: 'वीडियो जनरेशन',
     videoSection: 'टेक्स्ट-टू-वीडियो',
     videoProvider: 'वीडियो जनरेशन प्रदाता',
@@ -430,15 +437,18 @@ export const settingsHiIN = {
     singleAgent: 'सिंगल एजेंट मोड',
     multiAgent: 'मल्टी-एजेंट मोड',
     selectAgents: 'एजेंट चुनें',
-    noVisionWarning: 'वर्तमान मॉडल विज़न सपोर्ट नहीं करता। इमेज स्लाइड में जोड़ी जा सकती हैं लेकिन मॉडल उनकी सामग्री नहीं समझ सकता।',
+    noVisionWarning:
+      'वर्तमान मॉडल विज़न सपोर्ट नहीं करता। इमेज स्लाइड में जोड़ी जा सकती हैं लेकिन मॉडल उनकी सामग्री नहीं समझ सकता।',
     serverConfigured: 'सर्वर',
-    serverConfiguredNotice: 'एडमिन ने सर्वर पर इस प्रदाता की API Key कॉन्फ़िगर की है। सीधे उपयोग कर सकते हैं या अपनी Key से ओवरराइड कर सकते हैं।',
+    serverConfiguredNotice:
+      'एडमिन ने सर्वर पर इस प्रदाता की API Key कॉन्फ़िगर की है। सीधे उपयोग कर सकते हैं या अपनी Key से ओवरराइड कर सकते हैं।',
     optionalOverride: 'वैकल्पिक, खाली छोड़ने पर सर्वर कॉन्फ़िगरेशन उपयोग होगा',
     setupNeeded: 'कृपया पहले कॉन्फ़िगर करें',
     modelNotConfigured: 'उपयोग शुरू करने के लिए कृपया एक मॉडल चुनें',
     dangerZone: 'खतरनाक क्षेत्र',
     clearCache: 'लोकल कैश साफ़ करें',
-    clearCacheDescription: 'सभी लोकली स्टोर्ड डेटा हटाएं, जिसमें कक्षा रिकॉर्ड, बातचीत इतिहास, ऑडियो कैश और ऐप कॉन्फ़िगरेशन शामिल हैं। यह क्रिया पूर्ववत नहीं हो सकती।',
+    clearCacheDescription:
+      'सभी लोकली स्टोर्ड डेटा हटाएं, जिसमें कक्षा रिकॉर्ड, बातचीत इतिहास, ऑडियो कैश और ऐप कॉन्फ़िगरेशन शामिल हैं। यह क्रिया पूर्ववत नहीं हो सकती।',
     clearCacheConfirmTitle: 'क्या आप सभी कैश साफ़ करना चाहते हैं?',
     clearCacheConfirmDescription: 'यह क्रिया निम्नलिखित सभी डेटा को स्थायी रूप से हटा देगी:',
     clearCacheConfirmItems: 'कक्षा और दृश्य डेटा, बातचीत इतिहास, ऑडियो और इमेज कैश, ऐप सेटिंग्स',
@@ -461,7 +471,8 @@ export const settingsHiIN = {
     defaultNickname: 'छात्र',
     chooseAvatar: 'अवतार चुनें',
     uploadAvatar: 'अपलोड',
-    bioPlaceholder: 'अपने बारे में बताएं, AI शिक्षक आपकी पृष्ठभूमि के अनुसार शिक्षण को व्यक्तिगत बनाएगा...',
+    bioPlaceholder:
+      'अपने बारे में बताएं, AI शिक्षक आपकी पृष्ठभूमि के अनुसार शिक्षण को व्यक्तिगत बनाएगा...',
     avatarHint: 'आपका अवतार कक्षा चर्चा और बातचीत में दिखाई देगा',
     fileTooLarge: 'इमेज बहुत बड़ी है, कृपया 5MB से छोटी इमेज चुनें',
     invalidFileType: 'कृपया एक इमेज फ़ाइल चुनें',

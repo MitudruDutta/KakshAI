@@ -3,7 +3,10 @@ import type { Scene } from '@/lib/types/stage';
 import type { PPTElement } from '@/lib/types/slides';
 
 function stripMarkup(value: string): string {
-  return value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  return value
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function getSlideReadableText(elements: PPTElement[]): string[] {
@@ -67,7 +70,9 @@ export function buildSceneContextSummary(
     total: number;
   },
 ): string {
-  const parts = [`The student is now viewing slide ${position.index} of ${position.total}: "${scene.title}".`];
+  const parts = [
+    `The student is now viewing slide ${position.index} of ${position.total}: "${scene.title}".`,
+  ];
   const readableText = getSceneReadableText(scene);
   const lectureNotes = getSceneLectureNotes(scene);
 

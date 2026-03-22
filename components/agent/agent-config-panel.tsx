@@ -33,7 +33,9 @@ export function AgentConfigPanel() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-semibold">Agent Configuration</h2>
-          <p className="text-sm text-muted-foreground">Manage AI agents for classroom discussions</p>
+          <p className="text-sm text-muted-foreground">
+            Manage AI agents for classroom discussions
+          </p>
         </div>
         <Button size="sm" variant="outline">
           <PlusIcon className="w-4 h-4 mr-2" />

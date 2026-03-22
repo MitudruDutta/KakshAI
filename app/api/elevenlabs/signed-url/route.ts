@@ -21,11 +21,8 @@ const log = createLogger('ElevenLabs SignedURL');
 
 export async function GET(req: NextRequest) {
   try {
-    const apiKey =
-      req.headers.get('x-api-key') || process.env.ELEVENLABS_API_KEY;
-    const agentId =
-      req.headers.get('x-elevenlabs-agent-id') ||
-      process.env.ELEVENLABS_AGENT_ID;
+    const apiKey = req.headers.get('x-api-key') || process.env.ELEVENLABS_API_KEY;
+    const agentId = req.headers.get('x-elevenlabs-agent-id') || process.env.ELEVENLABS_AGENT_ID;
 
     if (!apiKey) {
       return apiError(
@@ -50,10 +47,6 @@ export async function GET(req: NextRequest) {
     return apiSuccess({ signedUrl: response.signed_url });
   } catch (error) {
     log.error('Failed to generate signed URL:', error);
-    return apiError(
-      'INTERNAL_ERROR',
-      500,
-      'Failed to generate ElevenLabs signed URL',
-    );
+    return apiError('INTERNAL_ERROR', 500, 'Failed to generate ElevenLabs signed URL');
   }
 }

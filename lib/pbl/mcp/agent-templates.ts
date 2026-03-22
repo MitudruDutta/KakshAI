@@ -51,4 +51,3 @@ export const JUDGE_AGENT_TEMPLATE_PROMPT = `You are a Judge Agent in a Project-B
 - Provide specific, actionable feedback
 - Focus on learning outcomes, not perfection
 - Celebrate successes while identifying growth areas`;
-

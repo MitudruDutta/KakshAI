@@ -395,7 +395,6 @@ export const PROVIDERS: Record<ProviderId, ProviderConfig> = {
       },
     ],
   },
-
 };
 
 /**
