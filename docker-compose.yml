@@ -1,3 +1,12 @@
+# KakshAI Docker Compose
+#
+# Usage:
+#   1. Start Supabase first:  cd supabase-docker && docker compose up -d
+#   2. Then start the app:    docker compose up -d
+#
+# Supabase services (Postgres, Auth, Studio, etc.) run in supabase-docker/.
+# This file only runs the Next.js app + Redis for rate limiting.
+
 services:
   kakshai:
     build: .
@@ -10,20 +19,8 @@ services:
       # - ./server-providers.yml:/app/server-providers.yml:ro
       - kakshai-data:/app/data
     depends_on:
-      - postgres
       - redis
     restart: unless-stopped
-
-  postgres:
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_DB: kakshai
-      POSTGRES_USER: kakshai
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
 
   redis:
     image: redis:7-alpine
@@ -34,5 +31,4 @@ services:
 
 volumes:
   kakshai-data:
-  postgres-data:
   redis-data:
