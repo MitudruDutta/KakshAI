@@ -1,9 +1,3 @@
-/**
- * Firecrawl Web Search Integration
- *
- * Uses Firecrawl Search/Scrape API v2 for web search with full markdown content.
- */
-
 import { proxyFetch } from '@/lib/server/proxy-fetch';
 import type { WebSearchResult, WebSearchSource } from '@/lib/web-search/types';
 

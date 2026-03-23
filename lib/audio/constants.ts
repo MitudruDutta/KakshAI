@@ -193,7 +193,7 @@ export const TTS_PROVIDERS: Record<TTSProviderId, TTSProviderConfig> = {
     name: 'ElevenLabs',
     requiresApiKey: true,
     defaultBaseUrl: 'https://api.elevenlabs.io/v1',
-    icon: '/logos/elevenlabs.svg',
+    icon: '/logos/elevenlabs.png',
     voices: [
       {
         id: 'JBFqnCBsd6RMkjVDRZzb',

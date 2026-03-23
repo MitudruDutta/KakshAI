@@ -1,15 +1,5 @@
-/**
- * Web Search Provider Type Definitions
- */
-
-/**
- * Web Search Provider IDs
- */
 export type WebSearchProviderId = 'firecrawl';
 
-/**
- * Web Search Provider Configuration
- */
 export interface WebSearchProviderConfig {
   id: WebSearchProviderId;
   name: string;
