@@ -16,13 +16,12 @@ export const PDF_PROVIDERS: Record<PDFProviderId, PDFProviderConfig> = {
     icon: '/logos/unpdf.svg',
     features: ['text', 'images', 'metadata'],
   },
-
-  mineru: {
-    id: 'mineru',
-    name: 'MinerU',
+  'pdf-parse': {
+    id: 'pdf-parse',
+    name: 'pdf-parse',
     requiresApiKey: false,
-    icon: '/logos/mineru.png',
-    features: ['text', 'images', 'tables', 'formulas', 'layout-analysis'],
+    icon: '/logos/pdf-parse.svg',
+    features: ['text', 'metadata'],
   },
 };
 

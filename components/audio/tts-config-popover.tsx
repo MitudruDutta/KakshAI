@@ -19,7 +19,7 @@ import { useSettingsStore } from '@/lib/store/settings';
 import { getTTSVoices } from '@/lib/audio/constants';
 import { useTTSPreview } from '@/lib/audio/use-tts-preview';
 
-/** Extract the English name from voice name format "ChineseName (English)" */
+/** Extract the fallback English label from names like "Native Name (English)" */
 function getVoiceDisplayName(name: string, lang: string): string {
   if (lang === 'en-US') {
     const match = name.match(/\(([^)]+)\)/);

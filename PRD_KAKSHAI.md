@@ -2,7 +2,7 @@
 
 ## Context
 
-**OpenMAIC** is a forked Chinese-origin open-source project — an AI-powered interactive classroom that generates courses from PDFs. It is deeply embedded with Chinese language defaults, Chinese-only TTS/LLM providers, Chinese agent names, and has no real backend (pure serverless Next.js API routes, all state client-side in IndexedDB).
+This codebase started from a legacy interactive classroom prototype that generates lessons from PDFs. It was heavily shaped by earlier language/provider assumptions and still has no real backend (pure serverless Next.js API routes, all state client-side in IndexedDB).
 
 **Goal:** Completely revamp this into **KakshAI** (from Hindi "Kaksha" = classroom) — a rebranded, production-ready product with:
 1. Firecrawl Search replacing Tavily for web search (hackathon requirement)
@@ -16,7 +16,7 @@
 
 ## 1. Product Rename & Rebrand
 
-### 1.1 Name: OpenMAIC → KakshAI
+### 1.1 Name: KakshAI
 
 | File | Change |
 |---|---|
@@ -56,12 +56,12 @@
 
 | ID | Current (Chinese) | New (English) |
 |---|---|---|
-| `default-1` | `'AI teacher'` | Keep as-is |
-| `default-2` | `'AI助教'` | `'AI Assistant'` |
-| `default-3` | `'显眼包'` | `'Class Clown'` |
-| `default-4` | `'好奇宝宝'` | `'Curious Mind'` |
-| `default-5` | `'笔记员'` | `'Note Taker'` |
-| `default-6` | `'思考者'` | `'Deep Thinker'` |
+| `default-1` | Legacy teacher preset | `'Lead Tutor'` |
+| `default-2` | Legacy assistant preset | `'Learning Guide'` |
+| `default-3` | Legacy comic-relief preset | `'Challenger'` |
+| `default-4` | Legacy curiosity preset | `'Curious Explorer'` |
+| `default-5` | Legacy note-taking preset | `'Notekeeper'` |
+| `default-6` | Legacy thinker preset | `'Critical Thinker'` |
 
 ### 2.3 Hardcoded Chinese Strings
 
@@ -87,7 +87,6 @@ Remove from `ProviderId` union and `PROVIDERS` registry:
 - `minimax` — MiniMax
 - `glm` — Zhipu GLM
 - `siliconflow` — SiliconFlow
-- `doubao` — ByteDance Doubao
 
 **Keep:** `openai`, `anthropic`, `google`
 
@@ -349,7 +348,7 @@ ELEVENLABS_AGENT_ID=your-agent-id
 ```
 
 #### ElevenLabs Dashboard Setup:
-1. Create agent with system prompt for "AI Teacher"
+1. Create agent with system prompt for "Lead Tutor"
 2. Configure voice (Rachel, Drew, etc.)
 3. Add custom tools matching `clientTools` schema
 4. Enable Firecrawl webhook tool pointing to `/api/web-search`

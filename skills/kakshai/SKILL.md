@@ -32,11 +32,11 @@ If present, read defaults from `~/.openclaw/openclaw.json` under:
 {
   "skills": {
     "entries": {
-      "openmaic": {
+      "kakshai": {
         "enabled": true,
         "config": {
           "accessCode": "sk-xxx",
-          "repoDir": "/path/to/Kaksh AI",
+          "repoDir": "/path/to/KakshAI",
           "url": "http://localhost:3000"
         }
       }
@@ -57,7 +57,7 @@ First check skill config for `accessCode`. If present, announce that a stored ac
 
 If no `accessCode` in config, ask the user how they want to use Kaksh AI:
 
-1. **Use hosted Kaksh AI** (recommended for quick start) — Requires an access code from open.maic.chat. No local setup needed.
+1. **Use hosted Kaksh AI** (recommended for quick start) — Requires an access code and URL for your hosted Kaksh deployment. No local setup needed.
 2. **Run locally** — Clone the repo, configure provider keys, and run on your machine.
 
 If the user chooses hosted mode, load [references/hosted-mode.md](references/hosted-mode.md) and skip phases 1–4.

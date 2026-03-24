@@ -86,7 +86,7 @@ function getTTSProviderName(providerId: TTSProviderId, t: (key: string) => strin
   return names[providerId] || providerId;
 }
 
-/** Extract the English name from voice name format "ChineseName (English)" */
+/** Extract the fallback English label from names like "Native Name (English)" */
 function getVoiceDisplayName(name: string, lang: string): string {
   if (lang === 'en-US') {
     const match = name.match(/\(([^)]+)\)/);
@@ -218,7 +218,7 @@ export function MediaPopover({ onSettingsOpen }: MediaPopoverProps) {
       if (p.id === 'browser-native-tts' && browserVoices.length > 0) {
         const byLang = new Map<string, SpeechSynthesisVoice[]>();
         for (const v of browserVoices) {
-          const langKey = v.lang.split('-')[0]; // "zh-CN" → "zh"
+          const langKey = v.lang.split('-')[0]; // "en-US" -> "en"
           if (!byLang.has(langKey)) byLang.set(langKey, []);
           byLang.get(langKey)!.push(v);
         }

@@ -8,7 +8,7 @@ Thank you for your interest in contributing to Kaksh AI! This guide will help yo
 | --- | --- |
 | **Bug fix** | Open a PR directly (link the issue if one exists) |
 | **Extending existing features** (e.g. adding a new model provider, new TTS engine) | Open a PR directly |
-| **New feature or architecture change** | Start a [GitHub Discussion](https://github.com/THU-MAIC/Kaksh AI/discussions) or ask in [Discord](https://discord.gg/PtZaaTbH) **before** opening a PR |
+| **New feature or architecture change** | Start a [GitHub Discussion](https://github.com/MitudruDutta/KakshAI/discussions) or ask in [Discord](https://discord.gg/PtZaaTbH) **before** opening a PR |
 | **Design / UI change** | Discuss in a GitHub Discussion or Discord first — include mockups or screenshots |
 | **Refactor-only PR** | Not accepted unless a maintainer explicitly requests it |
 | **Documentation** | Open a PR directly |
@@ -32,8 +32,8 @@ To avoid duplicate effort, please **comment on an issue** to claim it before you
 
 ```bash
 # Clone the repository
-git clone https://github.com/THU-MAIC/Kaksh AI.git
-cd Kaksh AI
+git clone https://github.com/MitudruDutta/KakshAI.git
+cd KakshAI
 
 # Install dependencies
 pnpm install
@@ -131,7 +131,7 @@ AI-assisted PRs are held to the same quality standard as any other PR. Community
 ## Project Structure
 
 ```
-Kaksh AI/
+KakshAI/
 ├── app/              # Next.js app router pages and API routes
 ├── components/       # React components
 ├── lib/              # Shared utilities and core logic
@@ -143,7 +143,7 @@ Kaksh AI/
 
 ## Reporting Bugs
 
-Use the [Bug Report](https://github.com/THU-MAIC/Kaksh AI/issues/new?template=bug_report.yml) issue template. Include:
+Use the [Bug Report](https://github.com/MitudruDutta/KakshAI/issues/new?template=bug_report.yml) issue template. Include:
 
 - Steps to reproduce
 - Expected vs. actual behavior
@@ -152,11 +152,11 @@ Use the [Bug Report](https://github.com/THU-MAIC/Kaksh AI/issues/new?template=bu
 
 ## Requesting Features
 
-Use the [Feature Request](https://github.com/THU-MAIC/Kaksh AI/issues/new?template=feature_request.yml) issue template. For larger features, please open a [Discussion](https://github.com/THU-MAIC/Kaksh AI/discussions) first.
+Use the [Feature Request](https://github.com/MitudruDutta/KakshAI/issues/new?template=feature_request.yml) issue template. For larger features, please open a [Discussion](https://github.com/MitudruDutta/KakshAI/discussions) first.
 
 ## Security Vulnerabilities
 
-Please report security vulnerabilities through [GitHub Security Advisories](https://github.com/THU-MAIC/Kaksh AI/security/advisories/new). **Do not** open a public issue for security vulnerabilities.
+Please report security vulnerabilities through [GitHub Security Advisories](https://github.com/MitudruDutta/KakshAI/security/advisories/new). **Do not** open a public issue for security vulnerabilities.
 
 ## License
 

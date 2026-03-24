@@ -45,7 +45,7 @@ function getModelId(params: GenerateTextParams | StreamTextParams): string {
 // Builds a lookup table from PROVIDERS at module load time, then uses it to
 // map a unified ThinkingConfig into provider-specific providerOptions.
 // Currently handles: openai (native), anthropic (native), google (native).
-// OpenAI-compatible providers (DeepSeek, Qwen, Kimi, GLM, etc.) are NOT
+// Additional OpenAI-compatible providers are NOT
 // handled — their vendor-specific thinking params can't be reliably passed
 // through Vercel AI SDK's createOpenAI.
 // ---------------------------------------------------------------------------

@@ -55,7 +55,6 @@ const ASR_ENV_MAP: Record<string, string> = {
 
 const PDF_ENV_MAP: Record<string, string> = {
   PDF_UNPDF: 'unpdf',
-  PDF_MINERU: 'mineru',
 };
 
 const IMAGE_ENV_MAP: Record<string, string> = {

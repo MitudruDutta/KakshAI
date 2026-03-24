@@ -5,7 +5,7 @@
 
 export interface AgentConfig {
   id: string; // Unique agent ID
-  name: string; // Display name (Chinese)
+  name: string; // Display name
   role: string; // Short role description
   persona: string; // Full system prompt (personality, responsibilities)
   avatar: string; // Emoji or image URL

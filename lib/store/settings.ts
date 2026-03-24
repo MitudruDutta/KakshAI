@@ -5,8 +5,8 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { ProviderId } from '@/lib/ai/providers';
-import type { ProvidersConfig } from '@/lib/types/settings';
+import type { ModelInfo, ProviderId } from '@/lib/ai/providers';
+import type { ProviderSettings, ProvidersConfig } from '@/lib/types/settings';
 import { PROVIDERS } from '@/lib/ai/providers';
 import type { TTSProviderId, ASRProviderId } from '@/lib/audio/types';
 import { ASR_PROVIDERS, DEFAULT_TTS_VOICES, TTS_PROVIDERS } from '@/lib/audio/constants';
@@ -288,9 +288,81 @@ const getDefaultPDFConfig = () => ({
   pdfProviderId: 'unpdf' as PDFProviderId,
   pdfProvidersConfig: {
     unpdf: { apiKey: '', baseUrl: '', enabled: true },
-    mineru: { apiKey: '', baseUrl: '', enabled: false },
+    'pdf-parse': { apiKey: '', baseUrl: '', enabled: true },
   } as Record<PDFProviderId, { apiKey: string; baseUrl: string; enabled: boolean }>,
 });
+
+const BLOCKED_PROVIDER_PATTERN =
+  /deepseek|qwen|kimi|minimax|glm|siliconflow|moonshot|zhipu|alibaba|modelscope|iflowcn|baichuan|doubao|\u8c46\u5305|volcengine|volces|byteplus|bytedance/i;
+
+function isBlockedModel(model: ModelInfo): boolean {
+  return BLOCKED_PROVIDER_PATTERN.test(`${model.id} ${model.name}`);
+}
+
+function isBlockedProvider(providerId: string, config: ProviderSettings): boolean {
+  const fingerprint = [
+    providerId,
+    config.name,
+    config.baseUrl,
+    config.defaultBaseUrl,
+    config.serverBaseUrl,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  return BLOCKED_PROVIDER_PATTERN.test(fingerprint);
+}
+
+function sanitizeProvidersConfig(state: Partial<SettingsState>): void {
+  if (!state.providersConfig) return;
+
+  const defaults = getDefaultProvidersConfig();
+  const sanitized = {} as ProvidersConfig;
+
+  for (const [id, config] of Object.entries(state.providersConfig) as [
+    ProviderId,
+    ProviderSettings,
+  ][]) {
+    const sanitizedModels = (config.models || []).filter((model) => !isBlockedModel(model));
+
+    if (id in PROVIDERS) {
+      sanitized[id] = {
+        ...config,
+        models: sanitizedModels.length > 0 ? sanitizedModels : defaults[id].models,
+      };
+      continue;
+    }
+
+    if (isBlockedProvider(id, config) || sanitizedModels.length === 0) {
+      continue;
+    }
+
+    sanitized[id] = {
+      ...config,
+      models: sanitizedModels,
+    };
+  }
+
+  state.providersConfig = sanitized;
+}
+
+function ensureValidModelSelection(state: Partial<SettingsState>): void {
+  const providersConfig = state.providersConfig;
+  if (!providersConfig || Object.keys(providersConfig).length === 0) return;
+
+  const fallbackProviderId = (
+    'openai' in providersConfig ? 'openai' : (Object.keys(providersConfig)[0] as ProviderId)
+  ) as ProviderId;
+
+  if (!state.providerId || !providersConfig[state.providerId]) {
+    state.providerId = fallbackProviderId;
+  }
+
+  const models = providersConfig[state.providerId]?.models || [];
+  if (!state.modelId || !models.some((model) => model.id === state.modelId)) {
+    state.modelId = models[0]?.id || '';
+  }
+}
 
 // Initialize default Image config
 const getDefaultImageConfig = () => ({
@@ -362,7 +434,7 @@ function ensureValidProviderSelections(state: Partial<SettingsState>): void {
     state.asrProviderId = defaultAudioConfig.asrProviderId;
   }
 
-  // Force migration from old Chinese defaults to Hinglish/English if requested/detected
+  // Normalize legacy ASR defaults to the current English-India default
   if (state.asrLanguage === 'zh' || state.asrLanguage === 'zh-CN') {
     state.asrLanguage = 'en-IN';
   }
@@ -540,17 +612,46 @@ export const useSettingsStore = create<SettingsState>()(
         setModel: (providerId, modelId) => set({ providerId, modelId }),
 
         setProviderConfig: (providerId, config) =>
-          set((state) => ({
-            providersConfig: {
-              ...state.providersConfig,
-              [providerId]: {
-                ...state.providersConfig[providerId],
-                ...config,
+          set((state) => {
+            const nextState: Partial<SettingsState> = {
+              providerId: state.providerId,
+              modelId: state.modelId,
+              providersConfig: {
+                ...state.providersConfig,
+                [providerId]: {
+                  ...state.providersConfig[providerId],
+                  ...config,
+                },
               },
-            },
-          })),
+            };
 
-        setProvidersConfig: (config) => set({ providersConfig: config }),
+            sanitizeProvidersConfig(nextState);
+            ensureValidModelSelection(nextState);
+
+            return {
+              providerId: nextState.providerId ?? state.providerId,
+              modelId: nextState.modelId ?? state.modelId,
+              providersConfig: nextState.providersConfig ?? state.providersConfig,
+            };
+          }),
+
+        setProvidersConfig: (config) =>
+          set((state) => {
+            const nextState: Partial<SettingsState> = {
+              providerId: state.providerId,
+              modelId: state.modelId,
+              providersConfig: config,
+            };
+
+            sanitizeProvidersConfig(nextState);
+            ensureValidModelSelection(nextState);
+
+            return {
+              providerId: nextState.providerId ?? state.providerId,
+              modelId: nextState.modelId ?? state.modelId,
+              providersConfig: nextState.providersConfig ?? state.providersConfig,
+            };
+          }),
 
         setTtsModel: (model) => set({ ttsModel: model }),
 
@@ -884,7 +985,6 @@ export const useSettingsStore = create<SettingsState>()(
               let autoTtsProvider: TTSProviderId | undefined;
               let autoTtsVoice: string | undefined;
               let autoAsrProvider: ASRProviderId | undefined;
-              let autoPdfProvider: PDFProviderId | undefined;
               let autoImageProvider: ImageProviderId | undefined;
               let autoImageModel: string | undefined;
               let autoVideoProvider: VideoProviderId | undefined;
@@ -893,11 +993,6 @@ export const useSettingsStore = create<SettingsState>()(
               let autoVideoEnabled: boolean | undefined;
 
               if (!state.autoConfigApplied) {
-                // PDF: unpdf → mineru if server has it
-                if (newPDFConfig.mineru?.isServerConfigured && state.pdfProviderId === 'unpdf') {
-                  autoPdfProvider = 'mineru' as PDFProviderId;
-                }
-
                 // TTS: select first server provider if current is not server-configured
                 const serverTtsIds = Object.keys(data.tts) as TTSProviderId[];
                 if (
@@ -975,7 +1070,6 @@ export const useSettingsStore = create<SettingsState>()(
                 videoProvidersConfig: newVideoConfig,
                 webSearchProvidersConfig: newWebSearchConfig,
                 autoConfigApplied: true,
-                ...(autoPdfProvider && { pdfProviderId: autoPdfProvider }),
                 ...(autoTtsProvider && {
                   ttsProviderId: autoTtsProvider,
                   ttsVoice: autoTtsVoice,
@@ -1022,6 +1116,7 @@ export const useSettingsStore = create<SettingsState>()(
 
         // Ensure providersConfig has all built-in providers (also in merge below)
         ensureBuiltInProviders(state);
+        sanitizeProvidersConfig(state);
 
         // Migrate from old ttsModel to new ttsProviderId
         if (state.ttsModel && !state.ttsProviderId) {
@@ -1119,6 +1214,7 @@ export const useSettingsStore = create<SettingsState>()(
         }
 
         ensureValidProviderSelections(state);
+        ensureValidModelSelection(state);
 
         return state;
       },
@@ -1127,7 +1223,9 @@ export const useSettingsStore = create<SettingsState>()(
       merge: (persistedState, currentState) => {
         const merged = { ...currentState, ...(persistedState as object) };
         ensureBuiltInProviders(merged as Partial<SettingsState>);
+        sanitizeProvidersConfig(merged as Partial<SettingsState>);
         ensureValidProviderSelections(merged as Partial<SettingsState>);
+        ensureValidModelSelection(merged as Partial<SettingsState>);
         return merged as SettingsState;
       },
     },

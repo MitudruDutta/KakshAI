@@ -57,7 +57,36 @@ import type { WebSearchProviderId } from '@/lib/web-search/types';
 import { GeneralSettings } from './general-settings';
 import { ModelEditDialog } from './model-edit-dialog';
 import { AddProviderDialog, type NewProviderData } from './add-provider-dialog';
-import type { SettingsSection, EditingModel } from '@/lib/types/settings';
+import type { EditingModel, ProvidersConfig, SettingsSection } from '@/lib/types/settings';
+
+const BLOCKED_PROVIDER_PATTERN =
+  /deepseek|qwen|kimi|minimax|glm|siliconflow|moonshot|zhipu|alibaba|modelscope|iflowcn|baichuan|doubao|\u8c46\u5305|volcengine|volces|byteplus|bytedance/i;
+
+function isBlockedModel(model: { id: string; name: string }): boolean {
+  return BLOCKED_PROVIDER_PATTERN.test(`${model.id} ${model.name}`);
+}
+
+function isBlockedProvider(
+  providerId: string,
+  config: {
+    name?: string;
+    baseUrl?: string;
+    defaultBaseUrl?: string;
+    serverBaseUrl?: string;
+  },
+): boolean {
+  const fingerprint = [
+    providerId,
+    config.name,
+    config.baseUrl,
+    config.defaultBaseUrl,
+    config.serverBaseUrl,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  return BLOCKED_PROVIDER_PATTERN.test(fingerprint);
+}
 
 // ─── Provider List Column (reusable) ───
 function ProviderListColumn<T extends string>({
@@ -295,17 +324,19 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
     setTimeout(() => setSaveStatus('idle'), 2000);
   };
 
-  const selectedProvider = providersConfig[selectedProviderId]
-    ? {
-        id: selectedProviderId,
-        name: providersConfig[selectedProviderId].name,
-        type: providersConfig[selectedProviderId].type,
-        defaultBaseUrl: providersConfig[selectedProviderId].defaultBaseUrl,
-        icon: providersConfig[selectedProviderId].icon,
-        requiresApiKey: providersConfig[selectedProviderId].requiresApiKey,
-        models: providersConfig[selectedProviderId].models,
-      }
-    : undefined;
+  const selectedProviderConfig = providersConfig[selectedProviderId];
+  const selectedProvider =
+    selectedProviderConfig && !isBlockedProvider(selectedProviderId, selectedProviderConfig)
+      ? {
+          id: selectedProviderId,
+          name: selectedProviderConfig.name,
+          type: selectedProviderConfig.type,
+          defaultBaseUrl: selectedProviderConfig.defaultBaseUrl,
+          icon: selectedProviderConfig.icon,
+          requiresApiKey: selectedProviderConfig.requiresApiKey,
+          models: selectedProviderConfig.models.filter((model) => !isBlockedModel(model)),
+        }
+      : undefined;
 
   // Handle model editing
   const handleEditModel = (pid: ProviderId, modelIndex: number) => {
@@ -320,7 +351,7 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
 
   const handleAddModel = () => {
     setEditingModel({
-      providerId: selectedProviderId,
+      providerId: effectiveSelectedProviderId,
       modelIndex: null,
       model: {
         id: '',
@@ -345,6 +376,7 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
     if (!editingModel) return;
     const { providerId: pid, modelIndex, model } = editingModel;
     if (!model.id.trim()) return;
+    if (isBlockedModel(model)) return;
     const currentModels = providersConfig[pid]?.models || [];
     let newModels: typeof currentModels;
     let newModelIndex = modelIndex;
@@ -375,6 +407,10 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
       toast.error(t('settings.modelIdRequired'));
       return;
     }
+    if (isBlockedModel(model)) {
+      toast.error('This model has been removed from the product.');
+      return;
+    }
     const currentModels = providersConfig[pid]?.models || [];
     let newModels: typeof currentModels;
     if (modelIndex === null) {
@@ -392,6 +428,15 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
   const handleAddProvider = (providerData: NewProviderData) => {
     if (!providerData.name.trim()) {
       toast.error(t('settings.providerNameRequired'));
+      return;
+    }
+    if (
+      isBlockedProvider('custom-provider', {
+        name: providerData.name,
+        baseUrl: providerData.baseUrl,
+      })
+    ) {
+      toast.error('This provider has been removed from the product.');
       return;
     }
     const newProviderId = `custom-${Date.now()}` as ProviderId;
@@ -454,8 +499,21 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
     toast.success(t('settings.resetSuccess'));
   };
 
+  const visibleProviderEntries = Object.entries(providersConfig)
+    .filter(([id, config]) => !isBlockedProvider(id, config))
+    .map(
+      ([id, config]) =>
+        [
+          id,
+          {
+            ...config,
+            models: config.models.filter((model) => !isBlockedModel(model)),
+          },
+        ] as const,
+    );
+
   // Get all providers from providersConfig
-  const allProviders = Object.entries(providersConfig).map(([id, config]) => ({
+  const allProviders = visibleProviderEntries.map(([id, config]) => ({
     id: id as ProviderId,
     name: config.name,
     type: config.type,
@@ -465,6 +523,34 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
     models: config.models,
     isServerConfigured: config.isServerConfigured,
   }));
+
+  const effectiveSelectedProviderId = selectedProvider
+    ? selectedProviderId
+    : ((allProviders[0]?.id ?? 'openai') as ProviderId);
+  const effectiveSelectedProvider =
+    selectedProvider ??
+    allProviders.find((provider) => provider.id === effectiveSelectedProviderId);
+
+  useEffect(() => {
+    const sanitizedProvidersConfig = Object.fromEntries(visibleProviderEntries) as ProvidersConfig;
+    const providerIdsChanged =
+      Object.keys(sanitizedProvidersConfig).length !== Object.keys(providersConfig).length;
+    const modelListsChanged = (
+      Object.entries(sanitizedProvidersConfig) as Array<[ProviderId, ProvidersConfig[ProviderId]]>
+    ).some(([id, config]) => config.models.length !== (providersConfig[id]?.models?.length ?? 0));
+
+    if (!providerIdsChanged && !modelListsChanged) return;
+
+    setProvidersConfig(sanitizedProvidersConfig);
+
+    if (!sanitizedProvidersConfig[providerId]) {
+      const fallbackProviderId = (Object.keys(sanitizedProvidersConfig)[0] ??
+        'openai') as ProviderId;
+      const fallbackModelId =
+        sanitizedProvidersConfig[fallbackProviderId]?.models[0]?.id ?? 'gpt-4o-mini';
+      setModel(fallbackProviderId, fallbackModelId);
+    }
+  }, [providerId, providersConfig, setModel, setProvidersConfig, visibleProviderEntries]);
 
   // Sections that show a provider list column
   const _hasProviderList = [
@@ -767,7 +853,7 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
             <>
               <ProviderList
                 providers={allProviders}
-                selectedProviderId={selectedProviderId}
+                selectedProviderId={effectiveSelectedProviderId}
                 onSelect={handleProviderSelect}
                 onAddProvider={() => setShowAddProviderDialog(true)}
                 width={providerListWidth}
@@ -918,12 +1004,12 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
               <div className="flex items-center gap-3">{getHeaderContent()}</div>
               <div className="flex items-center gap-2">
                 {activeSection === 'providers' &&
-                  !providersConfig[selectedProviderId]?.isBuiltIn && (
+                  !providersConfig[effectiveSelectedProviderId]?.isBuiltIn && (
                     <Button
                       variant="ghost"
                       size="sm"
                       className="h-7 px-2 text-destructive hover:text-destructive"
-                      onClick={() => handleDeleteProvider(selectedProviderId)}
+                      onClick={() => handleDeleteProvider(effectiveSelectedProviderId)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -938,24 +1024,29 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
             <div className="flex-1 overflow-y-auto p-5">
               {activeSection === 'general' && <GeneralSettings />}
 
-              {activeSection === 'providers' && selectedProvider && (
+              {activeSection === 'providers' && effectiveSelectedProvider && (
                 <ProviderConfigPanel
-                  provider={selectedProvider}
-                  initialApiKey={providersConfig[selectedProviderId]?.apiKey || ''}
-                  initialBaseUrl={providersConfig[selectedProviderId]?.baseUrl || ''}
+                  provider={effectiveSelectedProvider}
+                  initialApiKey={providersConfig[effectiveSelectedProviderId]?.apiKey || ''}
+                  initialBaseUrl={providersConfig[effectiveSelectedProviderId]?.baseUrl || ''}
                   initialRequiresApiKey={
-                    providersConfig[selectedProviderId]?.requiresApiKey ?? true
+                    providersConfig[effectiveSelectedProviderId]?.requiresApiKey ?? true
                   }
                   providersConfig={providersConfig}
                   onConfigChange={(apiKey, baseUrl, requiresApiKey) =>
-                    handleProviderConfigChange(selectedProviderId, apiKey, baseUrl, requiresApiKey)
+                    handleProviderConfigChange(
+                      effectiveSelectedProviderId,
+                      apiKey,
+                      baseUrl,
+                      requiresApiKey,
+                    )
                   }
                   onSave={handleProviderConfigSave}
-                  onEditModel={(index) => handleEditModel(selectedProviderId, index)}
-                  onDeleteModel={(index) => handleDeleteModel(selectedProviderId, index)}
+                  onEditModel={(index) => handleEditModel(effectiveSelectedProviderId, index)}
+                  onDeleteModel={(index) => handleDeleteModel(effectiveSelectedProviderId, index)}
                   onAddModel={handleAddModel}
-                  onResetToDefault={() => handleResetProvider(selectedProviderId)}
-                  isBuiltIn={providersConfig[selectedProviderId]?.isBuiltIn ?? true}
+                  onResetToDefault={() => handleResetProvider(effectiveSelectedProviderId)}
+                  isBuiltIn={providersConfig[effectiveSelectedProviderId]?.isBuiltIn ?? true}
                 />
               )}
 
@@ -1008,11 +1099,11 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
         setEditingModel={setEditingModel}
         onSave={handleSaveModel}
         onAutoSave={handleAutoSaveModel}
-        providerId={selectedProviderId}
-        apiKey={providersConfig[selectedProviderId]?.apiKey || ''}
-        baseUrl={providersConfig[selectedProviderId]?.baseUrl}
-        providerType={providersConfig[selectedProviderId]?.type}
-        requiresApiKey={providersConfig[selectedProviderId]?.requiresApiKey}
+        providerId={effectiveSelectedProviderId}
+        apiKey={providersConfig[effectiveSelectedProviderId]?.apiKey || ''}
+        baseUrl={providersConfig[effectiveSelectedProviderId]?.baseUrl}
+        providerType={providersConfig[effectiveSelectedProviderId]?.type}
+        requiresApiKey={providersConfig[effectiveSelectedProviderId]?.requiresApiKey}
       />
 
       {/* Add Provider Dialog */}

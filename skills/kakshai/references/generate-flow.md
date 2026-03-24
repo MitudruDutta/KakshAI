@@ -7,7 +7,7 @@
 - Kaksh AI is healthy at the selected `url`
 - Provider keys are configured
 
-> **Hosted mode**: If using hosted Kaksh AI (open.maic.chat), all
+> **Hosted mode**: If using a hosted Kaksh deployment, all
 > preconditions (repo, startup, provider keys) are already satisfied.
 > Include `Authorization: Bearer <access-code>` header on all requests below.
 > See [hosted-mode.md](hosted-mode.md) for details.

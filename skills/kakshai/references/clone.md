@@ -21,8 +21,8 @@ Establish which Kaksh AI checkout will be used for setup and runtime actions.
 Clone:
 
 ```bash
-git clone https://github.com/THU-MAIC/Kaksh AI.git
-cd Kaksh AI
+git clone https://github.com/MitudruDutta/KakshAI.git
+cd KakshAI
 ```
 
 Install dependencies:

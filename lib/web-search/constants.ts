@@ -1,6 +1,4 @@
-
 import type { WebSearchProviderId, WebSearchProviderConfig } from './types';
-
 
 export const WEB_SEARCH_PROVIDERS: Record<WebSearchProviderId, WebSearchProviderConfig> = {
   firecrawl: {
@@ -11,7 +9,6 @@ export const WEB_SEARCH_PROVIDERS: Record<WebSearchProviderId, WebSearchProvider
     icon: '/logos/firecrawl.png',
   },
 };
-
 
 export function getAllWebSearchProviders(): WebSearchProviderConfig[] {
   return Object.values(WEB_SEARCH_PROVIDERS);
