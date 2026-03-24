@@ -100,7 +100,7 @@ export function ModelEditDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-125">
         <DialogTitle className="sr-only">
           {editingModel.modelIndex === null ? t('settings.addNewModel') : t('settings.editModel')}
         </DialogTitle>
@@ -328,7 +328,7 @@ export function ModelEditDialog({
                 <div className="flex items-start gap-2 flex-wrap">
                   {testStatus === 'success' && <CheckCircle className="h-4 w-4 mt-0.5 shrink-0" />}
                   {testStatus === 'error' && <XCircle className="h-4 w-4 mt-0.5 shrink-0" />}
-                  <p className="flex-1 break-words">{testMessage}</p>
+                  <p className="flex-1 wrap-break-word">{testMessage}</p>
                 </div>
               </div>
             )}

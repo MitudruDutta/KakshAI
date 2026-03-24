@@ -92,7 +92,7 @@ function KatexContent({ html, width, height }: { html: string; width: number; he
     <div style={{ width, height, overflow: 'hidden' }}>
       <div
         ref={innerRef}
-        className="[&_.katex-display]:!m-0"
+        className="[&_.katex-display]:m-0!"
         style={{
           transformOrigin: '0 0',
           transform: `scale(${scale})`,

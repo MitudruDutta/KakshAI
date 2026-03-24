@@ -78,7 +78,7 @@ export function ResizeHandler({
 
   return (
     <div
-      className={`resize-handler absolute w-[10px] h-[10px] left-0 top-0 m-[-5px_0_0_-5px] border border-primary bg-white rounded-[1px] ${cursorClass} ${className || ''}`}
+      className={`resize-handler absolute w-2.5 h-2.5 left-0 top-0 m-[-5px_0_0_-5px] border border-primary bg-white rounded-[1px] ${cursorClass} ${className || ''}`}
       style={style}
       onMouseDown={onMouseDown}
     />

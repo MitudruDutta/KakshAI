@@ -53,7 +53,7 @@ export function LaserOverlay({
         top: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
         opacity: { duration: 0.15 },
       }}
-      className="absolute z-[101] pointer-events-none"
+      className="absolute z-101 pointer-events-none"
     >
       <div className="relative -translate-x-1/2 -translate-y-1/2">
         {/* Ring pulse */}

@@ -129,13 +129,13 @@ const MessageBubble = memo(function MessageBubble({
       className={cn(
         'inline-block px-2.5 py-1.5 rounded-xl text-[12px] leading-relaxed max-w-full text-left transition-shadow duration-300',
         isUser
-          ? 'bg-gradient-to-br from-purple-600 to-purple-700 dark:from-purple-500 dark:to-purple-600 text-white rounded-tr-sm shadow-sm shadow-purple-300/30 dark:shadow-purple-900/50 ring-1 ring-purple-500/20'
+          ? 'bg-linear-to-br from-purple-600 to-purple-700 dark:from-purple-500 dark:to-purple-600 text-white rounded-tr-sm shadow-sm shadow-purple-300/30 dark:shadow-purple-900/50 ring-1 ring-purple-500/20'
           : isTeacher
             ? 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-100 dark:border-gray-700 rounded-tl-sm shadow-sm'
             : 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-900 dark:text-indigo-200 border border-indigo-100/50 dark:border-indigo-800/50 rounded-tl-sm',
       )}
     >
-      <span className="break-words">
+      <span className="wrap-break-word">
         {parts.map((part: MessagePart, i: number) => {
           if (part.type === 'text' || part.type === 'step-start') {
             const text = part.type === 'text' ? part.text : '';
@@ -349,12 +349,12 @@ export function ChatSessionComponent({
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className="mx-3 mt-2 mb-1 flex items-center gap-2"
             >
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent" />
+              <div className="flex-1 h-px bg-linear-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent" />
               <span className="flex items-center gap-1 text-[9px] text-gray-400 dark:text-gray-500 font-medium">
                 <CircleStop className="w-2.5 h-2.5" />
                 {t('chat.ended')}
               </span>
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent" />
+              <div className="flex-1 h-px bg-linear-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent" />
             </motion.div>
           )}
         </AnimatePresence>

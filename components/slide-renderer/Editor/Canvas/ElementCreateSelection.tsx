@@ -172,7 +172,7 @@ export function ElementCreateSelection({ onCreated }: ElementCreateSelectionProp
   return (
     <div
       ref={selectionRef}
-      className="element-create-selection absolute top-0 left-0 w-full h-full z-[2] cursor-crosshair"
+      className="element-create-selection absolute top-0 left-0 w-full h-full z-2 cursor-crosshair"
       onMouseDown={(e) => {
         e.stopPropagation();
         createSelection(e);

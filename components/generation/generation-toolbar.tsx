@@ -153,7 +153,7 @@ export function GenerationToolbar({
           {pdfFile ? (
             <button className={pillActive}>
               <Paperclip className="size-3.5" />
-              <span className="max-w-[100px] truncate">{pdfFile.name}</span>
+              <span className="max-w-25 truncate">{pdfFile.name}</span>
               <span
                 role="button"
                 className="size-4 rounded-full inline-flex items-center justify-center hover:bg-violet-200 dark:hover:bg-violet-800 transition-colors"
@@ -489,7 +489,7 @@ function ModelSelectorPopover({
                     )}
                   </div>
                   {isActive && currentModelId && (
-                    <span className="text-[10px] text-muted-foreground truncate max-w-[80px]">
+                    <span className="text-[10px] text-muted-foreground truncate max-w-20">
                       {currentModelId}
                     </span>
                   )}

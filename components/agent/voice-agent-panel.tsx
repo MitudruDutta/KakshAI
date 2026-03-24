@@ -136,7 +136,7 @@ export function VoiceAgentPanel({ textModeContent, className, onOpenChat }: Voic
 
       {/* Content area */}
       <div className="flex-1 overflow-hidden">
-        {mode === 'text' ? (textModeContent ?? textFallback) : <VoiceAgent />}
+        {mode === 'text' ? (textModeContent ?? textFallback) : <VoiceAgent autoStart />}
       </div>
     </div>
   );

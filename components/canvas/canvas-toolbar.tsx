@@ -228,7 +228,7 @@ export function CanvasToolbar({
                   />
                 </div>
                 {/* Arrow pointing down */}
-                <div className="w-2 h-2 bg-white dark:bg-gray-800 border-b border-r border-gray-200 dark:border-gray-700 rotate-45 -mt-[5px]" />
+                <div className="w-2 h-2 bg-white dark:bg-gray-800 border-b border-r border-gray-200 dark:border-gray-700 rotate-45 -mt-1.25" />
               </div>
             </div>
           )}

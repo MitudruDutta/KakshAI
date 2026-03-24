@@ -244,7 +244,7 @@ export function ASRSettings({ selectedProviderId }: ASRSettingsProps) {
               !asrProvidersConfig[selectedProviderId]?.apiKey?.trim() &&
               !isServerConfigured
             }
-            className="gap-2 w-[140px]"
+            className="gap-2 w-35"
           >
             {isRecording ? (
               <>

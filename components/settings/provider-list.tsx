@@ -36,7 +36,7 @@ export function ProviderList({
   };
 
   return (
-    <div className="flex-shrink-0 bg-background flex flex-col" style={{ width: width ?? 192 }}>
+    <div className="shrink-0 bg-background flex flex-col" style={{ width: width ?? 192 }}>
       <div className="flex-1 overflow-y-auto p-3 space-y-1.5">
         {providers.map((provider) => (
           <button

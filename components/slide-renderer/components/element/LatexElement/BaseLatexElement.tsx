@@ -107,7 +107,7 @@ function KatexContent({
     >
       <div
         ref={innerRef}
-        className="[&_.katex-display]:!m-0"
+        className="[&_.katex-display]:m-0!"
         style={{
           transformOrigin: origin,
           transform: `scale(${scale})`,

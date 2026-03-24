@@ -89,7 +89,7 @@ export function UserProfileCard() {
 
   if (!hydrated) {
     return (
-      <Card className="p-5 !gap-0 shadow-xl border-muted/40 backdrop-blur-xl bg-white/80 dark:bg-slate-900/80">
+      <Card className="p-5 gap-0! shadow-xl border-muted/40 backdrop-blur-xl bg-white/80 dark:bg-slate-900/80">
         <div className="flex items-center gap-3">
           <div className="size-11 rounded-full bg-muted animate-pulse" />
           <div className="flex-1 space-y-2">
@@ -102,7 +102,7 @@ export function UserProfileCard() {
   }
 
   return (
-    <Card className="p-5 !gap-0 shadow-xl border-muted/40 backdrop-blur-xl bg-white/80 dark:bg-slate-900/80">
+    <Card className="p-5 gap-0! shadow-xl border-muted/40 backdrop-blur-xl bg-white/80 dark:bg-slate-900/80">
       {/* File input — sr-only keeps it in the flow but invisible; label triggers it */}
       <input
         id={FILE_INPUT_ID}
@@ -223,7 +223,7 @@ export function UserProfileCard() {
         placeholder={t('profile.bioPlaceholder')}
         maxLength={200}
         rows={3}
-        className="mt-3 resize-none bg-background/50 min-h-[80px]"
+        className="mt-3 resize-none bg-background/50 min-h-20"
       />
     </Card>
   );

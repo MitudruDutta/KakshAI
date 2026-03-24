@@ -120,7 +120,7 @@ export const ProactiveCard = ({
       initial={{ opacity: 0, y: 10, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
-      className="fixed w-64 z-[9999] pointer-events-auto"
+      className="fixed w-64 z-9999 pointer-events-auto"
       style={{
         left: pos.left,
         bottom: pos.bottom,
@@ -144,7 +144,7 @@ export const ProactiveCard = ({
 
         {/* Triangle Tail */}
         <div
-          className="absolute -bottom-[6px] w-3 h-3 bg-white dark:bg-gray-800 border-b border-r border-gray-100 dark:border-gray-700 z-10"
+          className="absolute -bottom-1.5 w-3 h-3 bg-white dark:bg-gray-800 border-b border-r border-gray-100 dark:border-gray-700 z-10"
           style={{
             left: `${pos.tailOffset}px`,
             transform: 'translateX(-50%) rotate(45deg)',
@@ -156,10 +156,10 @@ export const ProactiveCard = ({
           {/* Progress Bar */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-gray-50/50 dark:bg-gray-700/50">
             <div
-              className={`h-full transition-all duration-[50ms] ease-linear ${
+              className={`h-full transition-all duration-50 ease-linear ${
                 isPaused
                   ? 'bg-gray-300 dark:bg-gray-600'
-                  : 'bg-gradient-to-r from-amber-400 to-amber-500 dark:from-amber-500 dark:to-amber-600'
+                  : 'bg-linear-to-r from-amber-400 to-amber-500 dark:from-amber-500 dark:to-amber-600'
               }`}
               style={{ width: `${progress}%` }}
             />
@@ -211,7 +211,7 @@ export const ProactiveCard = ({
                 e.stopPropagation();
                 onListen();
               }}
-              className="flex-1 py-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 dark:from-amber-500 dark:to-amber-600 dark:hover:from-amber-600 dark:hover:to-amber-700 text-white text-[11px] font-black rounded-lg flex items-center justify-center gap-1.5 transition-all active:scale-[0.97] shadow-sm shadow-amber-200/50 dark:shadow-amber-800/50"
+              className="flex-1 py-2 bg-linear-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 dark:from-amber-500 dark:to-amber-600 dark:hover:from-amber-600 dark:hover:to-amber-700 text-white text-[11px] font-black rounded-lg flex items-center justify-center gap-1.5 transition-all active:scale-[0.97] shadow-sm shadow-amber-200/50 dark:shadow-amber-800/50"
             >
               <Play className="w-3 h-3 fill-current" /> {t('proactiveCard.join')}
             </button>

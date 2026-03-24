@@ -18,6 +18,9 @@ import {
   Monitor,
   BotOff,
   ChevronUp,
+  Link2,
+  Loader2,
+  X,
 } from 'lucide-react';
 import { useI18n } from '@/lib/hooks/use-i18n';
 import { createLogger } from '@/lib/logger';
@@ -56,6 +59,7 @@ const RECENT_OPEN_STORAGE_KEY = 'recentClassroomsOpen';
 interface FormState {
   pdfFile: File | null;
   requirement: string;
+  urlInput: string;
   language: 'en-US' | 'hi-IN';
   webSearch: boolean;
 }
@@ -63,6 +67,7 @@ interface FormState {
 const initialFormState: FormState = {
   pdfFile: null,
   requirement: '',
+  urlInput: '',
   language: 'en-US',
   webSearch: false,
 };
@@ -132,6 +137,7 @@ function HomePage() {
   const [classrooms, setClassrooms] = useState<StageListItem[]>([]);
   const [thumbnails, setThumbnails] = useState<Record<string, Slide>>({});
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+  const [scraping, setScraping] = useState(false);
   const toolbarRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -242,7 +248,7 @@ function HomePage() {
       return;
     }
 
-    if (!form.requirement.trim()) {
+    if (!form.requirement.trim() && !form.urlInput.trim()) {
       setError(t('upload.requirementRequired'));
       return;
     }
@@ -250,9 +256,51 @@ function HomePage() {
     setError(null);
 
     try {
+      let scrapedContent = '';
+
+      // If URL is provided, scrape it via Firecrawl first
+      if (form.urlInput.trim()) {
+        setScraping(true);
+        try {
+          const settings = useSettingsStore.getState();
+          const webSearchConfig = settings.webSearchProvidersConfig[settings.webSearchProviderId];
+          const scrapeRes = await fetch('/api/scrape-url', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              url: form.urlInput.trim(),
+              apiKey: webSearchConfig?.apiKey || undefined,
+              baseUrl: webSearchConfig?.baseUrl || undefined,
+            }),
+          });
+          const scrapeData = await scrapeRes.json();
+          if (scrapeData.success && scrapeData.markdown) {
+            scrapedContent = scrapeData.markdown;
+            log.info('Scraped URL:', form.urlInput, `(${scrapeData.markdown.length} chars)`);
+          } else {
+            setError(scrapeData.error || 'Failed to scrape URL. Please check the URL and try again.');
+            setScraping(false);
+            return;
+          }
+        } catch (scrapeErr) {
+          log.error('URL scrape failed:', scrapeErr);
+          setError('Failed to scrape URL. Please check the URL and try again.');
+          setScraping(false);
+          return;
+        }
+        setScraping(false);
+      }
+
+      // Build requirement with scraped content
+      const fullRequirement = scrapedContent
+        ? form.requirement.trim()
+          ? `${form.requirement.trim()}\n\n--- Source Material (from ${form.urlInput.trim()}) ---\n\n${scrapedContent.slice(0, 30000)}`
+          : `Create a comprehensive lesson based on this content:\n\n--- Source Material (from ${form.urlInput.trim()}) ---\n\n${scrapedContent.slice(0, 30000)}`
+        : form.requirement;
+
       const userProfile = useUserProfileStore.getState();
       const requirements: UserRequirements = {
-        requirement: form.requirement,
+        requirement: fullRequirement,
         language: form.language,
         userNickname: userProfile.nickname || undefined,
         userBio: userProfile.bio || undefined,
@@ -282,7 +330,7 @@ function HomePage() {
       const sessionState = {
         sessionId: nanoid(),
         requirements,
-        pdfText: '',
+        pdfText: scrapedContent || '',
         pdfImages: [],
         imageStorageIds: [],
         pdfStorageKey,
@@ -313,7 +361,7 @@ function HomePage() {
     return date.toLocaleDateString();
   };
 
-  const canGenerate = !!form.requirement.trim();
+  const canGenerate = !!form.requirement.trim() || !!form.urlInput.trim();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
@@ -545,6 +593,29 @@ function HomePage() {
               rows={4}
             />
 
+            {/* URL input row */}
+            <div className="px-4 pb-2">
+              <div className="flex items-center gap-2 rounded-lg border border-border/50 bg-muted/30 px-3 py-1.5 focus-within:border-violet-400/60 focus-within:bg-white/60 dark:focus-within:bg-slate-800/60 transition-colors">
+                <Link2 className="size-3.5 shrink-0 text-muted-foreground/60" />
+                <input
+                  type="url"
+                  placeholder="Paste a URL to generate a lesson from (powered by Firecrawl)"
+                  className="flex-1 bg-transparent text-xs placeholder:text-muted-foreground/40 focus:outline-none"
+                  value={form.urlInput}
+                  onChange={(e) => updateForm('urlInput', e.target.value)}
+                />
+                {form.urlInput && (
+                  <button
+                    type="button"
+                    onClick={() => updateForm('urlInput', '')}
+                    className="text-muted-foreground/50 hover:text-foreground transition-colors"
+                  >
+                    <X className="size-3" />
+                  </button>
+                )}
+              </div>
+            </div>
+
             {/* Toolbar row */}
             <div className="px-3 pb-3 flex items-end gap-2">
               <div className="flex-1 min-w-0">
@@ -578,16 +649,25 @@ function HomePage() {
               {/* Send button */}
               <button
                 onClick={handleGenerate}
-                disabled={!canGenerate}
+                disabled={!canGenerate || scraping}
                 className={cn(
                   'shrink-0 h-8 rounded-lg flex items-center justify-center gap-1.5 transition-all px-3',
-                  canGenerate
+                  canGenerate && !scraping
                     ? 'bg-primary text-primary-foreground hover:opacity-90 shadow-sm cursor-pointer'
                     : 'bg-muted text-muted-foreground/40 cursor-not-allowed',
                 )}
               >
-                <span className="text-xs font-medium">{t('toolbar.enterClassroom')}</span>
-                <ArrowUp className="size-3.5" />
+                {scraping ? (
+                  <>
+                    <Loader2 className="size-3.5 animate-spin" />
+                    <span className="text-xs font-medium">Scraping...</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-xs font-medium">{t('toolbar.enterClassroom')}</span>
+                    <ArrowUp className="size-3.5" />
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -687,7 +767,7 @@ function HomePage() {
 
       {/* Footer — flows with content, at the very end */}
       <div className="mt-auto pt-12 pb-4 text-center text-xs text-muted-foreground/40">
-        Kaksh AI — Open Source Project
+        KakshAI — Voice-first AI Classroom powered by ElevenLabs + Firecrawl
       </div>
     </div>
   );

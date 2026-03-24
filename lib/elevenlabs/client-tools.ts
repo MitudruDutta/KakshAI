@@ -92,6 +92,18 @@ export const clientTools: Record<string, (parameters: Record<string, unknown>) =
         const data = await res.json();
         if (!data.success) return 'Search returned no results.';
 
+        // Push source citations to voice panel
+        const addSource = (window as unknown as Record<string, unknown>).__kakshaiAddSource as
+          | ((s: { title: string; url: string }) => void)
+          | undefined;
+        if (addSource && data.sources) {
+          for (const src of data.sources as { title?: string; url?: string }[]) {
+            if (src.url) {
+              addSource({ title: src.title || src.url, url: src.url });
+            }
+          }
+        }
+
         const context =
           data.context ||
           data.sources
@@ -249,6 +261,33 @@ export const clientTools: Record<string, (parameters: Record<string, unknown>) =
       parts.push(`(Slide ${idx + 1} of ${scenes.length})`);
 
       return parts.join('\n');
+    },
+
+    /**
+     * Show a comprehension checkpoint question to the student.
+     * The agent should call this every 2-3 slides to verify understanding.
+     */
+    showCheckpoint: async (parameters: Record<string, unknown>): Promise<string> => {
+      const question = getStringParameter(parameters.question);
+      if (!question) return 'No question provided for checkpoint.';
+
+      const rawOptions = parameters.options;
+      const options: string[] | undefined = Array.isArray(rawOptions)
+        ? rawOptions.filter((o): o is string => typeof o === 'string')
+        : undefined;
+
+      const showCheckpoint = (window as unknown as Record<string, unknown>).__kakshaiShowCheckpoint as
+        | ((q: { question: string; options?: string[] }) => void)
+        | undefined;
+
+      if (showCheckpoint) {
+        showCheckpoint({
+          question,
+          options: options && options.length > 0 ? options : undefined,
+        });
+      }
+
+      return `Checkpoint question displayed: "${question}"${options ? ` with ${options.length} options` : ''}. Wait for the student to answer before continuing.`;
     },
   };
 

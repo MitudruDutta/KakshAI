@@ -24,7 +24,7 @@ export function PBLGuideInline() {
       <HoverCardContent
         side="top"
         collisionPadding={16}
-        className="w-[380px] overflow-y-auto rounded-xl p-5"
+        className="w-95 overflow-y-auto rounded-xl p-5"
         style={{
           maxHeight: 'var(--radix-hover-card-content-available-height, 70vh)',
         }}
@@ -55,7 +55,7 @@ export function PBLGuidePanel() {
         side="bottom"
         align="end"
         collisionPadding={16}
-        className="w-[380px] overflow-y-auto rounded-xl p-5"
+        className="w-95 overflow-y-auto rounded-xl p-5"
         style={{
           maxHeight: 'var(--radix-hover-card-content-available-height, 80vh)',
         }}
@@ -88,7 +88,7 @@ function GuideContent() {
           {/* 2-1 */}
           <li>
             <span className="font-medium text-foreground">{t('pbl.guide.step2.s1.title')}</span>
-            <p className="mt-0.5 ml-[1.125rem]">{t('pbl.guide.step2.s1.desc')}</p>
+            <p className="mt-0.5 ml-4.5">{t('pbl.guide.step2.s1.desc')}</p>
           </li>
 
           {/* 2-2 */}
@@ -97,7 +97,7 @@ function GuideContent() {
             <code className="ml-1.5 text-xs bg-muted rounded px-1.5 py-0.5 font-mono">
               @question
             </code>
-            <div className="mt-1.5 ml-[1.125rem] space-y-1.5">
+            <div className="mt-1.5 ml-4.5 space-y-1.5">
               <pre className="text-xs bg-muted/70 rounded-md px-3 py-2 font-mono leading-relaxed overflow-x-auto">
                 {t('pbl.guide.step2.s2.example')}
               </pre>
@@ -109,7 +109,7 @@ function GuideContent() {
           <li>
             <span className="font-medium text-foreground">{t('pbl.guide.step2.s3.title')}</span>
             <code className="ml-1.5 text-xs bg-muted rounded px-1.5 py-0.5 font-mono">@judge</code>
-            <div className="mt-1.5 ml-[1.125rem] space-y-1.5">
+            <div className="mt-1.5 ml-4.5 space-y-1.5">
               <pre className="text-xs bg-muted/70 rounded-md px-3 py-2 font-mono leading-relaxed overflow-x-auto">
                 {t('pbl.guide.step2.s3.example')}
               </pre>

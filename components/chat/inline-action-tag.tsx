@@ -106,7 +106,7 @@ export function InlineActionTag({ actionName, state }: InlineActionTagProps) {
             WB_ACCENT,
           )}
         >
-          <PenLine className="w-[7px] h-[7px] text-white dark:text-violet-950" strokeWidth={2.5} />
+          <PenLine className="w-1.75 h-1.75 text-white dark:text-violet-950" strokeWidth={2.5} />
         </span>
       )}
 

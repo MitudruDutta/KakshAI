@@ -165,7 +165,7 @@ export function ShapeCreateCanvas({ onCreated }: ShapeCreateCanvasProps) {
   return (
     <div
       ref={shapeCanvasRef}
-      className="shape-create-canvas absolute top-0 left-0 w-full h-full z-[2] cursor-crosshair"
+      className="shape-create-canvas absolute top-0 left-0 w-full h-full z-2 cursor-crosshair"
       onMouseDown={(e) => {
         e.stopPropagation();
         addPoint(e);

@@ -192,7 +192,7 @@ export function ModelSelector({
   }
 
   return (
-    <div className="border rounded-lg overflow-hidden flex flex-col h-[420px] relative">
+    <div className="border rounded-lg overflow-hidden flex flex-col h-105 relative">
       <div className="flex flex-1 min-h-0 overflow-hidden">
         {/* Left: Provider List */}
         <div className="w-48 border-r bg-muted/30 overflow-y-auto shrink-0">

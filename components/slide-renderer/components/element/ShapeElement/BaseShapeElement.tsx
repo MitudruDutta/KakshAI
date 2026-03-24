@@ -90,7 +90,7 @@ export function BaseShapeElement({ elementInfo }: BaseShapeElementProps) {
           </svg>
 
           <div
-            className={`shape-text flex flex-col px-2.5 py-2.5 leading-relaxed break-words absolute inset-0 ${
+            className={`shape-text flex flex-col px-2.5 py-2.5 leading-relaxed wrap-break-word absolute inset-0 ${
               text.align === 'top'
                 ? 'justify-start'
                 : text.align === 'bottom'
@@ -103,7 +103,7 @@ export function BaseShapeElement({ elementInfo }: BaseShapeElementProps) {
             }}
           >
             <div
-              className="ProseMirror-static [&_p]:mb-[var(--paragraphSpace)]"
+              className="ProseMirror-static [&_p]:mb-(--paragraphSpace)"
               style={{
                 // @ts-expect-error CSS custom properties
                 '--paragraphSpace': `${text.paragraphSpace === undefined ? 5 : text.paragraphSpace}px`,

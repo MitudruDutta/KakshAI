@@ -130,7 +130,7 @@ export function SceneSidebar({
           </button>
           <button
             onClick={() => onCollapseChange(true)}
-            className="w-7 h-7 shrink-0 rounded-lg flex items-center justify-center bg-gray-100/80 dark:bg-gray-800/80 text-gray-500 dark:text-gray-400 ring-1 ring-black/[0.04] dark:ring-white/[0.06] hover:bg-gray-200/90 dark:hover:bg-gray-700/90 hover:text-gray-700 dark:hover:text-gray-200 active:scale-90 transition-all duration-200"
+            className="w-7 h-7 shrink-0 rounded-lg flex items-center justify-center bg-gray-100/80 dark:bg-gray-800/80 text-gray-500 dark:text-gray-400 ring-1 ring-black/4 dark:ring-white/6 hover:bg-gray-200/90 dark:hover:bg-gray-700/90 hover:text-gray-700 dark:hover:text-gray-200 active:scale-90 transition-all duration-200"
           >
             <PanelLeftClose className="w-4 h-4" />
           </button>
@@ -199,7 +199,7 @@ export function SceneSidebar({
                       />
                     ) : scene.type === 'quiz' ? (
                       /* Quiz: question bar + 2x2 option grid */
-                      <div className="w-full h-full bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/20 p-2 flex flex-col">
+                      <div className="w-full h-full bg-linear-to-br from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/20 p-2 flex flex-col">
                         <div className="h-1.5 w-4/5 bg-orange-200/70 dark:bg-orange-700/30 rounded-full mb-1.5" />
                         <div className="flex-1 grid grid-cols-2 gap-1">
                           {[0, 1, 2, 3].map((i) => (
@@ -234,7 +234,7 @@ export function SceneSidebar({
                       </div>
                     ) : scene.type === 'interactive' ? (
                       /* Interactive: browser window with chrome + content */
-                      <div className="w-full h-full bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/20 p-1.5 flex flex-col">
+                      <div className="w-full h-full bg-linear-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/20 p-1.5 flex flex-col">
                         <div className="flex items-center gap-1 mb-1 pb-1 border-b border-emerald-200/40 dark:border-emerald-700/20">
                           <div className="flex gap-0.5">
                             <div className="w-1 h-1 rounded-full bg-red-300 dark:bg-red-500/60" />
@@ -259,7 +259,7 @@ export function SceneSidebar({
                       </div>
                     ) : scene.type === 'pbl' ? (
                       /* PBL: kanban board with 3 columns */
-                      <div className="w-full h-full bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/20 p-1.5 flex flex-col">
+                      <div className="w-full h-full bg-linear-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/20 p-1.5 flex flex-col">
                         <div className="flex items-center gap-1 mb-1.5">
                           <div className="w-1.5 h-1.5 rounded bg-blue-300 dark:bg-blue-600" />
                           <div className="h-1 w-8 bg-blue-200/60 dark:bg-blue-700/30 rounded-full" />
@@ -433,7 +433,7 @@ export function SceneSidebar({
                       )}
                     </div>
                     {!isFailed && !isPaused && (
-                      <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent" />
+                      <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-linear-to-r from-transparent via-white/40 dark:via-white/10 to-transparent" />
                     )}
                   </div>
                 </div>

@@ -185,7 +185,7 @@ export function AgentBar() {
             transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
             className="absolute right-0 top-full mt-1 z-50 w-80"
           >
-            <div className="rounded-2xl bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06] shadow-[0_1px_8px_-2px_rgba(0,0,0,0.06)] dark:shadow-[0_1px_8px_-2px_rgba(0,0,0,0.3)] px-2.5 py-2">
+            <div className="rounded-2xl bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm ring-1 ring-black/4 dark:ring-white/6 shadow-[0_1px_8px_-2px_rgba(0,0,0,0.06)] dark:shadow-[0_1px_8px_-2px_rgba(0,0,0,0.3)] px-2.5 py-2">
               {/* Mode tabs — full width, 50/50 */}
               <div className="flex rounded-lg border bg-muted/30 p-0.5 mb-2.5">
                 <button
@@ -269,9 +269,9 @@ export function AgentBar() {
                   {/* Shuffle icon with ambient animation */}
                   <div className="relative flex items-center justify-center">
                     {/* Ping ripple */}
-                    <div className="absolute size-12 rounded-full bg-violet-400/10 dark:bg-violet-400/15 animate-ping [animation-duration:3s]" />
+                    <div className="absolute size-12 rounded-full bg-violet-400/10 dark:bg-violet-400/15 animate-ping animation-duration-[3s]" />
                     {/* Soft glow ring */}
-                    <div className="absolute size-14 rounded-full bg-violet-400/5 dark:bg-violet-400/10 animate-pulse [animation-duration:2.5s]" />
+                    <div className="absolute size-14 rounded-full bg-violet-400/5 dark:bg-violet-400/10 animate-pulse animation-duration-[2.5s]" />
                     {/* Icon */}
                     <Shuffle className="relative size-7 text-violet-400 dark:text-violet-500" />
                   </div>

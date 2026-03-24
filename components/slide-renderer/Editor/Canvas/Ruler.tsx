@@ -58,7 +58,7 @@ export function Ruler({ viewportStyles, elementList }: RulerProps) {
         {markers.map((marker) => (
           <div
             key={`h-marker-100-${marker}`}
-            className={`ruler-marker-100 h-full leading-5 text-right flex-shrink-0 pr-[5px] relative ${
+            className={`ruler-marker-100 h-full leading-5 text-right shrink-0 pr-1.25 relative ${
               markerSize < 36 ? '[&>span]:hidden' : ''
             } ${markerSize < 72 ? 'before:hidden' : ''}`}
             style={{ width: markerSize + 'px' }}
@@ -94,7 +94,7 @@ export function Ruler({ viewportStyles, elementList }: RulerProps) {
         {markers.map((marker) => (
           <div
             key={`v-marker-100-${marker}`}
-            className={`ruler-marker-100 w-full leading-5 text-right pb-[5px] relative [writing-mode:vertical-rl] ${
+            className={`ruler-marker-100 w-full leading-5 text-right pb-1.25 relative [writing-mode:vertical-rl] ${
               markerSize < 36 ? '[&>span]:hidden' : ''
             } ${markerSize < 72 ? 'before:hidden' : ''}`}
             style={{ height: markerSize + 'px' }}

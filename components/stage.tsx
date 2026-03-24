@@ -93,7 +93,7 @@ export function Stage({
   const [activeBubbleId, setActiveBubbleId] = useState<string | null>(null);
 
   // Voice agent panel state
-  const [voicePanelOpen, setVoicePanelOpen] = useState(false);
+  const [voicePanelOpen, setVoicePanelOpen] = useState(true);
 
   // Scene switch confirmation dialog state
   const [pendingSceneId, setPendingSceneId] = useState<string | null>(null);
@@ -712,7 +712,11 @@ export function Stage({
             sidebarCollapsed={sidebarCollapsed}
             chatCollapsed={chatAreaCollapsed}
             onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
-            onToggleChat={() => setChatAreaCollapsed(!chatAreaCollapsed)}
+            onToggleChat={() => {
+              const next = !chatAreaCollapsed;
+              setChatAreaCollapsed(next);
+              if (!next) setVoicePanelOpen(false); // opening chat closes voice
+            }}
             onPrevSlide={handlePreviousScene}
             onNextSlide={handleNextScene}
             onPlayPause={handlePlayPause}
@@ -723,7 +727,11 @@ export function Stage({
             }
             onStopDiscussion={handleStopDiscussion}
             voicePanelOpen={voicePanelOpen}
-            onToggleVoice={() => setVoicePanelOpen(!voicePanelOpen)}
+            onToggleVoice={() => {
+              const next = !voicePanelOpen;
+              setVoicePanelOpen(next);
+              if (next) setChatAreaCollapsed(true); // opening voice closes chat
+            }}
             hideToolbar={mode === 'playback'}
             isPendingScene={isPendingScene}
             isGenerationFailed={
@@ -826,9 +834,17 @@ export function Stage({
             sidebarCollapsed={sidebarCollapsed}
             chatCollapsed={chatAreaCollapsed}
             onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
-            onToggleChat={() => setChatAreaCollapsed(!chatAreaCollapsed)}
+            onToggleChat={() => {
+              const next = !chatAreaCollapsed;
+              setChatAreaCollapsed(next);
+              if (!next) setVoicePanelOpen(false);
+            }}
             voicePanelOpen={voicePanelOpen}
-            onToggleVoice={() => setVoicePanelOpen(!voicePanelOpen)}
+            onToggleVoice={() => {
+              const next = !voicePanelOpen;
+              setVoicePanelOpen(next);
+              if (next) setChatAreaCollapsed(true);
+            }}
             onPrevSlide={handlePreviousScene}
             onNextSlide={handleNextScene}
             onWhiteboardClose={handleWhiteboardToggle}
@@ -892,7 +908,7 @@ export function Stage({
       {voicePanelOpen && (
         <div
           className="relative flex h-full flex-col border-l bg-background"
-          style={{ width: 320, minWidth: 280, maxWidth: 400 }}
+          style={{ width: 420, minWidth: 360, maxWidth: 500 }}
         >
           <VoiceAgentPanel
             onOpenChat={() => {
@@ -915,7 +931,7 @@ export function Stage({
             <AlertDialogTitle>{t('stage.confirmSwitchTitle')}</AlertDialogTitle>
           </VisuallyHidden.Root>
           {/* Top accent bar */}
-          <div className="h-1 bg-gradient-to-r from-amber-400 via-orange-400 to-red-400" />
+          <div className="h-1 bg-linear-to-r from-amber-400 via-orange-400 to-red-400" />
 
           <div className="px-6 pt-5 pb-2 flex flex-col items-center text-center">
             {/* Icon */}
@@ -938,7 +954,7 @@ export function Stage({
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmSceneSwitch}
-              className="flex-1 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0 shadow-md shadow-amber-200/50 dark:shadow-amber-900/30"
+              className="flex-1 rounded-xl bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0 shadow-md shadow-amber-200/50 dark:shadow-amber-900/30"
             >
               {t('common.confirm')}
             </AlertDialogAction>

@@ -64,7 +64,7 @@ export function GeneralSettings() {
   return (
     <div className="flex flex-col gap-8">
       {/* Danger Zone - Clear Cache */}
-      <div className="relative rounded-xl border border-destructive/30 bg-destructive/[0.03] dark:bg-destructive/[0.06] overflow-hidden">
+      <div className="relative rounded-xl border border-destructive/30 bg-destructive/3 dark:bg-destructive/6 overflow-hidden">
         {/* Subtle diagonal stripe pattern for danger emphasis */}
         <div
           className="absolute inset-0 opacity-[0.015] dark:opacity-[0.03] pointer-events-none"

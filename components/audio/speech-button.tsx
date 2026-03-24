@@ -77,7 +77,7 @@ export function SpeechButton({
           {/* Breathing ring when recording */}
           {isRecording && (
             <span
-              className="absolute inset-[-4px] rounded-[10px] border border-violet-400/40 dark:border-violet-400/25"
+              className="absolute -inset-1 rounded-[10px] border border-violet-400/40 dark:border-violet-400/25"
               style={{
                 animation: 'speech-ring 2s ease-in-out infinite',
               }}

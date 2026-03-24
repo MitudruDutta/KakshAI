@@ -81,7 +81,7 @@ export function BaseImageElement({ elementInfo }: BaseImageElementProps) {
                 </div>
               </div>
             ) : showSkeleton ? (
-              <div className="w-full h-full bg-gradient-to-br from-amber-50 via-orange-50/60 to-yellow-50 dark:from-amber-950/40 dark:via-orange-950/30 dark:to-yellow-950/20 flex items-center justify-center">
+              <div className="w-full h-full bg-linear-to-br from-amber-50 via-orange-50/60 to-yellow-50 dark:from-amber-950/40 dark:via-orange-950/30 dark:to-yellow-950/20 flex items-center justify-center">
                 <style>{`
                   @keyframes img-pulse-ring { 0%, 100% { opacity: 0.15; transform: scale(0.85); } 50% { opacity: 0.35; transform: scale(1.1); } }
                 `}</style>

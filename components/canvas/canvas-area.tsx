@@ -92,7 +92,7 @@ export function CanvasArea({
       >
         <div
           className={cn(
-            'aspect-[16/9] h-full max-h-full max-w-full bg-white dark:bg-gray-800 shadow-2xl rounded-lg overflow-hidden relative transition-all duration-700',
+            'aspect-video h-full max-h-full max-w-full bg-white dark:bg-gray-800 shadow-2xl rounded-lg overflow-hidden relative transition-all duration-700',
             showControls && !isLiveSession && currentScene?.type === 'slide' && 'cursor-pointer',
             currentScene?.type === 'interactive'
               ? 'shadow-blue-200/50 dark:shadow-blue-900/50 ring-1 ring-blue-900/5 dark:ring-blue-500/10'
@@ -101,7 +101,7 @@ export function CanvasArea({
           onClick={handleSlideClick}
         >
           {/* Whiteboard Layer */}
-          <div className="absolute inset-0 z-[110] pointer-events-none">
+          <div className="absolute inset-0 z-110 pointer-events-none">
             <SceneProvider>
               <Whiteboard isOpen={whiteboardOpen} onClose={onWhiteboardClose} />
             </SceneProvider>
@@ -124,7 +124,7 @@ export function CanvasArea({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.4, ease: 'easeOut' }}
-                className="absolute inset-0 z-[105] flex flex-col items-center justify-center bg-white dark:bg-gray-800"
+                className="absolute inset-0 z-105 flex flex-col items-center justify-center bg-white dark:bg-gray-800"
               >
                 {isGenerationFailed ? (
                   <div className="flex flex-col items-center gap-3">
@@ -192,7 +192,7 @@ export function CanvasArea({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="absolute inset-0 z-[102] flex items-center justify-center pointer-events-none"
+                className="absolute inset-0 z-102 flex items-center justify-center pointer-events-none"
               >
                 <motion.div
                   className="opacity-50 group-hover/canvas:opacity-100 transition-opacity duration-300 pointer-events-auto cursor-pointer"

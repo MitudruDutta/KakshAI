@@ -163,7 +163,7 @@ export function ShapeElement({ elementInfo, selectElement }: ShapeElementProps) 
           </svg>
 
           <div
-            className={`shape-text absolute inset-0 flex flex-col p-[10px] leading-[1.5] break-words pointer-events-none ${
+            className={`shape-text absolute inset-0 flex flex-col p-2.5 leading-normal wrap-break-word pointer-events-none ${
               editable || text.content ? 'pointer-events-auto' : ''
             } ${
               text.align === 'top'

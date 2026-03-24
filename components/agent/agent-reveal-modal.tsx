@@ -106,7 +106,7 @@ export function AgentRevealModal({ agents, open, onClose, onAllRevealed }: Agent
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-zinc-100/90 backdrop-blur-sm dark:bg-black/70 dark:backdrop-blur-md"
+          className="fixed inset-0 z-100 flex flex-col items-center justify-center bg-zinc-100/90 backdrop-blur-sm dark:bg-black/70 dark:backdrop-blur-md"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -166,7 +166,7 @@ export function AgentRevealModal({ agents, open, onClose, onAllRevealed }: Agent
                     >
                       {/* Outer colored border */}
                       <div
-                        className="absolute inset-0 rounded-2xl p-[2px]"
+                        className="absolute inset-0 rounded-2xl p-0.5"
                         style={{
                           background: `linear-gradient(160deg, ${agent.color}, ${lighten(agent.color, 0.35)}, ${agent.color})`,
                         }}
@@ -191,7 +191,7 @@ export function AgentRevealModal({ agents, open, onClose, onAllRevealed }: Agent
                             />
                             {/* Decorative corner accent lines */}
                             <svg
-                              className="absolute right-0 top-0 size-16 text-white/[0.06]"
+                              className="absolute right-0 top-0 size-16 text-white/6"
                               viewBox="0 0 64 64"
                             >
                               <line
@@ -224,7 +224,7 @@ export function AgentRevealModal({ agents, open, onClose, onAllRevealed }: Agent
                           {/* Avatar — overlapping the band */}
                           <div className="relative z-10 -mt-7 flex justify-center">
                             <div
-                              className="flex size-[50px] items-center justify-center rounded-full border-[2.5px] shadow-lg shadow-black/40"
+                              className="flex size-12.5 items-center justify-center rounded-full border-[2.5px] shadow-lg shadow-black/40"
                               style={{
                                 borderColor: agent.color,
                                 backgroundColor: '#f8f8fc',
@@ -312,7 +312,7 @@ export function AgentRevealModal({ agents, open, onClose, onAllRevealed }: Agent
                     >
                       {/* Gradient border matching front style */}
                       <div
-                        className="absolute inset-0 rounded-2xl p-[2px]"
+                        className="absolute inset-0 rounded-2xl p-0.5"
                         style={{
                           background: 'linear-gradient(160deg, #6366f1, #a855f7, #6366f1)',
                         }}
@@ -325,7 +325,7 @@ export function AgentRevealModal({ agents, open, onClose, onAllRevealed }: Agent
                           }}
                         >
                           {/* Decorative inner border */}
-                          <div className="absolute inset-3 rounded-xl border border-white/[0.08]" />
+                          <div className="absolute inset-3 rounded-xl border border-white/8" />
                           {/* Diamond pattern corners */}
                           <svg
                             className="absolute left-3 top-3 size-5 text-white/[0.07]"

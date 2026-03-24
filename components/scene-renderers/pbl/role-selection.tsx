@@ -19,7 +19,7 @@ export function PBLRoleSelection({ projectInfo, agents, onSelectRole }: PBLRoleS
   );
 
   return (
-    <div className="flex flex-col items-center h-full overflow-y-auto p-8 bg-gradient-to-b from-background to-muted/30">
+    <div className="flex flex-col items-center h-full overflow-y-auto p-8 bg-linear-to-b from-background to-muted/30">
       <div className="max-w-2xl w-full space-y-8 my-auto">
         {/* Project Info */}
         <div className="text-center space-y-3">

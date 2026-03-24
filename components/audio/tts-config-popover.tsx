@@ -110,7 +110,7 @@ export function TtsConfigPopover() {
             >
               <Volume2 className="size-3.5" />
               {ttsEnabled && (
-                <span className="max-w-[60px] truncate">
+                <span className="max-w-15 truncate">
                   {localizedVoices.find((v) => v.id === ttsVoice)?.displayName || ttsVoice}
                 </span>
               )}
@@ -119,7 +119,7 @@ export function TtsConfigPopover() {
         </TooltipTrigger>
         <TooltipContent>{t('toolbar.ttsHint')}</TooltipContent>
       </Tooltip>
-      <PopoverContent align="start" className="w-[280px] p-0">
+      <PopoverContent align="start" className="w-70 p-0">
         {/* Header with toggle */}
         <div className="flex items-center gap-2.5 px-3.5 py-3 border-b border-border/40">
           <Volume2

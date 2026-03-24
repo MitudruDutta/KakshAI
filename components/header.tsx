@@ -116,7 +116,7 @@ export function Header({ currentSceneTitle }: HeaderProps) {
               {locale === 'hi-IN' ? 'HI' : 'EN'}
             </button>
             {languageOpen && (
-              <div className="absolute top-full mt-2 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[120px]">
+              <div className="absolute top-full mt-2 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-30">
                 <button
                   onClick={() => {
                     setLocale('en-US');
@@ -147,7 +147,7 @@ export function Header({ currentSceneTitle }: HeaderProps) {
             )}
           </div>
 
-          <div className="w-[1px] h-4 bg-gray-200 dark:bg-gray-700" />
+          <div className="w-px h-4 bg-gray-200 dark:bg-gray-700" />
 
           {/* Theme Selector */}
           <div className="relative" ref={themeRef}>
@@ -163,7 +163,7 @@ export function Header({ currentSceneTitle }: HeaderProps) {
               {theme === 'system' && <Monitor className="w-4 h-4" />}
             </button>
             {themeOpen && (
-              <div className="absolute top-full mt-2 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[140px]">
+              <div className="absolute top-full mt-2 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-35">
                 <button
                   onClick={() => {
                     setTheme('light');
@@ -210,7 +210,7 @@ export function Header({ currentSceneTitle }: HeaderProps) {
             )}
           </div>
 
-          <div className="w-[1px] h-4 bg-gray-200 dark:bg-gray-700" />
+          <div className="w-px h-4 bg-gray-200 dark:bg-gray-700" />
 
           {/* Settings Button */}
           <div className="relative">
@@ -265,7 +265,7 @@ export function Header({ currentSceneTitle }: HeaderProps) {
             )}
           </button>
           {exportMenuOpen && (
-            <div className="absolute top-full mt-2 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-[200px]">
+            <div className="absolute top-full mt-2 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-50">
               <button
                 onClick={() => {
                   setExportMenuOpen(false);

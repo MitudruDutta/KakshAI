@@ -34,7 +34,7 @@ export function PBLWorkspace({
   return (
     <div className="flex h-full w-full">
       {/* Left: Issueboard (~35%) */}
-      <div className="w-[35%] min-w-[280px] border-r overflow-hidden flex flex-col">
+      <div className="w-[35%] min-w-70 border-r overflow-hidden flex flex-col">
         {/* Back button bar */}
         <div className="px-3 pt-2 flex items-center gap-1.5">
           {!showConfirm ? (

@@ -129,7 +129,10 @@
  * - Always include provider name in error messages
  */
 
-import pdfParse from 'pdf-parse';
+// Use the inner module to avoid pdf-parse's broken index.js which
+// tries to read a test fixture (./test/data/05-versions-space.pdf) at import time.
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const pdfParse = require('pdf-parse/lib/pdf-parse.js') as typeof import('pdf-parse').default;
 import { extractText, getDocumentProxy, extractImages } from 'unpdf';
 import sharp from 'sharp';
 import type { PDFParserConfig } from './types';

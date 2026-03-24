@@ -6,7 +6,7 @@ export const commonHiIN = {
     loading: 'लोड हो रहा है...',
   },
   home: {
-    slogan: 'Generative Learning in Multi-Agent Interactive Classroom',
+    slogan: 'Upload a PDF or paste a URL — your AI teacher explains it live, by voice',
     greeting: 'नमस्ते, ',
   },
   toolbar: {
@@ -22,7 +22,7 @@ export const commonHiIN = {
     selectProvider: 'प्रदाता चुनें',
     configureProvider: 'मॉडल सेट करें',
     configureProviderHint: 'कोर्स बनाने के लिए कम से कम एक मॉडल प्रदाता कॉन्फ़िगर करें',
-    enterClassroom: 'कक्षा में प्रवेश करें',
+    enterClassroom: 'पाठ शुरू करें',
     advancedSettings: 'उन्नत सेटिंग्स',
     ttsTitle: 'टेक्स्ट-टू-स्पीच',
     ttsHint: 'AI शिक्षक के लिए आवाज़ चुनें',
@@ -47,7 +47,7 @@ export const commonEnUS = {
     loading: 'Loading...',
   },
   home: {
-    slogan: 'Generative Learning in Multi-Agent Interactive Classroom',
+    slogan: 'Upload a PDF or paste a URL — your AI teacher explains it live, by voice',
     greeting: 'Hi, ',
   },
   toolbar: {
@@ -63,7 +63,7 @@ export const commonEnUS = {
     selectProvider: 'Select provider',
     configureProvider: 'Set up model',
     configureProviderHint: 'Configure at least one model provider to generate courses',
-    enterClassroom: 'Enter Classroom',
+    enterClassroom: 'Start Lesson',
     advancedSettings: 'Advanced Settings',
     ttsTitle: 'Text-to-Speech',
     ttsHint: 'Choose a voice for the AI teacher',

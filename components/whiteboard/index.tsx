@@ -88,7 +88,7 @@ export function Whiteboard({ isOpen, onClose }: WhiteboardProps) {
               y: 16,
               transition: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
             }}
-            className="absolute inset-4 pointer-events-auto bg-white/95 dark:bg-gray-800/95 backdrop-blur-2xl rounded-3xl shadow-[0_32px_80px_-20px_rgba(0,0,0,0.25)] border-2 border-purple-200/60 dark:border-purple-700/60 flex flex-col overflow-hidden z-[120] ring-4 ring-purple-100/40 dark:ring-purple-800/40"
+            className="absolute inset-4 pointer-events-auto bg-white/95 dark:bg-gray-800/95 backdrop-blur-2xl rounded-3xl shadow-[0_32px_80px_-20px_rgba(0,0,0,0.25)] border-2 border-purple-200/60 dark:border-purple-700/60 flex flex-col overflow-hidden z-120 ring-4 ring-purple-100/40 dark:ring-purple-800/40"
           >
             {/* Header */}
             <div className="h-14 px-6 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between shrink-0 bg-white/50 dark:bg-gray-800/50">
@@ -128,7 +128,7 @@ export function Whiteboard({ isOpen, onClose }: WhiteboardProps) {
                 >
                   <History className="w-4 h-4" />
                   {snapshotCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-purple-500 text-white text-[10px] font-bold flex items-center justify-center">
+                    <span className="absolute -top-0.5 -right-0.5 min-w-4 h-4 px-1 rounded-full bg-purple-500 text-white text-[10px] font-bold flex items-center justify-center">
                       {snapshotCount}
                     </span>
                   )}
@@ -146,7 +146,7 @@ export function Whiteboard({ isOpen, onClose }: WhiteboardProps) {
             </div>
 
             {/* Whiteboard Content Area */}
-            <div className="flex-1 relative bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#374151_1px,transparent_1px)] [background-size:24px_24px] overflow-hidden">
+            <div className="flex-1 relative bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#374151_1px,transparent_1px)] bg-size-[24px_24px] overflow-hidden">
               <WhiteboardCanvas />
 
               {/* History panel */}

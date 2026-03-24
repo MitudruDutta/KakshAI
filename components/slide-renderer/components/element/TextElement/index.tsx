@@ -179,7 +179,7 @@ export function TextElement({ elementInfo, selectElement }: TextElementProps) {
       >
         <div
           ref={elementRef}
-          className={`element-content relative p-[10px] leading-[1.5] break-words ${elementInfo.lock ? 'cursor-default' : 'cursor-move'}`}
+          className={`element-content relative p-2.5 leading-normal wrap-break-word ${elementInfo.lock ? 'cursor-default' : 'cursor-move'}`}
           style={{
             width: elementInfo.vertical ? 'auto' : `${elementInfo.width}px`,
             height: elementInfo.vertical ? `${elementInfo.height}px` : 'auto',
@@ -216,8 +216,8 @@ export function TextElement({ elementInfo, selectElement }: TextElementProps) {
           </div>
 
           {/* Drag handlers for better interaction when text overflows */}
-          <div className="drag-handler top absolute left-0 right-0 h-[10px] top-0" />
-          <div className="drag-handler bottom absolute left-0 right-0 h-[10px] bottom-0" />
+          <div className="drag-handler top absolute left-0 right-0 h-2.5 top-0" />
+          <div className="drag-handler bottom absolute left-0 right-0 h-2.5 bottom-0" />
         </div>
       </div>
     </div>

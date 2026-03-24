@@ -161,7 +161,7 @@ export function Operate({
           {elementIndexListInAnimation.map((index) => (
             <div
               key={index}
-              className="index-item w-[18px] h-[18px] bg-white text-primary border border-primary flex justify-center items-center mt-[5px] first:mt-0"
+              className="index-item w-4.5 h-4.5 bg-white text-primary border border-primary flex justify-center items-center mt-1.25 first:mt-0"
             >
               {index + 1}
             </div>
