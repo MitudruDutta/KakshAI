@@ -1,7 +1,7 @@
-# AI Codebase Knowledge: Kaksh AI
+# AI Codebase Knowledge: KakshAI
 
 ## Overview
-Kaksh AI (Open-source AI Interactive Classroom) is an advanced, multi-agent AI-powered learning platform. It allows users to upload documents (like PDFs) and provide a prompt to autonomously generate interactive, multi-modal course materials. The platform includes a complex multi-agent orchestration system, rendering different types of educational scenes (slides, quizzes, interactive models, and project-based learning).
+KakshAI is a voice-first AI classroom platform. Users upload a PDF or paste a URL, and an AI teacher explains the material live by voice using ElevenLabs conversational AI. The platform generates interactive, multi-modal course materials with slides, quizzes, and project-based learning — all navigable by voice. Web search is powered by Firecrawl for real-time information retrieval during lessons.
 
 ## Technology Stack
 - **Framework**: Next.js (App Router), React 19
@@ -170,7 +170,7 @@ Course generation follows a strictly typed, multi-stage pipeline (`lib/types/gen
   - Generates media (images, videos) based on outlines (`lib/media/media-orchestrator.ts`) into a background queue.
 
 ### 2. Multi-Agent Orchestration (`LangGraph`)
-Found in `lib/orchestration/`. Kaksh AI supports a conversational multi-agent system where multiple AI personas (with different backgrounds and configurations) discuss the course content with the user.
+Found in `lib/orchestration/`. KakshAI supports a conversational multi-agent system where multiple AI personas (with different backgrounds and configurations) discuss the course content with the user.
 - **Director Graph (`director-graph.ts`)**: A LangGraph `StateGraph` that manages turn-taking. 
   - **Director Node**: Evaluates context and decides the next speaker (Agent A, Agent B, User, or End). Uses LLM decision-making for multi-agent and fast-paths for single-agent.
   - **Agent Generate Node**: Streams out agent thoughts, dialogue, and executable UI actions.

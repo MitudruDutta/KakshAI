@@ -45,7 +45,7 @@ export function ScreenElement({ elementInfo, elementIndex, animate }: ScreenElem
       }
       return {
         fontColor: '#333333',
-        fontName: 'Microsoft YaHei',
+        fontName: 'Arial',
       };
     },
   );

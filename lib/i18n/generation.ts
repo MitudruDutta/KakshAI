@@ -16,6 +16,9 @@ export const generationHiIN = {
       'बताएं कि आप क्या सीखना चाहते हैं — AI शिक्षक आवाज़ से समझाएगा।\n\n"मुझे 30 मिनट में शुरू से Python सिखाएं"\n"व्हाइटबोर्ड पर फूरियर ट्रांसफॉर्म समझाएं"\n\nया नीचे URL पेस्ट करें — किसी भी वेबपेज से पाठ बनाएं।',
     requirementRequired: 'कृपया कोर्स आवश्यकताएं दर्ज करें',
     fileTooLarge: 'फ़ाइल बहुत बड़ी है। कृपया 50MB से छोटी PDF फ़ाइल चुनें',
+    urlPlaceholder: 'URL पेस्ट करें — किसी भी वेबपेज से पाठ बनाएं (Firecrawl द्वारा संचालित)',
+    scraping: 'स्क्रैप हो रहा है...',
+    scrapeFailed: 'URL स्क्रैप विफल',
   },
   generation: {
     analyzingPdf: 'PDF दस्तावेज़ का विश्लेषण',
@@ -81,6 +84,9 @@ export const generationEnUS = {
       'Describe what you want to learn — your AI teacher will explain it live by voice.\n\n"Teach me Python from scratch in 30 minutes"\n"Explain Fourier Transform on the whiteboard"\n\nOr paste a URL below to turn any webpage into a lesson.',
     requirementRequired: 'Please enter course requirements',
     fileTooLarge: 'File too large. Please select a PDF file smaller than 50MB',
+    urlPlaceholder: 'Paste a URL to generate a lesson from (powered by Firecrawl)',
+    scraping: 'Scraping...',
+    scrapeFailed: 'Failed to scrape URL',
   },
   generation: {
     // Progress steps (used dynamically via activeStep)

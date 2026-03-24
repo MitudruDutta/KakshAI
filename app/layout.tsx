@@ -17,9 +17,30 @@ const inter = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'KakshAI',
+  title: {
+    default: 'KakshAI — Voice-First AI Classroom',
+    template: '%s | KakshAI',
+  },
   description:
-    'AI-powered voice-interactive classroom. Upload a PDF or URL, get an immersive multi-agent learning experience with real-time voice conversations.',
+    'Upload a PDF or paste a URL — your AI teacher explains it live by voice. Powered by ElevenLabs conversational AI and Firecrawl web search.',
+  keywords: ['AI classroom', 'voice learning', 'ElevenLabs', 'Firecrawl', 'AI teacher', 'interactive learning'],
+  openGraph: {
+    title: 'KakshAI — Voice-First AI Classroom',
+    description:
+      'Upload a PDF or paste a URL — your AI teacher explains it live by voice. Real-time voice conversations powered by ElevenLabs + Firecrawl.',
+    type: 'website',
+    siteName: 'KakshAI',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'KakshAI — Voice-First AI Classroom',
+    description:
+      'Upload a PDF or paste a URL — your AI teacher explains it live by voice.',
+  },
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-icon.png',
+  },
 };
 
 export default function RootLayout({

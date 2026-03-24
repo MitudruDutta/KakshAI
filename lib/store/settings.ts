@@ -435,7 +435,11 @@ function ensureValidProviderSelections(state: Partial<SettingsState>): void {
   }
 
   // Normalize legacy ASR defaults to the current English-India default
-  if (state.asrLanguage === 'zh' || state.asrLanguage === 'zh-CN') {
+  if (state.asrLanguage === 'zh' || state.asrLanguage === 'zh-CN' || state.asrLanguage === 'zh') {
+    state.asrLanguage = 'en-IN';
+  }
+  // Also normalize any other unsupported CJK locale
+  if (state.asrLanguage?.startsWith('zh') || state.asrLanguage?.startsWith('yue')) {
     state.asrLanguage = 'en-IN';
   }
 }

@@ -15,7 +15,7 @@ export interface UseBrowserTTSOptions {
   rate?: number; // 0.1 to 10
   pitch?: number; // 0 to 2
   volume?: number; // 0 to 1
-  lang?: string; // e.g., 'zh-CN', 'en-US'
+  lang?: string; // e.g., 'en-US', 'hi-IN'
 }
 
 export function useBrowserTTS(options: UseBrowserTTSOptions = {}) {

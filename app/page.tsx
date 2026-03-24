@@ -599,7 +599,7 @@ function HomePage() {
                 <Link2 className="size-3.5 shrink-0 text-muted-foreground/60" />
                 <input
                   type="url"
-                  placeholder="Paste a URL to generate a lesson from (powered by Firecrawl)"
+                  placeholder={t('upload.urlPlaceholder')}
                   className="flex-1 bg-transparent text-xs placeholder:text-muted-foreground/40 focus:outline-none"
                   value={form.urlInput}
                   onChange={(e) => updateForm('urlInput', e.target.value)}
@@ -660,7 +660,7 @@ function HomePage() {
                 {scraping ? (
                   <>
                     <Loader2 className="size-3.5 animate-spin" />
-                    <span className="text-xs font-medium">Scraping...</span>
+                    <span className="text-xs font-medium">{t('upload.scraping')}</span>
                   </>
                 ) : (
                   <>

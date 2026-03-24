@@ -4,6 +4,8 @@ export const commonHiIN = {
     confirm: 'पुष्टि करें',
     cancel: 'रद्द करें',
     loading: 'लोड हो रहा है...',
+    retry: 'पुनः प्रयास',
+    loadingClassroom: 'कक्षा लोड हो रही है...',
   },
   home: {
     slogan: 'Upload a PDF or paste a URL — your AI teacher explains it live, by voice',
@@ -45,6 +47,8 @@ export const commonEnUS = {
     confirm: 'Confirm',
     cancel: 'Cancel',
     loading: 'Loading...',
+    retry: 'Retry',
+    loadingClassroom: 'Loading classroom...',
   },
   home: {
     slogan: 'Upload a PDF or paste a URL — your AI teacher explains it live, by voice',

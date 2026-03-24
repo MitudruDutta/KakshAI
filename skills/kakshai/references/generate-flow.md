@@ -4,7 +4,7 @@
 
 - Repo path is confirmed
 - Startup mode has been chosen
-- Kaksh AI is healthy at the selected `url`
+- KakshAI is healthy at the selected `url`
 - Provider keys are configured
 
 > **Hosted mode**: If using a hosted Kaksh deployment, all
@@ -34,7 +34,7 @@ Only send supported content fields:
 
 - `requirement` (required)
 - optional `pdfContent`
-- optional `language` (`"zh-CN"` | `"en-US"`, defaults to `"zh-CN"`) — any other value silently falls back to `"zh-CN"`
+- optional `language` (`"en-US"` | `"hi-IN"`, defaults to `"en-US"`) — any other value silently falls back to `"en-US"`
 - optional `enableWebSearch` (boolean) — include web search context in outline generation
 - optional `enableImageGeneration` (boolean) — allow image generation metadata in outlines
 - optional `enableVideoGeneration` (boolean) — allow video generation metadata in outlines
@@ -119,7 +119,7 @@ GET {pollUrl}
 - Prefer fewer poll attempts over aggressive polling. Long-running jobs are more likely to survive agent-loop limits if the tool-call cadence stays low.
 - Within a single agent turn, cap active polling to about 10 minutes. If the job is still not finished, tell the user it is still running and include the `jobId` and `pollUrl` so a later turn can continue checking without resubmitting.
 - Report progress to the user only when `status`, `step`, or visible progress meaningfully changes. Do not spam every poll result.
-- Do not try to recover from auth, provider, model, or base URL errors by changing request parameters. Tell the user to fix Kaksh AI server-side config and retry only after they confirm.
+- Do not try to recover from auth, provider, model, or base URL errors by changing request parameters. Tell the user to fix KakshAI server-side config and retry only after they confirm.
 - On `failed`, surface the server error and include the `jobId`.
 - On `succeeded`, use `result.classroomId` and `result.url` from the final poll response.
 

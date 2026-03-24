@@ -7,7 +7,6 @@
  * Currently Supported Providers:
  * - OpenAI Whisper: https://platform.openai.com/docs/guides/speech-to-text
  * - Browser Native: Web Speech API (https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)
- * - Qwen ASR: https://bailian.console.aliyun.com/
  *
  * HOW TO ADD A NEW PROVIDER:
  *

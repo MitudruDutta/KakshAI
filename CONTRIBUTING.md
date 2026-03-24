@@ -1,6 +1,6 @@
-# Contributing to Kaksh AI
+# Contributing to KakshAI
 
-Thank you for your interest in contributing to Kaksh AI! This guide will help you get started and ensure a smooth collaboration.
+Thank you for your interest in contributing to KakshAI! This guide will help you get started and ensure a smooth collaboration.
 
 ## How to Contribute
 
@@ -160,4 +160,4 @@ Please report security vulnerabilities through [GitHub Security Advisories](http
 
 ## License
 
-By contributing to Kaksh AI, you agree that your contributions will be licensed under the [AGPL-3.0 License](LICENSE).
+By contributing to KakshAI, you agree that your contributions will be licensed under the [MIT License](LICENSE).

@@ -299,7 +299,7 @@ export class ActionEngine {
         width: action.width ?? 400,
         height: action.height ?? 100,
         rotate: 0,
-        defaultFontName: 'Microsoft YaHei',
+        defaultFontName: 'Arial',
         defaultColor: action.color ?? '#333333',
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,

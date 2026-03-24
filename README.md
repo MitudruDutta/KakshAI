@@ -1,9 +1,9 @@
 <!-- <p align="center">
-  <img src="assets/logo-horizontal.png" alt="Kaksh AI" width="420"/>
+  <img src="assets/logo-horizontal.png" alt="KakshAI" width="420"/>
 </p> -->
 
 <p align="center">
-  <img src="assets/banner.png" alt="Kaksh AI Banner" width="680"/>
+  <img src="assets/banner.png" alt="KakshAI Banner" width="680"/>
 </p>
 
 <p align="center">
@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPL--3.0-blue.svg?style=flat-square" alt="License: AGPL-3.0"/></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg?style=flat-square" alt="License: MIT"/></a>
   <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMitudruDutta%2FKakshAI&envDescription=Configure%20at%20least%20one%20LLM%20provider%20API%20key%20(e.g.%20OPENAI_API_KEY%2C%20ANTHROPIC_API_KEY).%20All%20providers%20are%20optional.&envLink=https%3A%2F%2Fgithub.com%2FMitudruDutta%2FKakshAI%2Fblob%2Fmain%2F.env.example&project-name=kakshai&framework=nextjs"><img src="https://vercel.com/button" alt="Deploy with Vercel" height="20"/></a>
   <a href="#-openclaw-integration"><img src="https://img.shields.io/badge/OpenClaw-Integration-F4511E?style=flat-square" alt="OpenClaw Integration"/></a>
   <a href="https://github.com/MitudruDutta/KakshAI/stargazers"><img src="https://img.shields.io/github/stars/MitudruDutta/KakshAI?style=flat-square" alt="Stars"/></a>
@@ -35,7 +35,7 @@
 
 ## 📖 Overview
 
-**Kaksh AI** (Open Multi-Agent Interactive Classroom) is an open-source AI platform that turns any topic or document into a rich, interactive classroom experience. Powered by multi-agent orchestration, it generates slides, quizzes, interactive simulations, and project-based learning activities — all delivered by AI teachers and AI classmates who can speak, draw on a whiteboard, and engage in real-time discussions with you. With built-in [OpenClaw](https://github.com/openclaw/openclaw) integration, you can generate classrooms directly from messaging apps like Feishu, Slack, or Telegram.
+**KakshAI** is a voice-first AI classroom. Upload a PDF or paste any URL — your AI teacher explains it live by voice, navigates slides, draws on the whiteboard, searches the web for real-time information, and checks your understanding with comprehension questions. Powered by **ElevenLabs** conversational AI for real-time voice and **Firecrawl** for web search and content scraping.
 
 https://github.com/user-attachments/assets/b4ab35ac-f994-46b1-8957-e82fe87ff0e9
 
@@ -51,11 +51,11 @@ https://github.com/user-attachments/assets/b4ab35ac-f994-46b1-8957-e82fe87ff0e9
 ---
 
 > [!TIP]
-> ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/openclaw.png" height="28" align="top"/> OpenClaw — Use Kaksh AI from your chat app, zero setup
+> ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/openclaw.png" height="28" align="top"/> OpenClaw — Use KakshAI from your chat app, zero setup
 >
 > With [OpenClaw](https://github.com/openclaw/openclaw), you can generate classrooms directly from Feishu, Slack, Discord, Telegram, and 20+ messaging apps.
 >
-> 1. `clawhub install kakshai` or just ask your Claw *"install Kaksh AI skill"*
+> 1. `clawhub install kakshai` or just ask your Claw *"install KakshAI skill"*
 > 2. Pick a mode:
 >    - **Hosted mode** — Use an access code and URL for your hosted Kaksh deployment, no local setup needed
 >    - **Self-hosted** — The skill walks you through clone, config, and startup step by step
@@ -110,7 +110,7 @@ Supported providers: **OpenAI**, **Anthropic**, **Google Gemini**, and custom Op
 
 > **Recommended model:** **Gemini 3 Flash** — best balance of quality and speed. For highest quality (at slower speed), try **Gemini 3.1 Pro**.
 >
-> If you want Kaksh AI server APIs to use Gemini by default, also set `DEFAULT_MODEL=google:gemini-3-flash-preview`.
+> If you want KakshAI server APIs to use Gemini by default, also set `DEFAULT_MODEL=google:gemini-3-flash-preview`.
 
 ### 3. Run
 
@@ -149,7 +149,7 @@ docker compose up --build
 
 ### Lesson Generation
 
-Describe what you want to learn or attach reference materials. Kaksh AI's two-stage pipeline handles the rest:
+Describe what you want to learn or attach reference materials. KakshAI's two-stage pipeline handles the rest:
 
 | Stage | What Happens |
 |-------|-------------|
@@ -230,7 +230,7 @@ Choose a role and collaborate with AI agents on structured projects with milesto
 <tr>
 <td valign="top">
 
-Kaksh AI integrates with [OpenClaw](https://github.com/openclaw/openclaw) — a personal AI assistant that connects to messaging platforms you already use (Feishu, Slack, Discord, Telegram, WhatsApp, etc.). With this integration, you can **generate and view interactive classrooms directly from your chat app** without ever touching a terminal.
+KakshAI integrates with [OpenClaw](https://github.com/openclaw/openclaw) — a personal AI assistant that connects to messaging platforms you already use (Feishu, Slack, Discord, Telegram, WhatsApp, etc.). With this integration, you can **generate and view interactive classrooms directly from your chat app** without ever touching a terminal.
 
 </td>
 <td width="360" valign="top">
@@ -311,7 +311,7 @@ Optional config in `~/.openclaw/openclaw.json`:
 - **Text-to-Speech** — Multiple voice providers with customizable voices
 - **Speech Recognition** — Talk to your AI teacher using your microphone
 - **Web Search** — Agents search the web for up-to-date information during class
-- **i18n** — Interface supports Chinese and English
+- **i18n** — Interface supports English and Hindi
 - **Dark Mode** — Easy on the eyes for late-night study sessions
 
 ---
@@ -346,7 +346,7 @@ We welcome contributions from the community! Whether it's bug reports, feature i
 ### Project Structure
 
 ```
-Kaksh AI/
+KakshAI/
 ├── app/                        # Next.js App Router
 │   ├── api/                    #   Server API routes (~18 endpoints)
 │   │   ├── generate/           #     Scene generation pipeline (outlines, content, images, TTS …)
@@ -370,7 +370,7 @@ Kaksh AI/
 │   ├── media/                  #   Image & video generation providers
 │   ├── export/                 #   PPTX & HTML export
 │   ├── hooks/                  #   React custom hooks (55+)
-│   ├── i18n/                   #   Internationalization (zh-CN, en-US)
+│   ├── i18n/                   #   Internationalization (en-US, hi-IN)
 │   └── ...                     #   prosemirror, storage, pdf, web-search, utils
 │
 ├── components/                 # React UI components
@@ -391,7 +391,7 @@ Kaksh AI/
 │   └── mathml2omml/            #   MathML → Office Math conversion
 │
 ├── skills/                     # OpenClaw / ClawHub skills
-│   └── kakshai/               #   Guided Kaksh AI setup & generation SOP
+│   └── kakshai/               #   Guided KakshAI setup & generation SOP
 │       ├── SKILL.md            #   Thin router with confirmation rules
 │       └── references/         #   On-demand SOP sections
 │

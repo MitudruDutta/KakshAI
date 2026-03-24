@@ -195,7 +195,7 @@ export const clientTools: Record<string, (parameters: Record<string, unknown>) =
           width,
           height,
           rotate: 0,
-          defaultFontName: 'Microsoft YaHei',
+          defaultFontName: 'Arial',
           defaultColor: color,
           textType: 'content',
         };
