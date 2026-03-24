@@ -276,7 +276,8 @@ export const clientTools: Record<string, (parameters: Record<string, unknown>) =
         ? rawOptions.filter((o): o is string => typeof o === 'string')
         : undefined;
 
-      const showCheckpoint = (window as unknown as Record<string, unknown>).__kakshaiShowCheckpoint as
+      const showCheckpoint = (window as unknown as Record<string, unknown>)
+        .__kakshaiShowCheckpoint as
         | ((q: { question: string; options?: string[] }) => void)
         | undefined;
 

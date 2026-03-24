@@ -45,14 +45,18 @@ export function VoiceAgent({ autoStart = false }: VoiceAgentProps) {
 
   // Expose source/checkpoint setters on window for client tools to call
   useEffect(() => {
-    (window as unknown as Record<string, unknown>).__kakshaiAddSource = (source: SourceCitation) => {
+    (window as unknown as Record<string, unknown>).__kakshaiAddSource = (
+      source: SourceCitation,
+    ) => {
       setSources((prev) => {
         // Deduplicate by URL
         if (prev.some((s) => s.url === source.url)) return prev;
         return [...prev.slice(-9), source]; // Keep last 10
       });
     };
-    (window as unknown as Record<string, unknown>).__kakshaiShowCheckpoint = (q: CheckpointQuestion) => {
+    (window as unknown as Record<string, unknown>).__kakshaiShowCheckpoint = (
+      q: CheckpointQuestion,
+    ) => {
       setCheckpoint(q);
     };
     return () => {

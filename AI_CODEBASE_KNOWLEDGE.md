@@ -34,8 +34,8 @@ graph TD
     end
 
     subgraph Server [Backend - Next.js API Routes]
-        API_Chat[/api/chat/]
-        API_Gen[/api/generate/*]
+        API_Chat["/api/chat"]
+        API_Gen["/api/generate"]
         LangGraph[LangGraph Orchestrator]
         AI_Providers[AI Provider Abstraction]
         
@@ -139,7 +139,7 @@ flowchart TD
     Docs --> OutlineGen
     useSettingsStore --> OutlineGen
     
-    OutlineGen --> |Produces SceneOutline[]| useStageStore
+    OutlineGen --> |Produces SceneOutlines| useStageStore
     
     useStageStore --> SceneGen
     SceneGen --> |Produces Full Scene JSON| Scenes

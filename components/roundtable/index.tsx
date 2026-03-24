@@ -1026,7 +1026,10 @@ export function Roundtable({
                             />
                           </div>
                         ) : (
-                          <p className="whitespace-pre-wrap wrap-break-word" suppressHydrationWarning>
+                          <p
+                            className="whitespace-pre-wrap wrap-break-word"
+                            suppressHydrationWarning
+                          >
                             {sourceText}
                             {isTopicPending && (
                               <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-500 ml-1 align-middle" />

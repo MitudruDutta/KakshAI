@@ -278,7 +278,9 @@ function HomePage() {
             scrapedContent = scrapeData.markdown;
             log.info('Scraped URL:', form.urlInput, `(${scrapeData.markdown.length} chars)`);
           } else {
-            setError(scrapeData.error || 'Failed to scrape URL. Please check the URL and try again.');
+            setError(
+              scrapeData.error || 'Failed to scrape URL. Please check the URL and try again.',
+            );
             setScraping(false);
             return;
           }
