@@ -270,7 +270,7 @@ const getDefaultAudioConfig = () => ({
   ttsVoice: 'default',
   ttsSpeed: 1.0,
   asrProviderId: 'browser-native' as ASRProviderId,
-  asrLanguage: 'zh',
+  asrLanguage: 'en-IN',
   ttsProvidersConfig: {
     'openai-tts': { apiKey: '', baseUrl: '', enabled: true },
     'azure-tts': { apiKey: '', baseUrl: '', enabled: false },
@@ -360,6 +360,11 @@ function ensureValidProviderSelections(state: Partial<SettingsState>): void {
 
   if (!hasProviderId(ASR_PROVIDERS, state.asrProviderId)) {
     state.asrProviderId = defaultAudioConfig.asrProviderId;
+  }
+
+  // Force migration from old Chinese defaults to Hinglish/English if requested/detected
+  if (state.asrLanguage === 'zh' || state.asrLanguage === 'zh-CN') {
+    state.asrLanguage = 'en-IN';
   }
 }
 
@@ -1003,7 +1008,7 @@ export const useSettingsStore = create<SettingsState>()(
     },
     {
       name: 'settings-storage',
-      version: 2,
+      version: 3,
       // Migrate persisted state
       migrate: (persistedState: unknown, version: number) => {
         const state = persistedState as Partial<SettingsState>;
@@ -1059,6 +1064,11 @@ export const useSettingsStore = create<SettingsState>()(
         if (version < 2) {
           delete (state as Record<string, unknown>).deepResearchProviderId;
           delete (state as Record<string, unknown>).deepResearchProvidersConfig;
+        }
+
+        // v2 → v3: Force en-IN as the default ASR language for better Hinglish support
+        if (version < 3) {
+          state.asrLanguage = 'en-IN';
         }
 
         // Add default media generation toggles if missing

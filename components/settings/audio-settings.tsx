@@ -144,7 +144,7 @@ export function AudioSettings({ onSave }: AudioSettingsProps = {}) {
   const [showASRApiKey, setShowASRApiKey] = useState(false);
 
   // Language filter state
-  const [selectedLocale, setSelectedLocale] = useState<string>('all');
+  const [selectedLocale, setSelectedLocale] = useState<string>('en-US');
 
   // Test state
   const [testingTTS, setTestingTTS] = useState(false);
@@ -179,7 +179,7 @@ export function AudioSettings({ onSave }: AudioSettingsProps = {}) {
   if (ttsProviderId !== prevTTSProviderId) {
     setPrevTTSProviderId(ttsProviderId);
     if (ttsProviderId !== 'azure-tts') {
-      setSelectedLocale('all');
+      setSelectedLocale('en-US');
     }
   }
 
@@ -202,7 +202,7 @@ export function AudioSettings({ onSave }: AudioSettingsProps = {}) {
 
   // Update voice selection when locale filter changes
   useEffect(() => {
-    if (ttsProviderId === 'azure-tts' && selectedLocale !== 'all') {
+    if (ttsProviderId === 'azure-tts') {
       // Filter Azure voices by selected locale
       const filteredVoices = azureVoices.filter((voice) => voice.Locale === selectedLocale);
 
@@ -692,79 +692,33 @@ export function AudioSettings({ onSave }: AudioSettingsProps = {}) {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">{t('settings.allLanguages')}</SelectItem>
                     {(() => {
-                      // Extract unique locales from Azure voices
+                      // Extract unique locales from Azure voices, keeping only Hindi and English
                       const uniqueLocales = Array.from(
                         new Set(azureVoices.map((voice) => voice.Locale)),
-                      );
+                      ).filter((locale) => {
+                        const voice = azureVoices.find((v) => v.Locale === locale);
+                        const localeName = voice?.LocaleName || locale;
+                        return /hindi/i.test(localeName) || /english/i.test(localeName);
+                      });
 
-                      // Sort: Chinese dialects first, then other major languages, then alphabetically
+                      // Sort: Hindi and English first
                       const sortedLocales = uniqueLocales.sort((a, b) => {
-                        // Get LocaleName for both locales
                         const voiceA = azureVoices.find((v) => v.Locale === a);
                         const voiceB = azureVoices.find((v) => v.Locale === b);
                         const localeNameA = voiceA?.LocaleName || a;
                         const localeNameB = voiceB?.LocaleName || b;
 
-                        // Check if LocaleName contains "Chinese" (case-insensitive)
-                        const aIsChinese = /chinese/i.test(localeNameA);
-                        const bIsChinese = /chinese/i.test(localeNameB);
+                        const aIsHindi = /hindi/i.test(localeNameA);
+                        const bIsHindi = /hindi/i.test(localeNameB);
 
-                        // Both are Chinese - sort by priority
-                        if (aIsChinese && bIsChinese) {
-                          const chinesePriority = [
-                            'zh-CN', // Chinese (Simplified, China)
-                            'zh-CN-liaoning', // Chinese (Northeastern Mandarin, Liaoning)
-                            'zh-CN-shaanxi', // Chinese (Shaanxi dialect)
-                            'wuu-CN', // Chinese (Wu, China)
-                            'zh-HK', // Chinese (Cantonese, Hong Kong)
-                            'yue-CN', // Chinese (Cantonese, China)
-                            'zh-CN-shandong', // Chinese (Jinan dialect, Shandong)
-                            'zh-CN-sichuan', // Chinese (Sichuan dialect)
-                            'zh-TW', // Chinese (Taiwanese Mandarin)
-                          ];
-                          const aIndex = chinesePriority.indexOf(a);
-                          const bIndex = chinesePriority.indexOf(b);
+                        if (aIsHindi && !bIsHindi) return -1;
+                        if (!aIsHindi && bIsHindi) return 1;
 
-                          if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
-                          if (aIndex !== -1) return -1;
-                          if (bIndex !== -1) return 1;
-                          return localeNameA.localeCompare(localeNameB);
-                        }
-
-                        // Only a is Chinese
-                        if (aIsChinese) return -1;
-                        // Only b is Chinese
-                        if (bIsChinese) return 1;
-
-                        // Neither is Chinese - sort by priority for other major languages
-                        const otherPriority = [
-                          'en-US',
-                          'en-GB',
-                          'ja-JP',
-                          'ko-KR',
-                          'es-ES',
-                          'fr-FR',
-                          'de-DE',
-                          'ru-RU',
-                          'ar-SA',
-                          'pt-BR',
-                          'it-IT',
-                        ];
-                        const aIndex = otherPriority.indexOf(a);
-                        const bIndex = otherPriority.indexOf(b);
-
-                        if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
-                        if (aIndex !== -1) return -1;
-                        if (bIndex !== -1) return 1;
-
-                        // Sort alphabetically
-                        return a.localeCompare(b);
+                        return localeNameA.localeCompare(localeNameB);
                       });
 
                       return sortedLocales.map((locale) => {
-                        // Find a voice with this locale to get the LocaleName
                         const voiceWithLocale = azureVoices.find((v) => v.Locale === locale);
                         const localeName = voiceWithLocale?.LocaleName || locale;
                         return (
@@ -789,11 +743,10 @@ export function AudioSettings({ onSave }: AudioSettingsProps = {}) {
                   {(() => {
                     // For Azure TTS, use JSON data
                     if (ttsProviderId === 'azure-tts') {
-                      // Filter voices by selected locale
-                      const filteredVoices =
-                        selectedLocale === 'all'
-                          ? azureVoices
-                          : azureVoices.filter((voice) => voice.Locale === selectedLocale);
+                      // Filter Azure voices by selected locale
+                      const filteredVoices = azureVoices.filter(
+                        (voice) => voice.Locale === selectedLocale,
+                      );
 
                       return filteredVoices.map((voice) => (
                         <SelectItem key={voice.ShortName} value={voice.ShortName}>

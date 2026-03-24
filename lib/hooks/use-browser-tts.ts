@@ -42,7 +42,11 @@ export function useBrowserTTS(options: UseBrowserTTSOptions = {}) {
 
     const loadVoices = () => {
       const voices = window.speechSynthesis.getVoices();
-      setAvailableVoices(voices);
+      // Keep only English and Hindi voices
+      const filteredVoices = voices.filter(
+        (v) => v.lang.startsWith('en') || v.lang.startsWith('hi'),
+      );
+      setAvailableVoices(filteredVoices);
     };
 
     loadVoices();

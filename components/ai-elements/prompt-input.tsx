@@ -35,6 +35,7 @@ import { createLogger } from '@/lib/logger';
 import type { ChatStatus, FileUIPart } from 'ai';
 
 const log = createLogger('PromptInput');
+import { useSettingsStore } from '@/lib/store/settings';
 import {
   CornerDownLeftIcon,
   ImageIcon,
@@ -1010,7 +1011,7 @@ type SpeechRecognitionResult = {
 };
 
 type SpeechRecognitionAlternative = {
-  script: string;
+  transcript: string;
   confidence: number;
 };
 
@@ -1038,6 +1039,7 @@ export const PromptInputSpeechButton = ({
   onScriptionChange,
   ...props
 }: PromptInputSpeechButtonProps) => {
+  const asrLanguage = useSettingsStore((state) => state.asrLanguage);
   const [isListening, setIsListening] = useState(false);
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
@@ -1052,7 +1054,7 @@ export const PromptInputSpeechButton = ({
 
       speechRecognition.continuous = true;
       speechRecognition.interimResults = true;
-      speechRecognition.lang = 'en-US';
+      speechRecognition.lang = asrLanguage || 'hi-IN';
 
       speechRecognition.onstart = () => {
         setIsListening(true);
@@ -1068,7 +1070,7 @@ export const PromptInputSpeechButton = ({
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const result = event.results[i];
           if (result.isFinal) {
-            finalScript += result[0]?.script ?? '';
+            finalScript += result[0]?.transcript ?? '';
           }
         }
 
@@ -1098,7 +1100,7 @@ export const PromptInputSpeechButton = ({
         recognitionRef.current.stop();
       }
     };
-  }, [textareaRef, onScriptionChange]);
+  }, [textareaRef, onScriptionChange, asrLanguage]);
 
   const toggleListening = useCallback(() => {
     if (!recognition) {
