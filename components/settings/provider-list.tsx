@@ -36,7 +36,16 @@ export function ProviderList({
   };
 
   return (
-    <div className="shrink-0 bg-background flex flex-col" style={{ width: width ?? 192 }}>
+    <div
+      className="shrink-0 flex flex-col"
+      style={{
+        width: width ?? 192,
+        background:
+          'linear-gradient(135deg, rgba(254,240,138,0.12) 0%, rgba(253,224,71,0.08) 40%, rgba(251,191,36,0.12) 100%)',
+        backdropFilter: 'blur(16px) saturate(1.2)',
+        WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
+      }}
+    >
       <div className="flex-1 overflow-y-auto p-3 space-y-1.5">
         {providers.map((provider) => (
           <button

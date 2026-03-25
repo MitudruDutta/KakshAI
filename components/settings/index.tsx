@@ -105,7 +105,16 @@ function ProviderListColumn<T extends string>({
   t: (key: string) => string;
 }) {
   return (
-    <div className="shrink-0 bg-background flex flex-col" style={{ width }}>
+    <div
+      className="shrink-0 flex flex-col"
+      style={{
+        width,
+        background:
+          'linear-gradient(135deg, rgba(254,240,138,0.12) 0%, rgba(253,224,71,0.08) 40%, rgba(251,191,36,0.12) 100%)',
+        backdropFilter: 'blur(16px) saturate(1.2)',
+        WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
+      }}
+    >
       <div className="flex-1 overflow-y-auto p-3 space-y-1.5">
         {providers.map((provider) => (
           <button
@@ -754,7 +763,16 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
         />
         <div className="flex h-full overflow-hidden relative z-10">
           {/* Left Sidebar - Navigation */}
-          <div className="shrink-0 bg-muted/30 p-3 space-y-1" style={{ width: sidebarWidth }}>
+          <div
+            className="shrink-0 p-3 space-y-1"
+            style={{
+              width: sidebarWidth,
+              background:
+                'linear-gradient(135deg, rgba(254,240,138,0.15) 0%, rgba(253,224,71,0.1) 40%, rgba(251,191,36,0.15) 100%)',
+              backdropFilter: 'blur(16px) saturate(1.2)',
+              WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
+            }}
+          >
             <button
               onClick={() => setActiveSection('providers')}
               className={cn(

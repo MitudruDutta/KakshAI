@@ -75,7 +75,7 @@ export function HeroSection({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.25 }}
-        className="text-sm text-muted-foreground/60 mb-8"
+        className="text-sm text-white font-medium mb-8 drop-shadow-sm"
       >
         {t('home.slogan')}
       </motion.p>

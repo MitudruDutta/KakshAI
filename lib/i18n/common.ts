@@ -8,7 +8,8 @@ export const commonHiIN = {
     loadingClassroom: 'कक्षा लोड हो रही है...',
   },
   home: {
-    slogan: 'Upload a PDF or paste a URL — your AI teacher explains it live, by voice',
+    slogan:
+      'Turn any document into an interactive AI classroom with teaching agents, slides, and voice',
     greeting: 'नमस्ते, ',
   },
   toolbar: {
@@ -51,7 +52,8 @@ export const commonEnUS = {
     loadingClassroom: 'Loading classroom...',
   },
   home: {
-    slogan: 'Upload a PDF or paste a URL — your AI teacher explains it live, by voice',
+    slogan:
+      'Turn any document into an interactive AI classroom with teaching agents, slides, and voice',
     greeting: 'Hi, ',
   },
   toolbar: {

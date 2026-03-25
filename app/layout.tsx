@@ -18,11 +18,11 @@ const inter = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: 'KakshAI — Voice-First AI Classroom',
+    default: 'KakshAI',
     template: '%s | KakshAI',
   },
   description:
-    'Upload a PDF or paste a URL — your AI teacher explains it live by voice. Powered by ElevenLabs conversational AI and Firecrawl web search.',
+    'Turn any document into an interactive AI classroom — complete with teaching agents, slides, voice, and real-time chat. Powered by ElevenLabs and Firecrawl.',
   keywords: [
     'AI classroom',
     'voice learning',
@@ -34,14 +34,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'KakshAI — Voice-First AI Classroom',
     description:
-      'Upload a PDF or paste a URL — your AI teacher explains it live by voice. Real-time voice conversations powered by ElevenLabs + Firecrawl.',
+      'Turn any document into an interactive AI classroom — complete with teaching agents, slides, voice, and real-time chat. Powered by ElevenLabs + Firecrawl.',
     type: 'website',
     siteName: 'KakshAI',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'KakshAI — Voice-First AI Classroom',
-    description: 'Upload a PDF or paste a URL — your AI teacher explains it live by voice.',
+    description:
+      'Turn any document into an interactive AI classroom with teaching agents, slides, and voice.',
   },
   icons: {
     icon: '/favicon.ico',

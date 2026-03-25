@@ -5,7 +5,7 @@
 /**
  * Built-in provider IDs
  */
-export type BuiltInProviderId = 'openai' | 'anthropic' | 'google' | 'groq' | 'ollama';
+export type BuiltInProviderId = 'openai' | 'anthropic' | 'google' | 'groq' | 'deepseek' | 'ollama';
 
 /**
  * Provider ID (built-in or custom)
