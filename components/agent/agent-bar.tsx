@@ -148,7 +148,7 @@ export function AgentBar() {
           <button
             className={cn(
               'group flex items-center gap-2 cursor-pointer rounded-full px-2.5 py-2 transition-all w-full',
-              'border border-border/50 text-muted-foreground/70 hover:text-foreground hover:bg-muted/60',
+              'border border-foreground/30 dark:border-white/30 text-foreground/80 hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10',
             )}
             onClick={() => setOpen(!open)}
           >
@@ -185,7 +185,7 @@ export function AgentBar() {
             transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
             className="absolute right-0 top-full mt-1 z-50 w-80"
           >
-            <div className="rounded-2xl bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm ring-1 ring-black/4 dark:ring-white/6 shadow-[0_1px_8px_-2px_rgba(0,0,0,0.06)] dark:shadow-[0_1px_8px_-2px_rgba(0,0,0,0.3)] px-2.5 py-2">
+            <div className="rounded-2xl bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border border-black/10 dark:border-white/30 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_24px_-4px_rgba(0,0,0,0.4)] px-2.5 py-2">
               {/* Mode tabs — full width, 50/50 */}
               <div className="flex rounded-lg border bg-muted/30 p-0.5 mb-2.5">
                 <button
@@ -215,7 +215,7 @@ export function AgentBar() {
 
               {agentMode === 'preset' ? (
                 /* Agent list — teacher is always selected, no need to show */
-                <div className="max-h-72 overflow-y-auto -mx-1">
+                <div className="max-h-80 overflow-y-auto pr-1 -mx-1 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-foreground/30 [&::-webkit-scrollbar-thumb]:rounded-full">
                   {agents
                     .filter((a) => a.role !== 'teacher')
                     .map((agent) => {

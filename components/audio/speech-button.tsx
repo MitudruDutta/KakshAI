@@ -68,8 +68,8 @@ export function SpeechButton({
             'relative flex items-center justify-center rounded-lg transition-all duration-200 shrink-0 cursor-pointer',
             sizeClasses,
             active
-              ? 'bg-violet-500/90 dark:bg-violet-600/80 text-white shadow-[0_0_12px_rgba(139,92,246,0.45)] dark:shadow-[0_0_12px_rgba(139,92,246,0.3)]'
-              : 'text-muted-foreground/60 hover:text-muted-foreground hover:bg-muted/80',
+              ? 'bg-amber-500/90 text-black shadow-[0_0_12px_rgba(245,158,11,0.45)]'
+              : 'text-foreground/70 hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10',
             disabled && 'opacity-40 pointer-events-none',
             className,
           )}
@@ -77,7 +77,7 @@ export function SpeechButton({
           {/* Breathing ring when recording */}
           {isRecording && (
             <span
-              className="absolute -inset-1 rounded-[10px] border border-violet-400/40 dark:border-violet-400/25"
+              className="absolute -inset-1 rounded-[10px] border border-amber-400/40 dark:border-amber-400/30"
               style={{
                 animation: 'speech-ring 2s ease-in-out infinite',
               }}
