@@ -345,8 +345,8 @@ export function SceneSidebar({
                       : 'cursor-pointer hover:bg-gray-50/80 dark:hover:bg-gray-800/50',
                     !isFailed && !isActive && 'opacity-60',
                     isActive &&
-                    !isFailed &&
-                    'bg-purple-50 dark:bg-purple-900/20 ring-1 ring-purple-200 dark:ring-purple-700 opacity-100',
+                      !isFailed &&
+                      'bg-purple-50 dark:bg-purple-900/20 ring-1 ring-purple-200 dark:ring-purple-700 opacity-100',
                   )}
                 >
                   {/* Scene Header */}

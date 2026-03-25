@@ -1,7 +1,17 @@
 'use client';
 
 import { useState, useRef, useMemo } from 'react';
-import { Bot, Check, ChevronLeft, Globe, Paperclip, FileText, X, Globe2, Link2 } from 'lucide-react';
+import {
+  Bot,
+  Check,
+  ChevronLeft,
+  Globe,
+  Paperclip,
+  FileText,
+  X,
+  Globe2,
+  Link2,
+} from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
   Select,
@@ -495,7 +505,12 @@ function ModelSelectorPopover({
         </TooltipContent>
       </Tooltip>
 
-      <PopoverContent align="start" side="top" sideOffset={-8} className="w-72 p-0 flex flex-col max-h-[400px]">
+      <PopoverContent
+        align="start"
+        side="top"
+        sideOffset={-8}
+        className="w-72 p-0 flex flex-col max-h-[400px]"
+      >
         {/* Search */}
         <div className="p-3 border-b sticky top-0 bg-popover z-10">
           <div className="relative">
@@ -515,14 +530,16 @@ function ModelSelectorPopover({
           {filteredProviders.length === 0 ? (
             <div className="p-8 text-center bg-muted/20">
               <Bot className="size-6 text-muted-foreground/30 mx-auto mb-2" />
-              <p className="text-xs text-muted-foreground">{t('settings.noModelsFound') || 'No models found'}</p>
+              <p className="text-xs text-muted-foreground">
+                {t('settings.noModelsFound') || 'No models found'}
+              </p>
             </div>
           ) : (
             filteredProviders.map((provider) => (
               <div key={provider.id} className="mb-0.5">
                 {/* Provider Header */}
                 <div className="px-3 py-1.5 bg-muted/40 sticky top-0 flex items-center gap-1.5 border-y border-border/10">
-                   {provider.icon ? (
+                  {provider.icon ? (
                     <img src={provider.icon} alt="" className="size-3.5 rounded-sm" />
                   ) : (
                     <Bot className="size-3.5 text-muted-foreground/60" />
@@ -540,7 +557,8 @@ function ModelSelectorPopover({
                 {/* Models */}
                 <div className="p-1 gap-px grid">
                   {provider.models.map((model) => {
-                    const isSelected = currentProviderId === provider.id && currentModelId === model.id;
+                    const isSelected =
+                      currentProviderId === provider.id && currentModelId === model.id;
                     return (
                       <button
                         key={model.id}
@@ -557,7 +575,9 @@ function ModelSelectorPopover({
                       >
                         <div className="flex-1 min-w-0">
                           <p className="text-xs font-semibold truncate">{model.name}</p>
-                          <p className="text-[10px] font-mono text-muted-foreground/60 truncate">{model.id}</p>
+                          <p className="text-[10px] font-mono text-muted-foreground/60 truncate">
+                            {model.id}
+                          </p>
                         </div>
                         {isSelected && (
                           <Check className="size-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
@@ -570,7 +590,6 @@ function ModelSelectorPopover({
             ))
           )}
         </div>
-
       </PopoverContent>
     </Popover>
   );

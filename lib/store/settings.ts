@@ -1116,7 +1116,10 @@ export const useSettingsStore = create<SettingsState>()(
 
         // v3 → v4: replace quota-exhausted gemini-3.1-pro with gemini-2.0-flash
         if (version <= 3) {
-          if (state.modelId === 'gemini-3.1-pro-preview' || state.modelId === 'gemini-3-pro-preview') {
+          if (
+            state.modelId === 'gemini-3.1-pro-preview' ||
+            state.modelId === 'gemini-3-pro-preview'
+          ) {
             state.modelId = 'gemini-2.5-flash';
           }
         }

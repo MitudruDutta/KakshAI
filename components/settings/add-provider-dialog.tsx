@@ -66,11 +66,13 @@ export function AddProviderDialog({ open, onOpenChange, onAdd }: AddProviderDial
       <DialogContent
         className="sm:max-w-112.5 border-0"
         style={{
-          background: 'linear-gradient(135deg, rgba(254,240,138,0.35) 0%, rgba(253,224,71,0.22) 40%, rgba(251,191,36,0.28) 100%)',
+          background:
+            'linear-gradient(135deg, rgba(254,240,138,0.35) 0%, rgba(253,224,71,0.22) 40%, rgba(251,191,36,0.28) 100%)',
           backdropFilter: 'blur(32px) saturate(1.5)',
           WebkitBackdropFilter: 'blur(32px) saturate(1.5)',
           border: '1px solid rgba(234,179,8,0.45)',
-          boxShadow: '0 8px 32px rgba(234,179,8,0.18), 0 2px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -1px 0 rgba(234,179,8,0.1)',
+          boxShadow:
+            '0 8px 32px rgba(234,179,8,0.18), 0 2px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -1px 0 rgba(234,179,8,0.1)',
         }}
       >
         <DialogTitle className="sr-only">{t('settings.addProviderDialog')}</DialogTitle>

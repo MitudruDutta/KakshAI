@@ -54,7 +54,7 @@ export function TopToolbar({ needsSetup }: TopToolbarProps) {
           </button>
           <AnimatePresence>
             {languageOpen && (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -67,7 +67,8 @@ export function TopToolbar({ needsSetup }: TopToolbarProps) {
                   }}
                   className={cn(
                     'w-full px-4 py-2 text-left text-sm hover:bg-white/20 dark:hover:bg-white/10 transition-colors',
-                    locale === 'en-US' && 'bg-amber-500/20 text-amber-600 dark:text-amber-400 font-semibold',
+                    locale === 'en-US' &&
+                      'bg-amber-500/20 text-amber-600 dark:text-amber-400 font-semibold',
                   )}
                 >
                   English
@@ -79,7 +80,8 @@ export function TopToolbar({ needsSetup }: TopToolbarProps) {
                   }}
                   className={cn(
                     'w-full px-4 py-2 text-left text-sm hover:bg-white/20 dark:hover:bg-white/10 transition-colors',
-                    locale === 'hi-IN' && 'bg-amber-500/20 text-amber-600 dark:text-amber-400 font-semibold',
+                    locale === 'hi-IN' &&
+                      'bg-amber-500/20 text-amber-600 dark:text-amber-400 font-semibold',
                   )}
                 >
                   हिन्दी
