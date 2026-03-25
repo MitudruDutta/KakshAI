@@ -41,6 +41,8 @@ const LLM_ENV_MAP: Record<string, string> = {
   OPENAI: 'openai',
   ANTHROPIC: 'anthropic',
   GOOGLE: 'google',
+  GROQ: 'groq',
+  OLLAMA: 'ollama',
 };
 
 const TTS_ENV_MAP: Record<string, string> = {

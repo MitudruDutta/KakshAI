@@ -143,7 +143,10 @@ async function generateElevenLabsTTS(
   config: TTSModelConfig,
   text: string,
 ): Promise<TTSGenerationResult> {
-  const rawBaseUrl = config.baseUrl || TTS_PROVIDERS['elevenlabs-tts'].defaultBaseUrl;
+  const rawBaseUrl =
+    config.baseUrl ||
+    TTS_PROVIDERS['elevenlabs-tts'].defaultBaseUrl ||
+    'https://api.elevenlabs.io/v1';
   // Normalize: ensure baseUrl ends with /v1
   const baseUrl = rawBaseUrl.endsWith('/v1') ? rawBaseUrl : rawBaseUrl.replace(/\/?$/, '/v1');
 

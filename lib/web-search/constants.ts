@@ -6,7 +6,7 @@ export const WEB_SEARCH_PROVIDERS: Record<WebSearchProviderId, WebSearchProvider
     name: 'Firecrawl',
     requiresApiKey: true,
     defaultBaseUrl: 'https://api.firecrawl.dev',
-    icon: '/logos/firecrawl.png',
+    icon: '/logos/firecrawl-logo.png',
   },
 };
 

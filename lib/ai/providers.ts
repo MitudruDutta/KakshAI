@@ -407,6 +407,84 @@ export const PROVIDERS: Record<ProviderId, ProviderConfig> = {
       },
     ],
   },
+
+  groq: {
+    id: 'groq',
+    name: 'Groq',
+    type: 'openai',
+    requiresApiKey: true,
+    defaultBaseUrl: 'https://api.groq.com/openai/v1',
+    icon: '/logos/Groq_Logo_No_Trademark.svg',
+    models: [
+      {
+        id: 'openai/gpt-oss-120b',
+        name: 'GPT-OSS 120B',
+        contextWindow: 131072,
+        outputWindow: 65536,
+        capabilities: { streaming: true, tools: true, vision: false },
+      },
+      {
+        id: 'openai/gpt-oss-20b',
+        name: 'GPT-OSS 20B',
+        contextWindow: 131072,
+        outputWindow: 65536,
+        capabilities: { streaming: true, tools: true, vision: false },
+      },
+      {
+        id: 'llama-3.3-70b-versatile',
+        name: 'Llama 3.3 70B',
+        contextWindow: 131072,
+        outputWindow: 32768,
+        capabilities: { streaming: true, tools: true, vision: false },
+      },
+      {
+        id: 'llama-3.1-8b-instant',
+        name: 'Llama 3.1 8B Instant',
+        contextWindow: 131072,
+        outputWindow: 131072,
+        capabilities: { streaming: true, tools: true, vision: false },
+      },
+      {
+        id: 'meta-llama/llama-4-scout-17b-16e-instruct',
+        name: 'Llama 4 Scout 17B',
+        contextWindow: 131072,
+        outputWindow: 8192,
+        capabilities: { streaming: true, tools: true, vision: true },
+      },
+    ],
+  },
+
+  ollama: {
+    id: 'ollama',
+    name: 'Ollama Cloud',
+    type: 'openai',
+    requiresApiKey: true,
+    defaultBaseUrl: 'https://ollama.com/v1',
+    icon: '/logos/OIP.svg',
+    models: [
+      {
+        id: 'devstral-2',
+        name: 'Devstral 2 (123B)',
+        contextWindow: 131072,
+        outputWindow: 16384,
+        capabilities: { streaming: true, tools: true, vision: false },
+      },
+      {
+        id: 'nemotron-3-super',
+        name: 'Nemotron 3 Super (120B)',
+        contextWindow: 131072,
+        outputWindow: 16384,
+        capabilities: { streaming: true, tools: true, vision: false },
+      },
+      {
+        id: 'gemini-3-flash-preview',
+        name: 'Gemini 3 Flash Preview',
+        contextWindow: 131072,
+        outputWindow: 16384,
+        capabilities: { streaming: true, tools: true, vision: true },
+      },
+    ],
+  },
 };
 
 /**

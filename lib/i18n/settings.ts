@@ -82,6 +82,8 @@ export const settingsHiIN = {
       openai: 'OpenAI',
       anthropic: 'Claude',
       google: 'Gemini',
+      groq: 'Groq',
+      ollama: 'Ollama Cloud',
     },
     providerTypes: {
       openai: 'OpenAI प्रोटोकॉल',
@@ -560,6 +562,8 @@ export const settingsEnUS = {
       openai: 'OpenAI',
       anthropic: 'Claude',
       google: 'Gemini',
+      groq: 'Groq',
+      ollama: 'Ollama Cloud',
     },
     providerTypes: {
       openai: 'OpenAI Protocol',
