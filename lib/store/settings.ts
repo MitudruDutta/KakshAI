@@ -350,8 +350,20 @@ function ensureValidModelSelection(state: Partial<SettingsState>): void {
   const providersConfig = state.providersConfig;
   if (!providersConfig || Object.keys(providersConfig).length === 0) return;
 
+  // Find first configured provider (has API key or is server-configured)
+  const configuredProviders = Object.entries(providersConfig).filter(
+    ([, config]) =>
+      (!config.requiresApiKey || config.apiKey || config.isServerConfigured) &&
+      config.models.length >= 1 &&
+      (config.baseUrl || config.defaultBaseUrl || config.serverBaseUrl),
+  );
+
   const fallbackProviderId = (
-    'openai' in providersConfig ? 'openai' : (Object.keys(providersConfig)[0] as ProviderId)
+    configuredProviders.length > 0
+      ? configuredProviders[0][0]
+      : 'openai' in providersConfig
+        ? 'openai'
+        : (Object.keys(providersConfig)[0] as ProviderId)
   ) as ProviderId;
 
   if (!state.providerId || !providersConfig[state.providerId]) {
@@ -562,7 +574,7 @@ const migrateFromOldStorage = () => {
 
 export const useSettingsStore = create<SettingsState>()(
   persist(
-    (set) => {
+    (set, get) => {
       // Try to migrate from old storage
       const migratedData = migrateFromOldStorage();
       const defaultAudioConfig = getDefaultAudioConfig();
@@ -1056,13 +1068,13 @@ export const useSettingsStore = create<SettingsState>()(
                 }
               }
 
-              // LLM auto-select: when modelId is empty
+              // LLM auto-select: when modelId is empty (always check, not just first run)
               let autoProviderId: ProviderId | undefined;
               let autoModelId: string | undefined;
               if (!state.modelId) {
+                // First try server-configured providers
                 for (const [pid, cfg] of Object.entries(newProvidersConfig)) {
                   if (cfg.isServerConfigured) {
-                    // Prefer server-restricted models, fall back to built-in list
                     const serverModels = cfg.serverModels;
                     const modelId = serverModels?.length
                       ? serverModels[0]
@@ -1070,6 +1082,16 @@ export const useSettingsStore = create<SettingsState>()(
                     if (modelId) {
                       autoProviderId = pid as ProviderId;
                       autoModelId = modelId;
+                      break;
+                    }
+                  }
+                }
+                // If no server provider, try configured providers (with API key)
+                if (!autoProviderId) {
+                  for (const [pid, cfg] of Object.entries(newProvidersConfig)) {
+                    if (cfg.apiKey && cfg.models.length > 0) {
+                      autoProviderId = pid as ProviderId;
+                      autoModelId = cfg.models[0].id;
                       break;
                     }
                   }
@@ -1121,13 +1143,6 @@ export const useSettingsStore = create<SettingsState>()(
       // Migrate persisted state
       migrate: (persistedState: unknown, version: number) => {
         const state = persistedState as Partial<SettingsState>;
-
-        // v0 → v1: clear hardcoded default model so user must actively select
-        if (version === 0) {
-          if (state.providerId === 'openai' && state.modelId === 'gpt-4o-mini') {
-            state.modelId = '';
-          }
-        }
 
         // v3 → v4: replace quota-exhausted gemini-3.1-pro with gemini-2.0-flash
         if (version <= 3) {
