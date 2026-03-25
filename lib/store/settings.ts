@@ -292,27 +292,6 @@ const getDefaultPDFConfig = () => ({
   } as Record<PDFProviderId, { apiKey: string; baseUrl: string; enabled: boolean }>,
 });
 
-const BLOCKED_PROVIDER_PATTERN =
-  /deepseek|qwen|kimi|minimax|glm|siliconflow|moonshot|zhipu|alibaba|modelscope|iflowcn|baichuan|doubao|\u8c46\u5305|volcengine|volces|byteplus|bytedance/i;
-
-function isBlockedModel(model: ModelInfo): boolean {
-  return BLOCKED_PROVIDER_PATTERN.test(`${model.id} ${model.name}`);
-}
-
-function isBlockedProvider(providerId: string, config: ProviderSettings): boolean {
-  const fingerprint = [
-    providerId,
-    config.name,
-    config.baseUrl,
-    config.defaultBaseUrl,
-    config.serverBaseUrl,
-  ]
-    .filter(Boolean)
-    .join(' ');
-
-  return BLOCKED_PROVIDER_PATTERN.test(fingerprint);
-}
-
 function sanitizeProvidersConfig(state: Partial<SettingsState>): void {
   if (!state.providersConfig) return;
 
@@ -323,24 +302,15 @@ function sanitizeProvidersConfig(state: Partial<SettingsState>): void {
     ProviderId,
     ProviderSettings,
   ][]) {
-    const sanitizedModels = (config.models || []).filter((model) => !isBlockedModel(model));
-
     if (id in PROVIDERS) {
       sanitized[id] = {
         ...config,
-        models: sanitizedModels.length > 0 ? sanitizedModels : defaults[id].models,
+        models: config.models?.length > 0 ? config.models : defaults[id].models,
       };
       continue;
     }
 
-    if (isBlockedProvider(id, config) || sanitizedModels.length === 0) {
-      continue;
-    }
-
-    sanitized[id] = {
-      ...config,
-      models: sanitizedModels,
-    };
+    sanitized[id] = config;
   }
 
   state.providersConfig = sanitized;
