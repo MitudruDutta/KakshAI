@@ -430,6 +430,17 @@ function ensureValidProviderSelections(state: Partial<SettingsState>): void {
     state.ttsProviderId = defaultAudioConfig.ttsProviderId;
   }
 
+  // Ensure selected voice actually exists for the selected provider
+  if (state.ttsProviderId && hasProviderId(TTS_PROVIDERS, state.ttsProviderId)) {
+    const providerId = state.ttsProviderId as TTSProviderId;
+    const provider = TTS_PROVIDERS[providerId];
+    if (provider && provider.voices && state.ttsVoice) {
+      if (!provider.voices.some((v) => v.id === state.ttsVoice)) {
+        state.ttsVoice = DEFAULT_TTS_VOICES[providerId] || 'default';
+      }
+    }
+  }
+
   if (!hasProviderId(ASR_PROVIDERS, state.asrProviderId)) {
     state.asrProviderId = defaultAudioConfig.asrProviderId;
   }
@@ -1106,7 +1117,7 @@ export const useSettingsStore = create<SettingsState>()(
     },
     {
       name: 'settings-storage',
-      version: 3,
+      version: 4,
       // Migrate persisted state
       migrate: (persistedState: unknown, version: number) => {
         const state = persistedState as Partial<SettingsState>;
@@ -1115,6 +1126,13 @@ export const useSettingsStore = create<SettingsState>()(
         if (version === 0) {
           if (state.providerId === 'openai' && state.modelId === 'gpt-4o-mini') {
             state.modelId = '';
+          }
+        }
+
+        // v3 → v4: replace quota-exhausted gemini-3.1-pro with gemini-2.0-flash
+        if (version <= 3) {
+          if (state.modelId === 'gemini-3.1-pro-preview' || state.modelId === 'gemini-3-pro-preview') {
+            state.modelId = 'gemini-2.5-flash';
           }
         }
 

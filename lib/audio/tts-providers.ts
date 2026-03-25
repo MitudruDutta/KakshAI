@@ -143,7 +143,9 @@ async function generateElevenLabsTTS(
   config: TTSModelConfig,
   text: string,
 ): Promise<TTSGenerationResult> {
-  const baseUrl = config.baseUrl || TTS_PROVIDERS['elevenlabs-tts'].defaultBaseUrl;
+  const rawBaseUrl = config.baseUrl || TTS_PROVIDERS['elevenlabs-tts'].defaultBaseUrl;
+  // Normalize: ensure baseUrl ends with /v1
+  const baseUrl = rawBaseUrl.endsWith('/v1') ? rawBaseUrl : rawBaseUrl.replace(/\/?$/, '/v1');
 
   const response = await fetch(`${baseUrl}/text-to-speech/${config.voice}`, {
     method: 'POST',
