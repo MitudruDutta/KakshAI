@@ -324,17 +324,33 @@ export function MediaPopover({ onSettingsOpen }: MediaPopoverProps) {
               : 'text-muted-foreground/60 hover:text-foreground hover:bg-muted/60 border-border/40 hover:border-border/60',
           )}
         >
-          <SlidersHorizontal className={cn("size-3.5 transition-transform duration-500", open && "rotate-180")} />
+          <SlidersHorizontal
+            className={cn('size-3.5 transition-transform duration-500', open && 'rotate-180')}
+          />
           <div className="flex items-center -space-x-1.5 ml-0.5">
-            {imageGenerationEnabled && <ImageIcon className="size-3 border-2 border-background rounded-full bg-background" />}
-            {videoGenerationEnabled && <Video className="size-3 border-2 border-background rounded-full bg-background" />}
-            {ttsEnabled && <Volume2 className="size-3 border-2 border-background rounded-full bg-background" />}
-            {asrEnabled && <Mic className="size-3 border-2 border-background rounded-full bg-background" />}
+            {imageGenerationEnabled && (
+              <ImageIcon className="size-3 border-2 border-background rounded-full bg-background" />
+            )}
+            {videoGenerationEnabled && (
+              <Video className="size-3 border-2 border-background rounded-full bg-background" />
+            )}
+            {ttsEnabled && (
+              <Volume2 className="size-3 border-2 border-background rounded-full bg-background" />
+            )}
+            {asrEnabled && (
+              <Mic className="size-3 border-2 border-background rounded-full bg-background" />
+            )}
           </div>
         </button>
       </PopoverTrigger>
 
-      <PopoverContent align="start" side="bottom" sideOffset={8} avoidCollisions={false} className="w-[340px] p-0 overflow-hidden border-border/40 bg-background/80 backdrop-blur-xl shadow-2xl rounded-2xl">
+      <PopoverContent
+        align="start"
+        side="bottom"
+        sideOffset={8}
+        avoidCollisions={false}
+        className="w-[340px] p-0 overflow-hidden border-border/40 bg-background/80 backdrop-blur-xl shadow-2xl rounded-2xl"
+      >
         {/* ── Tab bar (premium glass control) ── */}
         <div className="p-3 bg-gradient-to-b from-muted/30 to-transparent">
           <div className="flex gap-1 p-1 bg-black/5 dark:bg-white/5 rounded-xl border border-border/10">
@@ -353,13 +369,24 @@ export function MediaPopover({ onSettingsOpen }: MediaPopoverProps) {
                       : 'text-muted-foreground/60 hover:text-foreground/80 hover:bg-black/5 dark:hover:bg-white/5 border border-transparent',
                   )}
                 >
-                  <Icon className={cn("size-4 transition-transform duration-300", isActive && "scale-110")} />
-                  <span className="opacity-80 tracking-tight uppercase text-[9px]">{tab.label}</span>
+                  <Icon
+                    className={cn(
+                      'size-4 transition-transform duration-300',
+                      isActive && 'scale-110',
+                    )}
+                  />
+                  <span className="opacity-80 tracking-tight uppercase text-[9px]">
+                    {tab.label}
+                  </span>
                   {isEnabled && (
-                    <span className={cn(
-                      "absolute top-1 right-1 size-1.5 rounded-full transition-all duration-300",
-                      isActive ? "bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]" : "bg-muted-foreground/30"
-                    )} />
+                    <span
+                      className={cn(
+                        'absolute top-1 right-1 size-1.5 rounded-full transition-all duration-300',
+                        isActive
+                          ? 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]'
+                          : 'bg-muted-foreground/30',
+                      )}
+                    />
                   )}
                   {isActive && (
                     <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500/50 blur-[2px]" />
@@ -430,9 +457,9 @@ export function MediaPopover({ onSettingsOpen }: MediaPopoverProps) {
                     setTTSVoice(iid);
                   }}
                 />
-                
+
                 <div className="flex justify-center">
-                  <LiquidMetalButton 
+                  <LiquidMetalButton
                     label={previewing ? t('toolbar.ttsPreviewing') : t('toolbar.ttsPreview')}
                     onClick={handlePreview}
                     width={180}
@@ -518,12 +545,14 @@ function TabPanel({
     <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex items-center justify-between gap-3 px-1">
         <div className="flex items-center gap-2.5">
-          <div className={cn(
-            'size-8 rounded-xl flex items-center justify-center transition-all duration-500',
-            enabled 
-              ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.1)] border border-amber-500/20' 
-              : 'bg-muted/50 text-muted-foreground/40 border border-transparent'
-          )}>
+          <div
+            className={cn(
+              'size-8 rounded-xl flex items-center justify-center transition-all duration-500',
+              enabled
+                ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.1)] border border-amber-500/20'
+                : 'bg-muted/50 text-muted-foreground/40 border border-transparent',
+            )}
+          >
             <Icon className="size-4.5" />
           </div>
           <span
@@ -541,11 +570,7 @@ function TabPanel({
           className="data-[state=checked]:bg-amber-600 dark:data-[state=checked]:bg-amber-500"
         />
       </div>
-      {enabled && (
-        <div className="pt-1">
-          {children}
-        </div>
-      )}
+      {enabled && <div className="pt-1">{children}</div>}
     </div>
   );
 }
@@ -590,7 +615,11 @@ function GroupedSelect({
       <SelectTrigger className="h-10 w-full rounded-xl border-border/20 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 shadow-none text-xs focus:ring-2 focus:ring-amber-500/20 px-3 transition-all duration-300">
         <span className="flex items-center gap-2.5 min-w-0 flex-1 overflow-hidden">
           {selectedGroup?.groupIcon && (
-            <img src={selectedGroup.groupIcon} alt="" className="size-4.5 rounded-md shrink-0 shadow-sm" />
+            <img
+              src={selectedGroup.groupIcon}
+              alt=""
+              className="size-4.5 rounded-md shrink-0 shadow-sm"
+            />
           )}
           <span className="font-semibold truncate text-[13px]">{selectedGroup?.groupName}</span>
           <span className="text-muted-foreground/30 font-light translate-y-[0.5px]">/</span>

@@ -108,7 +108,11 @@ export function GreetingBar() {
         >
           <div className="shrink-0 relative">
             <div className="size-8 rounded-full overflow-hidden ring-[2px] ring-amber-500/40 group-hover:ring-amber-500 shadow-lg transition-all duration-500">
-              <img src={avatar} alt="" className="size-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              <img
+                src={avatar}
+                alt=""
+                className="size-full object-cover group-hover:scale-110 transition-transform duration-700"
+              />
             </div>
             <div className="absolute -bottom-1 -right-1 size-3.5 rounded-full bg-linear-to-br from-amber-400 to-orange-600 border border-white/40 flex items-center justify-center shadow-xl opacity-0 group-hover:opacity-100 transition-opacity">
               <Pencil className="size-[6px] text-white" />

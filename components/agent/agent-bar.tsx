@@ -138,9 +138,9 @@ export function AgentBar() {
             className={cn(
               'group flex items-center gap-2.5 cursor-pointer rounded-full p-1.5 pr-3.5 transition-all w-full active:scale-95 duration-500',
               open
-                 ? 'bg-amber-500/10 border-amber-500/30 dark:border-amber-500/20 text-foreground ring-4 ring-amber-500/5'
-                 : 'border-border/40 hover:border-border/60 text-foreground/80 hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5',
-              'border'
+                ? 'bg-amber-500/10 border-amber-500/30 dark:border-amber-500/20 text-foreground ring-4 ring-amber-500/5'
+                : 'border-border/40 hover:border-border/60 text-foreground/80 hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5',
+              'border',
             )}
             onClick={() => setOpen(!open)}
           >
@@ -153,7 +153,7 @@ export function AgentBar() {
             </span>
 
             {/* Chevron */}
-            <div className={cn("transition-transform duration-500", open && "rotate-180")}>
+            <div className={cn('transition-transform duration-500', open && 'rotate-180')}>
               <ChevronDown className="size-4 text-muted-foreground/60 transition-colors" />
             </div>
           </button>
@@ -201,7 +201,14 @@ export function AgentBar() {
                       : 'text-muted-foreground/60 hover:text-foreground/80 hover:bg-black/5 dark:hover:bg-white/5 border border-transparent',
                   )}
                 >
-                  <Sparkles className={cn("size-3.5", agentMode === 'auto' ? "text-amber-500 animate-pulse" : "text-muted-foreground/40")} />
+                  <Sparkles
+                    className={cn(
+                      'size-3.5',
+                      agentMode === 'auto'
+                        ? 'text-amber-500 animate-pulse'
+                        : 'text-muted-foreground/40',
+                    )}
+                  />
                   {t('settings.agentModeAuto')}
                   {agentMode === 'auto' && (
                     <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500/50 shadow-[0_0_10px_rgba(245,158,11,0.5)]" />
@@ -222,28 +229,32 @@ export function AgentBar() {
                           onClick={() => toggleAgent(agent.id)}
                           className={cn(
                             'w-full flex items-center gap-3.5 px-3 py-3 text-left transition-all duration-300 cursor-pointer rounded-2xl mb-1.5 group/item active:scale-[0.98]',
-                            isSelected 
-                               ? 'bg-black/5 dark:bg-white/5 border border-border/10 ring-1 ring-white/5' 
-                               : 'hover:bg-muted/10 border border-transparent',
+                            isSelected
+                              ? 'bg-black/5 dark:bg-white/5 border border-border/10 ring-1 ring-white/5'
+                              : 'hover:bg-muted/10 border border-transparent',
                           )}
                         >
                           <div className="relative">
-                            <Checkbox 
-                                checked={isSelected} 
-                                className="pointer-events-none data-[state=checked]:bg-amber-500 data-[state=checked]:border-amber-500 shadow-sm"
+                            <Checkbox
+                              checked={isSelected}
+                              className="pointer-events-none data-[state=checked]:bg-amber-500 data-[state=checked]:border-amber-500 shadow-sm"
                             />
                             {isSelected && (
-                                <div className="absolute inset-0 bg-amber-500/20 blur-[8px] rounded animate-pulse" />
+                              <div className="absolute inset-0 bg-amber-500/20 blur-[8px] rounded animate-pulse" />
                             )}
                           </div>
-                          
+
                           <div
                             className={cn(
-                                "size-10 rounded-2xl overflow-hidden shrink-0 transition-all duration-500 border border-border/20 shadow-sm",
-                                isSelected ? "scale-105" : "grayscale-[40%] opacity-80 group-hover/item:grayscale-0 group-hover/item:opacity-100"
+                              'size-10 rounded-2xl overflow-hidden shrink-0 transition-all duration-500 border border-border/20 shadow-sm',
+                              isSelected
+                                ? 'scale-105'
+                                : 'grayscale-[40%] opacity-80 group-hover/item:grayscale-0 group-hover/item:opacity-100',
                             )}
                             style={{
-                              boxShadow: isSelected ? `0 8px 16px -4px ${agent.color}40, 0 0 0 2px ${agent.color}20` : undefined,
+                              boxShadow: isSelected
+                                ? `0 8px 16px -4px ${agent.color}40, 0 0 0 2px ${agent.color}20`
+                                : undefined,
                             }}
                           >
                             <img
@@ -254,10 +265,14 @@ export function AgentBar() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-1.5">
-                              <span className={cn(
-                                  "text-[13px] font-bold tracking-tight transition-colors",
-                                  isSelected ? "text-foreground" : "text-muted-foreground group-hover/item:text-foreground"
-                              )}>
+                              <span
+                                className={cn(
+                                  'text-[13px] font-bold tracking-tight transition-colors',
+                                  isSelected
+                                    ? 'text-foreground'
+                                    : 'text-muted-foreground group-hover/item:text-foreground',
+                                )}
+                              >
                                 {getAgentName(agent)}
                               </span>
                               <span className="text-[9px] font-black uppercase tracking-[0.1em] text-muted-foreground/30 px-1.5 py-0.5 rounded-full border border-border/10">
@@ -268,10 +283,14 @@ export function AgentBar() {
                               const descKey = `settings.agentDescriptions.${agent.id}`;
                               const desc = t(descKey);
                               return desc !== descKey ? (
-                                <p className={cn(
-                                    "text-[11px] leading-relaxed mt-1 line-clamp-2 transition-colors",
-                                    isSelected ? "text-muted-foreground" : "text-muted-foreground/50"
-                                )}>
+                                <p
+                                  className={cn(
+                                    'text-[11px] leading-relaxed mt-1 line-clamp-2 transition-colors',
+                                    isSelected
+                                      ? 'text-muted-foreground'
+                                      : 'text-muted-foreground/50',
+                                  )}
+                                >
                                   {desc}
                                 </p>
                               ) : null;
@@ -289,7 +308,7 @@ export function AgentBar() {
                     <div className="absolute size-16 rounded-full bg-amber-500/10 animate-ping animation-duration-[3s]" />
                     <div className="absolute size-20 rounded-full bg-amber-500/5 animate-pulse animation-duration-[2.5s] delay-300" />
                     <div className="absolute size-24 rounded-full border border-amber-500/10 animate-pulse animation-duration-[4s]" />
-                    
+
                     {/* Central Icon with glow */}
                     <div className="relative size-14 rounded-3xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20 shadow-[0_0_20px_rgba(245,158,11,0.1)]">
                       <Shuffle className="size-6 text-amber-600 dark:text-amber-400" />

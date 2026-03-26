@@ -481,7 +481,7 @@ function ModelSelectorPopover({
             <button
               className={cn(
                 'inline-flex items-center justify-center size-8 rounded-full transition-all duration-300 cursor-pointer select-none border active:scale-90',
-                currentModelId 
+                currentModelId
                   ? 'border-amber-500/30 bg-amber-500/10 shadow-[0_0_12px_-2px_rgba(245,158,11,0.15)] ring-1 ring-amber-500/20'
                   : 'border-border/40 hover:border-border/60 hover:bg-muted/60',
               )}

@@ -104,11 +104,12 @@ export function HeroSection({
           <div
             className="absolute inset-0 rounded-2xl pointer-events-none overflow-hidden"
             style={{
-              background: 'radial-gradient(ellipse at 50% -20%, rgba(254,240,138,0.15) 0%, transparent 80%)',
+              background:
+                'radial-gradient(ellipse at 50% -20%, rgba(254,240,138,0.15) 0%, transparent 80%)',
             }}
           >
             {/* Moving Light Highlight */}
-            <motion.div 
+            <motion.div
               className="absolute inset-[-100%] bg-linear-to-tr from-transparent via-white/[0.03] to-transparent rotate-45"
               animate={{ x: ['-50%', '150%'] }}
               transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}

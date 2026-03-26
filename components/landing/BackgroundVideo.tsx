@@ -6,7 +6,7 @@ export function BackgroundVideo() {
       {/* ── Atmospheric Overlays ── */}
       <div className="absolute inset-0 bg-linear-to-b from-amber-950/20 via-transparent to-black/40 z-10 pointer-events-none" />
       <div className="absolute inset-0 bg-amber-500/5 mix-blend-overlay z-10 pointer-events-none" />
-      
+
       <video
         autoPlay
         loop

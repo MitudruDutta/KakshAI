@@ -102,13 +102,15 @@ export function UserProfileCard() {
   }
 
   return (
-    <Card className={cn(
-      "p-6 border-white/20 backdrop-blur-3xl bg-white/5 dark:bg-black/40 shadow-2xl overflow-hidden relative transition-all duration-700 select-none group/slate",
-      "hover:shadow-amber-500/20 hover:border-amber-500/40 hover:-translate-y-1"
-    )}>
+    <Card
+      className={cn(
+        'p-6 border-white/20 backdrop-blur-3xl bg-white/5 dark:bg-black/40 shadow-2xl overflow-hidden relative transition-all duration-700 select-none group/slate',
+        'hover:shadow-amber-500/20 hover:border-amber-500/40 hover:-translate-y-1',
+      )}
+    >
       {/* ── Hyper-Glass Sheen Effect ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-0 group-hover/slate:opacity-100 transition-opacity duration-1000">
-        <motion.div 
+        <motion.div
           className="absolute inset-[-100%] bg-linear-to-tr from-transparent via-white/5 dark:via-white/10 to-transparent rotate-45"
           animate={{ x: ['-100%', '200%'] }}
           transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
@@ -116,10 +118,14 @@ export function UserProfileCard() {
       </div>
 
       {/* ── Noise Texture Layer ── */}
-      <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-[0.03] dark:opacity-[0.08]" 
-        style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }} 
+      <div
+        className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-[0.03] dark:opacity-[0.08]"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E\")",
+        }}
       />
-      
+
       {/* ── Floating Atmospheric Glows ── */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/20 blur-[80px] -mr-16 -mt-16 animate-pulse pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-24 h-24 bg-orange-600/10 blur-[60px] -ml-12 -mb-12 pointer-events-none" />
@@ -142,18 +148,24 @@ export function UserProfileCard() {
           >
             {/* Outer Glow Ring */}
             <div className="absolute inset-[-4px] rounded-full bg-linear-to-br from-amber-500/30 via-orange-500/10 to-transparent blur-md opacity-0 group-hover/avatar:opacity-100 transition-opacity duration-500" />
-            
-            <div className={cn(
-              "size-14 rounded-full p-[2px] transition-all duration-700 relative",
-              "bg-linear-to-br from-amber-200 via-amber-600 to-orange-800 shadow-2xl group-hover/avatar:scale-110 group-hover/avatar:rotate-3 active:scale-95"
-            )}>
+
+            <div
+              className={cn(
+                'size-14 rounded-full p-[2px] transition-all duration-700 relative',
+                'bg-linear-to-br from-amber-200 via-amber-600 to-orange-800 shadow-2xl group-hover/avatar:scale-110 group-hover/avatar:rotate-3 active:scale-95',
+              )}
+            >
               {/* Inner Etched Ring */}
               <div className="size-full rounded-full bg-background overflow-hidden relative ring-[1px] ring-white/20">
-                <img src={avatar} alt="" className="size-full object-cover transition-transform duration-1000 group-hover/avatar:scale-125" />
+                <img
+                  src={avatar}
+                  alt=""
+                  className="size-full object-cover transition-transform duration-1000 group-hover/avatar:scale-125"
+                />
                 <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-white/10 opacity-60" />
               </div>
             </div>
-            
+
             {/* Command Picker Trigger */}
             <div className="absolute -bottom-1 -right-1 size-5 rounded-full bg-linear-to-br from-amber-400 to-orange-600 border border-white/40 flex items-center justify-center shadow-xl group-hover/avatar:scale-125 transition-all">
               <ChevronDown
@@ -282,17 +294,21 @@ export function UserProfileCard() {
             </span>
           </div>
         </div>
-        
+
         <div className="relative group/bio">
           {/* Detailed Display Panel Decoration */}
           <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-amber-500/40 rounded-tl-lg z-20 pointer-events-none" />
           <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-amber-500/40 rounded-br-lg z-20 pointer-events-none" />
-          
+
           <div className="absolute inset-0 rounded-2xl bg-linear-to-b from-black/20 via-transparent to-black/5 pointer-events-none z-0" />
-          
+
           {/* Micro-grid overlay inside the textarea area */}
-          <div className="absolute inset-2 pointer-events-none opacity-[0.03] dark:opacity-[0.07] z-0"
-            style={{ backgroundImage: 'radial-gradient(circle, currentColor 0.5px, transparent 0.5px)', backgroundSize: '6px 6px' }}
+          <div
+            className="absolute inset-2 pointer-events-none opacity-[0.03] dark:opacity-[0.07] z-0"
+            style={{
+              backgroundImage: 'radial-gradient(circle, currentColor 0.5px, transparent 0.5px)',
+              backgroundSize: '6px 6px',
+            }}
           />
 
           <Textarea
@@ -302,13 +318,13 @@ export function UserProfileCard() {
             maxLength={200}
             rows={4}
             className={cn(
-              "w-full resize-none transition-all duration-700 relative z-10",
-              "bg-black/10 dark:bg-black/40 border-white/5 rounded-2xl p-4.5 text-sm leading-relaxed",
-              "focus:bg-amber-500/[0.04] dark:focus:bg-amber-500/[0.08] focus:border-amber-500/30 focus:ring-0 shadow-2xl",
-              "placeholder:text-muted-foreground/20 placeholder:italic font-medium text-foreground/90"
+              'w-full resize-none transition-all duration-700 relative z-10',
+              'bg-black/10 dark:bg-black/40 border-white/5 rounded-2xl p-4.5 text-sm leading-relaxed',
+              'focus:bg-amber-500/[0.04] dark:focus:bg-amber-500/[0.08] focus:border-amber-500/30 focus:ring-0 shadow-2xl',
+              'placeholder:text-muted-foreground/20 placeholder:italic font-medium text-foreground/90',
             )}
           />
-          
+
           {/* Interactive Aura */}
           <div className="absolute inset-[-2px] rounded-[18px] bg-linear-to-br from-amber-500/20 via-orange-500/10 to-transparent opacity-0 group-focus-within/bio:opacity-100 blur-[2px] transition-all duration-700 pointer-events-none" />
         </div>
