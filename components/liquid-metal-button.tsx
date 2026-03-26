@@ -4,6 +4,11 @@ import type React from 'react';
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { Sparkles } from 'lucide-react';
 
+interface ShaderMount {
+  destroy?: () => void;
+  setSpeed?: (speed: number) => void;
+}
+
 interface LiquidMetalButtonProps {
   label?: string;
   onClick?: () => void;
@@ -21,7 +26,7 @@ export function LiquidMetalButton({
   const [isPressed, setIsPressed] = useState(false);
   const [ripples, setRipples] = useState<Array<{ x: number; y: number; id: number }>>([]);
   const shaderRef = useRef<HTMLDivElement>(null);
-  const shaderMount = useRef<HTMLElement | null>(null);
+  const shaderMount = useRef<ShaderMount | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const rippleId = useRef(0);
 

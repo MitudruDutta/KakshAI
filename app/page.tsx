@@ -21,7 +21,9 @@ import {
 } from '@/lib/utils/stage-storage';
 import type { UserRequirements } from '@/lib/types/generation';
 import type { Slide } from '@/lib/types/slides';
+import type { SettingsSection } from '@/lib/types/settings';
 
+import { SettingsDialog } from '@/components/settings';
 import {
   TopToolbar,
   BackgroundVideo,
@@ -95,6 +97,10 @@ function HomePage() {
   const [thumbnails, setThumbnails] = useState<Record<string, Slide>>({});
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [scraping, setScraping] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settingsSection, setSettingsSection] = useState<
+    'general' | 'providers' | 'agents' | 'tts' | 'asr' | 'pdf' | 'image' | 'video' | 'web-search' | undefined
+  >(undefined);
 
   const loadClassrooms = async () => {
     try {
@@ -347,6 +353,15 @@ function HomePage() {
           KakshAI — Voice-first AI Classroom powered by ElevenLabs + Firecrawl
         </div>
       </div>
+
+      <SettingsDialog
+        open={settingsOpen}
+        onOpenChange={(open) => {
+          setSettingsOpen(open);
+          if (!open) setSettingsSection(undefined);
+        }}
+        initialSection={settingsSection}
+      />
     </>
   );
 }
