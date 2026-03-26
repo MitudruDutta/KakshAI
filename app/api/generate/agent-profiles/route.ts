@@ -77,12 +77,26 @@ export async function POST(req: NextRequest) {
           .join('\n')
       : null;
 
-    const systemPrompt = `You are an expert instructional designer. Generate agent profiles for a multi-agent classroom simulation. Decide the appropriate number of agents (typically 3-5) based on the course content and complexity. Return ONLY valid JSON, no markdown or explanation.`;
+    const safeName = stageInfo.name.slice(0, 200);
+    const safeDesc = stageInfo.description?.slice(0, 500) || '';
+
+    const systemPrompt = `You are an expert instructional designer creating agent profiles for a multi-agent classroom simulation.
+
+## Personality Diversity (CRITICAL)
+Each agent MUST have a distinct, vivid personality. Avoid generic archetypes like "enthusiastic teacher" or "curious student". Use this diversity checklist:
+- Vary communication styles: formal vs casual, verbose vs terse, enthusiastic vs deadpan
+- Vary expertise angles: theoretical vs practical, big-picture vs detail-oriented
+- Vary emotional tones: warm/nurturing, challenging/Socratic, humorous/witty, calm/methodical
+- Give at least one agent a mildly unconventional trait (uses analogies from cooking, references pop culture, thinks in diagrams, talks in questions)
+- NEVER produce generic personalities. Each agent should feel like a real, memorable person.
+
+## Output Rules
+Return ONLY a valid JSON object. No markdown code fences, no explanation, no text before or after the JSON. The JSON must parse cleanly with JSON.parse().`;
 
     const userPrompt = `Generate agent profiles for the following course:
 
-Course name: ${stageInfo.name}
-${stageInfo.description ? `Course description: ${stageInfo.description}` : ''}
+<course_name>${safeName}</course_name>
+${safeDesc ? `<course_description>${safeDesc}</course_description>` : ''}
 ${sceneSummary ? `\nScene outlines:\n${sceneSummary}\n` : ''}
 Requirements:
 - Decide the appropriate number of agents based on the course content (typically 3-5)
@@ -90,10 +104,21 @@ Requirements:
 - Priority values: teacher=10 (highest), assistant=7, student=4-6
 - Each agent needs: name, role, persona (2-3 sentences describing personality and teaching/learning style)
 - Names and personas must be in language: ${language}
-- Each agent must be assigned one avatar from this list: ${JSON.stringify(availableAvatars)}
-  - Try to use different avatars for each agent
-- Each agent must be assigned one color from this list: ${JSON.stringify(COLOR_PALETTE)}
-  - Each agent must have a different color
+- Each agent must be assigned one UNIQUE avatar from this list: ${JSON.stringify(availableAvatars)}
+  - NO duplicate avatars — every agent must have a different avatar
+- Each agent must be assigned one UNIQUE color from this list: ${JSON.stringify(COLOR_PALETTE)}
+  - NO duplicate colors — every agent must have a different color
+
+Example output for a "World History" course (DO NOT copy — generate completely different personalities):
+{
+  "agents": [
+    {"name": "Prof. Rivera", "role": "teacher", "persona": "A theatrical storyteller who treats history like a detective novel. Loves asking 'But WHY did they do that?' and connecting ancient events to modern headlines.", "avatar": "${availableAvatars[0]}", "color": "#3b82f6", "priority": 10},
+    {"name": "Kai", "role": "student", "persona": "A skeptical thinker who questions everything and plays devil's advocate. Often says 'Yeah but what about...' Short, punchy reactions.", "avatar": "${availableAvatars[1]}", "color": "#10b981", "priority": 5},
+    {"name": "Mei Lin", "role": "assistant", "persona": "A meticulous note-taker who summarizes complex ideas into simple bullet points. Calm, precise, always has a relevant timeline to share.", "avatar": "${availableAvatars[2]}", "color": "#f59e0b", "priority": 7}
+  ]
+}
+
+IMPORTANT: Generate completely different personalities suited to "${safeName}". Do NOT reuse names or traits from the example above.
 
 Return a JSON object with this exact structure:
 {

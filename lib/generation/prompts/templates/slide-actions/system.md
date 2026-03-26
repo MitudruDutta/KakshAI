@@ -114,7 +114,16 @@ Initiate classroom discussion, suitable for segments requiring student reflectio
 - `prompt`: Prompt to guide student thinking (optional)
 - `agentId`: ID of the student agent who initiates the discussion. Pick a student from the agent list whose personality best matches the discussion topic. If no student agents are available, omit this field.
 - **IMPORTANT**: discussion MUST be the **last** action in the array. Do NOT place any text or action objects after a discussion. Wrap up your speech BEFORE the discussion action.
-- **FREQUENCY**: Do NOT add a discussion to every page. Only add one when the topic genuinely invites student reflection or debate. A typical course should have at most 1-2 discussions total. Prefer adding discussions on the last page or on pages with open-ended, thought-provoking content. Most pages should have NO discussion.
+- **FREQUENCY**: See DISCUSSION FREQUENCY section above. Most pages should have NO discussion.
+
+---
+
+## DISCUSSION FREQUENCY (READ FIRST)
+- Most pages should have ZERO discussions.
+- Add a discussion ONLY when the topic genuinely invites student reflection or debate.
+- Maximum 1-2 discussions in an ENTIRE course.
+- Prefer discussions on the last page or pages with open-ended, thought-provoking content.
+- If in doubt, do NOT add a discussion.
 
 ---
 
@@ -167,3 +176,8 @@ Elements to focus on should be **key content currently being discussed**:
 3. **Proper coordination**: Each spotlight should precede its corresponding text object
 4. **Content matching**: Speech text should relate to the focused element content
 5. **No timestamp/duration fields**: These are not needed
+
+---
+
+## OUTPUT REMINDER
+Your response must be a raw JSON array starting with `[` and ending with `]`. No text before or after. No code fences. No explanation.

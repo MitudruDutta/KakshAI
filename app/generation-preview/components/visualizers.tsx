@@ -68,7 +68,7 @@ function PdfScanVisualizer() {
         </div>
         {/* Scanning laser */}
         <motion.div
-          className="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_rgba(34,211,238,0.6)]"
+          className="absolute inset-x-0 h-0.5 bg-linear-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_rgba(34,211,238,0.6)]"
           animate={{ top: ['5%', '90%', '5%'] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
         />
@@ -136,7 +136,7 @@ function WebSearchVisualizer({ sources }: { sources: Array<{ title: string; url:
           {/* Sliding highlight */}
           {sources.length > 0 && (
             <motion.div
-              className="absolute left-2 right-2 rounded-lg bg-teal-500/[0.06] dark:bg-teal-400/[0.08]"
+              className="absolute left-2 right-2 rounded-lg bg-teal-500/6 dark:bg-teal-400/8"
               style={{ height: ROW_H - 6 }}
               animate={{ y: activeResult * ROW_H }}
               transition={{ type: 'spring', stiffness: 300, damping: 28 }}
@@ -210,7 +210,7 @@ function WebSearchVisualizer({ sources }: { sources: Array<{ title: string; url:
 
         {/* Scanning beam */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 dark:via-white/5 to-transparent -skew-x-12 pointer-events-none"
+          className="absolute inset-0 bg-linear-to-tr from-transparent via-white/20 dark:via-white/5 to-transparent -skew-x-12 pointer-events-none"
           initial={{ left: '-150%' }}
           animate={{ left: '200%' }}
           transition={{
@@ -251,7 +251,7 @@ function StreamingOutlineVisualizer({ outlines }: { outlines: SceneOutline[] }) 
   });
 
   return (
-    <div className="w-40 h-52 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-2xl p-4 overflow-hidden relative rotate-[-2deg] hover:rotate-0 transition-transform duration-500">
+    <div className="w-40 h-52 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-2xl p-4 overflow-hidden relative -rotate-2 hover:rotate-0 transition-transform duration-500">
       <div className="absolute top-0 inset-x-0 h-1 bg-blue-500/50" />
       <div className="w-1/3 h-2 bg-slate-100 dark:bg-slate-700 rounded mb-3" />
       <div className="space-y-1.5 font-mono text-[8px] text-muted-foreground leading-tight">
@@ -303,7 +303,7 @@ function AgentGenerationVisualizer() {
         {[0, 1, 2].map((i) => (
           <motion.div
             key={i}
-            className="w-14 h-20 rounded-lg bg-gradient-to-br from-purple-400 to-blue-500 dark:from-purple-600 dark:to-blue-700 shadow-lg"
+            className="w-14 h-20 rounded-lg bg-linear-to-br from-purple-400 to-blue-500 dark:from-purple-600 dark:to-blue-700 shadow-lg"
             animate={{ y: [0, -8, 0], rotateZ: [0, 3, -3, 0] }}
             transition={{
               duration: 1.5,
@@ -382,7 +382,7 @@ function ContentVisualizer() {
   const theme = getTheme(index);
 
   return (
-    <div className="size-56 relative flex items-center justify-center perspective-[800px]">
+    <div className="size-56 relative flex items-center justify-center perspective-midrange">
       {/* Background glow based on current theme */}
       <motion.div
         key={`glow-${index}`}
@@ -607,7 +607,7 @@ function ContentVisualizer() {
 
             {/* Scanning beam (shared) */}
             <motion.div
-              className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 dark:via-white/10 to-transparent -skew-x-12 pointer-events-none"
+              className="absolute inset-0 bg-linear-to-tr from-transparent via-white/30 dark:via-white/10 to-transparent -skew-x-12 pointer-events-none"
               initial={{ left: '-150%' }}
               animate={{ left: '200%' }}
               transition={{
@@ -703,7 +703,7 @@ function ActionsVisualizer() {
         <div className="p-2 space-y-1.5 relative">
           {/* Sliding highlight — absolute, animates via y transform, no layout impact */}
           <motion.div
-            className="absolute left-2 right-2 rounded-lg bg-violet-500/[0.06] dark:bg-violet-400/[0.08]"
+            className="absolute left-2 right-2 rounded-lg bg-violet-500/6 dark:bg-violet-400/8"
             style={{ height: ROW_H - 6 }}
             animate={{ y: activeIdx * ROW_H }}
             transition={{ type: 'spring', stiffness: 300, damping: 28 }}

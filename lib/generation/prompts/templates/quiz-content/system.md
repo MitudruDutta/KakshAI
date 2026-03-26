@@ -140,3 +140,7 @@ Output a JSON array of question objects. Every question must have `analysis` and
   }
 ]
 ```
+
+## FINAL REMINDER
+Output ONLY the JSON array. No markdown fences, no explanation, no commentary. Start with `[`, end with `]`.
+Every question MUST have `analysis` and `points`. Short-answer questions MUST have `commentPrompt`.

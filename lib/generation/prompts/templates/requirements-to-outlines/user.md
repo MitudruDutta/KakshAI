@@ -4,11 +4,15 @@ Please generate scene outlines based on the following course requirements.
 
 ## User Requirements
 
+<user_requirement>
 {{requirement}}
+</user_requirement>
 
 ---
 
+<user_profile>
 {{userProfile}}
+</user_profile>
 
 ## Course Language
 

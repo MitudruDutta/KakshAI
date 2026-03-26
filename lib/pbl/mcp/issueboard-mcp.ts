@@ -107,7 +107,10 @@ export class IssueboardMCP {
     // Auto-create question and judge agents
     this.agentMCP.createAgent({
       name: questionAgentName,
-      system_prompt: getQuestionAgentPrompt(this.language),
+      system_prompt: getQuestionAgentPrompt(this.language, {
+        projectTopic: this.config.projectInfo.title || 'the project',
+        issueTitle: title,
+      }),
       default_mode: 'chat',
       actor_role: 'Question Assistant for Issue',
       role_division: 'development',
@@ -116,7 +119,10 @@ export class IssueboardMCP {
 
     this.agentMCP.createAgent({
       name: judgeAgentName,
-      system_prompt: getJudgeAgentPrompt(this.language),
+      system_prompt: getJudgeAgentPrompt(this.language, {
+        projectTopic: this.config.projectInfo.title || 'the project',
+        issueTitle: title,
+      }),
       default_mode: 'chat',
       actor_role: 'Judge for Issue Completion',
       role_division: 'management',

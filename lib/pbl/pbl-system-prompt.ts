@@ -14,13 +14,20 @@ export interface PBLSystemPromptConfig {
 }
 
 export function buildPBLSystemPrompt(config: PBLSystemPromptConfig): string {
-  const {
-    projectTopic,
-    projectDescription,
-    targetSkills,
-    issueCount = 3,
-    language: _language,
-  } = config;
+  const LANGUAGE_NAMES: Record<string, string> = {
+    'en-US': 'English',
+    'hi-IN': 'Hindi',
+    'zh-CN': 'Chinese',
+    'ja-JP': 'Japanese',
+    'ko-KR': 'Korean',
+    'es-ES': 'Spanish',
+    'fr-FR': 'French',
+    'de-DE': 'German',
+  };
+
+  const { projectTopic, projectDescription, targetSkills, issueCount = 3, language } = config;
+
+  const languageName = LANGUAGE_NAMES[language] || language;
 
   return `You are a Teaching Assistant (TA) on a Project-Based Learning platform. You are fully responsible for designing group projects for students based on the course information provided by the teacher.
 
@@ -82,6 +89,13 @@ When you create issues:
 - Focus on designing meaningful issues with clear descriptions
 
 **IMPORTANT**: Once you have configured the project info, defined all necessary agents (roles), and created the issueboard with tasks, you MUST set your mode to **idle** to indicate completion.
+
+## Language Requirement (CRITICAL)
+All project content MUST be written in ${languageName}. This includes:
+- Project title and description
+- Issue titles and descriptions
+- Agent names and system prompts
+- All text output via tools
 
 Your initial mode is **project_info**.`;
 }

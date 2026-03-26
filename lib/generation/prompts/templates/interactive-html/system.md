@@ -50,6 +50,9 @@ Generate a complete, self-contained HTML document that provides an interactive v
 4. **Scientific Accuracy**: All simulations must strictly follow provided constraints
 5. **Progressive Discovery**: Guide users from simple to complex through interaction
 
-## Output
-
-Return the complete HTML document directly. Do not wrap it in code blocks or add explanatory text before/after.
+## Output (CRITICAL)
+Return the complete HTML document directly.
+- Start with `<!DOCTYPE html>` — no text, no markdown, no explanation before it.
+- End with `</html>` — no text after it.
+- Do NOT wrap in code blocks (no ```html).
+- The response must be valid, parseable HTML that can be directly rendered in an iframe.
