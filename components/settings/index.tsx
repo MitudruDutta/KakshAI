@@ -495,7 +495,7 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
       if (firstRemainingPid && firstModel) {
         setModel(firstRemainingPid, firstModel);
       } else {
-        setModel('openai' as ProviderId, 'gpt-4o-mini');
+        setModel('openai' as ProviderId, 'gpt-5.4-mini');
       }
     }
     setProviderToDelete(null);
@@ -504,7 +504,28 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
   const handleResetProvider = (pid: ProviderId) => {
     const provider = PROVIDERS[pid];
     if (!provider) return;
-    setProviderConfig(pid, { models: [...provider.models] });
+    const config = providersConfig[pid];
+    if (config?.isServerConfigured && config.serverModels?.length) {
+      const builtInById = new Map(provider.models.map((model) => [model.id, model]));
+      const currentById = new Map((config.models || []).map((model) => [model.id, model]));
+      setProviderConfig(pid, {
+        models: config.serverModels.map(
+          (modelId) =>
+            builtInById.get(modelId) ||
+            currentById.get(modelId) || {
+              id: modelId,
+              name: modelId,
+              capabilities: {
+                streaming: true,
+                tools: true,
+                vision: /vision|llava|scout/i.test(modelId),
+              },
+            },
+        ),
+      });
+    } else {
+      setProviderConfig(pid, { models: [...provider.models] });
+    }
     toast.success(t('settings.resetSuccess'));
   };
 
@@ -556,7 +577,7 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
       const fallbackProviderId = (Object.keys(sanitizedProvidersConfig)[0] ??
         'openai') as ProviderId;
       const fallbackModelId =
-        sanitizedProvidersConfig[fallbackProviderId]?.models[0]?.id ?? 'gpt-4o-mini';
+        sanitizedProvidersConfig[fallbackProviderId]?.models[0]?.id ?? 'gpt-5.4-mini';
       setModel(fallbackProviderId, fallbackModelId);
     }
   }, [providerId, providersConfig, setModel, setProvidersConfig, visibleProviderEntries]);

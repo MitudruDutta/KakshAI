@@ -316,6 +316,37 @@ function sanitizeProvidersConfig(state: Partial<SettingsState>): void {
   state.providersConfig = sanitized;
 }
 
+const REMOVED_BUILT_IN_MODEL_IDS = new Set([
+  'claude-3-5-sonnet-20241022',
+  'claude-3-7-sonnet-20250219',
+  'claude-3-5-haiku-20241022',
+  'claude-3-opus-20240229',
+  'claude-3-haiku-20240307',
+  'gemini-2.0-flash',
+]);
+
+function buildServerModelInfo(modelId: string): ModelInfo {
+  const supportsVision = /vision|llava|scout/i.test(modelId);
+
+  return {
+    id: modelId,
+    name: modelId,
+    capabilities: {
+      streaming: true,
+      tools: true,
+      vision: supportsVision,
+    },
+  };
+}
+
+function mergeServerModels(currentModels: ModelInfo[], serverModels?: string[]): ModelInfo[] {
+  if (!serverModels?.length) return currentModels;
+
+  const modelsById = new Map(currentModels.map((model) => [model.id, model]));
+
+  return serverModels.map((modelId) => modelsById.get(modelId) || buildServerModelInfo(modelId));
+}
+
 function ensureValidModelSelection(state: Partial<SettingsState>): void {
   const providersConfig = state.providersConfig;
   if (!providersConfig || Object.keys(providersConfig).length === 0) return;
@@ -444,31 +475,27 @@ function ensureValidProviderSelections(state: Partial<SettingsState>): void {
  */
 function ensureBuiltInProviders(state: Partial<SettingsState>): void {
   if (!state.providersConfig) return;
-  const defaultConfig = getDefaultProvidersConfig();
   Object.keys(PROVIDERS).forEach((pid) => {
     const providerId = pid as ProviderId;
     if (!state.providersConfig![providerId]) {
-      // New provider: add with defaults
-      state.providersConfig![providerId] = defaultConfig[providerId];
+      state.providersConfig![providerId] = getDefaultProvidersConfig()[providerId];
     } else {
-      // Existing provider: merge new models & metadata
       const provider = PROVIDERS[providerId];
       const existing = state.providersConfig![providerId];
-
-      const existingModelIds = new Set(existing.models?.map((m) => m.id) || []);
-      const newModels = provider.models.filter((m) => !existingModelIds.has(m.id));
-      const mergedModels =
-        newModels.length > 0 ? [...newModels, ...(existing.models || [])] : existing.models;
+      const builtInModelIds = new Set(provider.models.map((model) => model.id));
+      const customModels = (existing.models || []).filter(
+        (model) => !builtInModelIds.has(model.id) && !REMOVED_BUILT_IN_MODEL_IDS.has(model.id),
+      );
 
       state.providersConfig![providerId] = {
         ...existing,
-        models: mergedModels,
-        name: existing.name || provider.name,
-        type: existing.type || provider.type,
-        defaultBaseUrl: existing.defaultBaseUrl || provider.defaultBaseUrl,
-        icon: provider.icon || existing.icon,
-        requiresApiKey: existing.requiresApiKey ?? provider.requiresApiKey,
-        isBuiltIn: existing.isBuiltIn ?? true,
+        models: [...provider.models, ...customModels],
+        name: provider.name,
+        type: provider.type,
+        defaultBaseUrl: provider.defaultBaseUrl,
+        icon: provider.icon,
+        requiresApiKey: provider.requiresApiKey,
+        isBuiltIn: true,
       };
     }
   });
@@ -493,7 +520,7 @@ const migrateFromOldStorage = () => {
 
   // Parse model selection
   let providerId: ProviderId = 'openai';
-  let modelId = 'gpt-4o-mini';
+  let modelId = 'gpt-5.4-mini';
   if (oldLlmModel) {
     const [pid, mid] = oldLlmModel.split(':');
     if (pid && mid) {
@@ -544,7 +571,7 @@ const migrateFromOldStorage = () => {
 
 export const useSettingsStore = create<SettingsState>()(
   persist(
-    (set, get) => {
+    (set, _get) => {
       // Try to migrate from old storage
       const migratedData = migrateFromOldStorage();
       const defaultAudioConfig = getDefaultAudioConfig();
@@ -825,16 +852,12 @@ export const useSettingsStore = create<SettingsState>()(
                 const key = pid as ProviderId;
                 if (newProvidersConfig[key]) {
                   const currentModels = newProvidersConfig[key].models;
-                  // When server specifies allowed models, filter the models list
-                  const filteredModels = info.models?.length
-                    ? currentModels.filter((m) => info.models!.includes(m.id))
-                    : currentModels;
                   newProvidersConfig[key] = {
                     ...newProvidersConfig[key],
                     isServerConfigured: true,
                     serverModels: info.models,
                     serverBaseUrl: info.baseUrl,
-                    models: filteredModels,
+                    models: mergeServerModels(currentModels, info.models),
                   };
                 }
               }
@@ -1041,6 +1064,13 @@ export const useSettingsStore = create<SettingsState>()(
               // LLM auto-select: when modelId is empty (always check, not just first run)
               let autoProviderId: ProviderId | undefined;
               let autoModelId: string | undefined;
+              const nextModelSelection: Partial<SettingsState> = {
+                providerId: state.providerId,
+                modelId: state.modelId,
+                providersConfig: newProvidersConfig,
+              };
+              ensureValidModelSelection(nextModelSelection);
+
               if (!state.modelId) {
                 // First try server-configured providers
                 for (const [pid, cfg] of Object.entries(newProvidersConfig)) {
@@ -1070,6 +1100,8 @@ export const useSettingsStore = create<SettingsState>()(
 
               return {
                 providersConfig: newProvidersConfig,
+                providerId: nextModelSelection.providerId ?? state.providerId,
+                modelId: nextModelSelection.modelId ?? state.modelId,
                 ttsProvidersConfig: newTTSConfig,
                 asrProvidersConfig: newASRConfig,
                 pdfProvidersConfig: newPDFConfig,
@@ -1114,12 +1146,9 @@ export const useSettingsStore = create<SettingsState>()(
       migrate: (persistedState: unknown, version: number) => {
         const state = persistedState as Partial<SettingsState>;
 
-        // v3 → v4: replace quota-exhausted gemini-3.1-pro with gemini-2.0-flash
+        // Replace deprecated Gemini selections with a stable fallback.
         if (version <= 3) {
-          if (
-            state.modelId === 'gemini-3.1-pro-preview' ||
-            state.modelId === 'gemini-3-pro-preview'
-          ) {
+          if (state.modelId === 'gemini-2.0-flash') {
             state.modelId = 'gemini-2.5-flash';
           }
         }

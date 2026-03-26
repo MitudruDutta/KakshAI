@@ -264,29 +264,29 @@ UPSTASH_REDIS_REST_URL=https://...
 UPSTASH_REDIS_REST_TOKEN=...
 
 # --- Optional: Default Model ---
-DEFAULT_MODEL=google:gemini-2-flash
+DEFAULT_MODEL=openai:gpt-5.4-mini
 ```
 
 See `.env.example` for all available options.
 
 ### Provider Configuration
 
-Providers can also be configured via YAML files in `configs/`:
+Providers can also be configured via a root-level `server-providers.yml` file:
 
 ```yaml
-# configs/server-providers.yml
+# server-providers.yml
 providers:
   openai:
     apiKey: ${OPENAI_API_KEY}
     baseUrl: https://api.openai.com/v1
     models:
-      - gpt-4o
-      - gpt-4o-mini
+      - gpt-5.4-mini
+      - gpt-4.1
 
   anthropic:
     apiKey: ${ANTHROPIC_API_KEY}
     models:
-      - claude-3-5-sonnet-20241022
+      - claude-sonnet-4-6
 ```
 
 ## Available Scripts

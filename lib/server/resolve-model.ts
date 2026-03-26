@@ -11,7 +11,7 @@ import { resolveApiKey, resolveBaseUrl, resolveProxy } from '@/lib/server/provid
 import { validateUrlForSSRF } from '@/lib/server/ssrf-guard';
 
 export interface ResolvedModel extends ModelWithInfo {
-  /** Original model string (e.g. "openai/gpt-4o-mini") */
+  /** Original model string (e.g. "openai:gpt-5.4-mini") */
   modelString: string;
 }
 
@@ -27,7 +27,7 @@ export function resolveModel(params: {
   providerType?: string;
   requiresApiKey?: boolean;
 }): ResolvedModel {
-  const modelString = params.modelString || process.env.DEFAULT_MODEL || 'gpt-4o-mini';
+  const modelString = params.modelString || process.env.DEFAULT_MODEL || 'gpt-5.4-mini';
   const { providerId, modelId } = parseModelString(modelString);
 
   const clientBaseUrl = params.baseUrl || undefined;
