@@ -1,16 +1,7 @@
 'use client';
 
 import { useState, useRef, useMemo } from 'react';
-import {
-  Bot,
-  Check,
-  Globe,
-  Paperclip,
-  FileText,
-  X,
-  Globe2,
-  Link2,
-} from 'lucide-react';
+import { Bot, Check, Globe, Paperclip, FileText, X, Globe2, Link2 } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
   Select,

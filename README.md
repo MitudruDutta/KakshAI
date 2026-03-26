@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/kakshailogo.png" alt="KakshAI logo" width="140" />
+  <img src="public/kakshailogo.png" alt="KakshAI logo" width="60" />
 </p>
 
 <p align="center">
@@ -20,7 +20,7 @@
 
 
 <p align="center">
-  <img src="public/demo.png" alt="KakshAI" width="140" />
+  <img src="public/demo.png" alt="KakshAI" width="60" />
 </p>
 
 ## Overview
