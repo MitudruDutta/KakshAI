@@ -4,7 +4,6 @@ import { useState, useRef, useMemo } from 'react';
 import {
   Bot,
   Check,
-  ChevronLeft,
   Globe,
   Paperclip,
   FileText,
@@ -432,7 +431,6 @@ function ModelSelectorPopover({
   currentModelId,
   currentProviderConfig,
   setModel,
-  onSettingsOpen,
   t,
 }: {
   configuredProviders: ConfiguredProvider[];
@@ -461,11 +459,6 @@ function ModelSelectorPopover({
       }))
       .filter((p) => p.models.length > 0);
   }, [configuredProviders, search]);
-
-  const totalModels = useMemo(
-    () => configuredProviders.reduce((acc, p) => acc + p.models.length, 0),
-    [configuredProviders],
-  );
 
   return (
     <Popover

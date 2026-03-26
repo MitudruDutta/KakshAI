@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { useI18n } from '@/lib/hooks/use-i18n';
 import { useSettingsStore } from '@/lib/store/settings';
 import { useAgentRegistry } from '@/lib/orchestration/registry/store';
-import { Sparkles, ChevronDown, ChevronUp, Shuffle } from 'lucide-react';
+import { Sparkles, ChevronDown, Shuffle } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 export function AgentBar() {

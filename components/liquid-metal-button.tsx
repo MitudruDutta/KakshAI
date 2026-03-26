@@ -21,7 +21,7 @@ export function LiquidMetalButton({
   const [isPressed, setIsPressed] = useState(false);
   const [ripples, setRipples] = useState<Array<{ x: number; y: number; id: number }>>([]);
   const shaderRef = useRef<HTMLDivElement>(null);
-  const shaderMount = useRef<any>(null);
+  const shaderMount = useRef<HTMLElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const rippleId = useRef(0);
 

@@ -18,6 +18,11 @@
   <img alt="License" src="https://img.shields.io/badge/License-MIT-green.svg" />
 </p>
 
+
+<p align="center">
+  <img src="public/demo.png" alt="KakshAI" width="140" />
+</p>
+
 ## Overview
 
 KakshAI is a local-first learning runtime built with Next.js, React, TypeScript, ElevenLabs, Firecrawl,

@@ -32,12 +32,8 @@ export function UserProfileCard() {
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState('');
   const [avatarPickerOpen, setAvatarPickerOpen] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
+  const hydrated = true;
   const nameInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
 
   useEffect(() => {
     if (editingName) nameInputRef.current?.focus();
