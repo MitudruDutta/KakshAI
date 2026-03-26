@@ -1,7 +1,5 @@
-# KakshAI
-
 <p align="center">
-  <img src="public/kakshailogo.png" alt="KakshAI logo" width="128" />
+  <img src="public/kakshailogo.png" alt="KakshAI logo" width="140" />
 </p>
 
 <p align="center">
