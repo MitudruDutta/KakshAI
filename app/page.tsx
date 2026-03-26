@@ -99,7 +99,16 @@ function HomePage() {
   const [scraping, setScraping] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [settingsSection, setSettingsSection] = useState<
-    'general' | 'providers' | 'agents' | 'tts' | 'asr' | 'pdf' | 'image' | 'video' | 'web-search' | undefined
+    | 'general'
+    | 'providers'
+    | 'agents'
+    | 'tts'
+    | 'asr'
+    | 'pdf'
+    | 'image'
+    | 'video'
+    | 'web-search'
+    | undefined
   >(undefined);
 
   const loadClassrooms = async () => {
