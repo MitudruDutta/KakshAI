@@ -50,7 +50,7 @@ function PdfScanVisualizer() {
   return (
     <div className="size-32 relative flex items-center justify-center">
       <motion.div
-        className="absolute inset-2 bg-cyan-500/5 rounded-2xl blur-lg"
+        className="absolute inset-2 bg-amber-500/5 rounded-2xl blur-lg"
         animate={{ opacity: [0.3, 0.6, 0.3] }}
         transition={{ duration: 2, repeat: Infinity }}
       />
@@ -68,7 +68,7 @@ function PdfScanVisualizer() {
         </div>
         {/* Scanning laser */}
         <motion.div
-          className="absolute inset-x-0 h-0.5 bg-linear-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_rgba(34,211,238,0.6)]"
+          className="absolute inset-x-0 h-0.5 bg-linear-to-r from-transparent via-amber-400 to-transparent shadow-[0_0_12px_rgba(245,158,11,0.6)]"
           animate={{ top: ['5%', '90%', '5%'] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
         />
@@ -78,7 +78,7 @@ function PdfScanVisualizer() {
         animate={{ rotate: [0, 10, -10, 0] }}
         transition={{ duration: 3, repeat: Infinity }}
       >
-        <ScanLine className="size-6 text-cyan-500/70" />
+        <ScanLine className="size-6 text-amber-500/70" />
       </motion.div>
     </div>
   );
@@ -111,7 +111,7 @@ function WebSearchVisualizer({ sources }: { sources: Array<{ title: string; url:
     <div className="size-56 relative flex items-center justify-center">
       {/* Background glow */}
       <motion.div
-        className="absolute inset-0 blur-3xl rounded-full bg-teal-500/8"
+        className="absolute inset-0 blur-3xl rounded-full bg-amber-500/8"
         animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.5, 0.3] }}
         transition={{ duration: 3.5, repeat: Infinity }}
       />
@@ -120,10 +120,10 @@ function WebSearchVisualizer({ sources }: { sources: Array<{ title: string; url:
       <div className="w-44 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden relative">
         {/* Search bar header */}
         <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-700 flex items-center gap-2">
-          <Search className="size-3 text-teal-500 shrink-0" />
+          <Search className="size-3 text-amber-500 shrink-0" />
           <div className="flex-1 h-4 bg-slate-50 dark:bg-slate-700/50 rounded-full overflow-hidden flex items-center px-2">
             <motion.div
-              className="h-1.5 bg-teal-500/25 rounded-full"
+              className="h-1.5 bg-amber-500/25 rounded-full"
               initial={{ width: 0 }}
               animate={{ width: '70%' }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -136,7 +136,7 @@ function WebSearchVisualizer({ sources }: { sources: Array<{ title: string; url:
           {/* Sliding highlight */}
           {sources.length > 0 && (
             <motion.div
-              className="absolute left-2 right-2 rounded-lg bg-teal-500/6 dark:bg-teal-400/8"
+              className="absolute left-2 right-2 rounded-lg bg-amber-500/6 dark:bg-amber-400/8"
               style={{ height: ROW_H - 6 }}
               animate={{ y: activeResult * ROW_H }}
               transition={{ type: 'spring', stiffness: 300, damping: 28 }}
@@ -157,7 +157,7 @@ function WebSearchVisualizer({ sources }: { sources: Array<{ title: string; url:
                   }}
                 >
                   <div
-                    className="h-1.5 bg-teal-200/40 dark:bg-teal-800/30 rounded"
+                    className="h-1.5 bg-amber-200/40 dark:bg-amber-800/30 rounded"
                     style={{ width: `${item.titleW}%` }}
                   />
                   <div
@@ -190,13 +190,13 @@ function WebSearchVisualizer({ sources }: { sources: Array<{ title: string; url:
                       className={cn(
                         'text-[8px] font-semibold truncate transition-colors duration-300 leading-tight',
                         isActive
-                          ? 'text-teal-600 dark:text-teal-400'
+                          ? 'text-amber-600 dark:text-amber-400'
                           : 'text-slate-600 dark:text-slate-400',
                       )}
                     >
                       {source.title}
                     </div>
-                    <div className="text-[6px] text-teal-500/50 truncate leading-tight">
+                    <div className="text-[6px] text-amber-500/50 truncate leading-tight">
                       {source.url.replace(/^https?:\/\/(www\.)?/, '').slice(0, 32)}
                     </div>
                     <div className="flex gap-1">
@@ -228,7 +228,7 @@ function WebSearchVisualizer({ sources }: { sources: Array<{ title: string; url:
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-          className="absolute -top-2 -right-2 h-6 px-2 rounded-full bg-teal-500 text-white text-[10px] font-bold flex items-center justify-center shadow-lg shadow-teal-500/25 z-20 gap-0.5"
+          className="absolute -top-2 -right-2 h-6 px-2 rounded-full bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center shadow-lg shadow-amber-500/25 z-20 gap-0.5"
         >
           <Globe className="size-2.5" />
           {sources.length}
@@ -252,7 +252,7 @@ function StreamingOutlineVisualizer({ outlines }: { outlines: SceneOutline[] }) 
 
   return (
     <div className="w-40 h-52 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-2xl p-4 overflow-hidden relative -rotate-2 hover:rotate-0 transition-transform duration-500">
-      <div className="absolute top-0 inset-x-0 h-1 bg-blue-500/50" />
+      <div className="absolute top-0 inset-x-0 h-1 bg-amber-500/50" />
       <div className="w-1/3 h-2 bg-slate-100 dark:bg-slate-700 rounded mb-3" />
       <div className="space-y-1.5 font-mono text-[8px] text-muted-foreground leading-tight">
         {allLines.length === 0 ? (
@@ -277,7 +277,7 @@ function StreamingOutlineVisualizer({ outlines }: { outlines: SceneOutline[] }) 
               className={cn(
                 'truncate',
                 !line.startsWith('   ')
-                  ? 'text-blue-600 dark:text-blue-400 font-semibold text-[9px]'
+                  ? 'text-amber-600 dark:text-amber-400 font-semibold text-[9px]'
                   : 'pl-1 opacity-80',
               )}
             >
@@ -287,7 +287,7 @@ function StreamingOutlineVisualizer({ outlines }: { outlines: SceneOutline[] }) 
         )}
       </div>
       <motion.div
-        className="absolute bottom-3 right-3 size-2 bg-blue-500 rounded-full"
+        className="absolute bottom-3 right-3 size-2 bg-amber-500 rounded-full"
         animate={{ opacity: [0, 1, 0] }}
         transition={{ repeat: Infinity, duration: 0.8 }}
       />
@@ -303,7 +303,7 @@ function AgentGenerationVisualizer() {
         {[0, 1, 2].map((i) => (
           <motion.div
             key={i}
-            className="w-14 h-20 rounded-lg bg-linear-to-br from-purple-400 to-blue-500 dark:from-purple-600 dark:to-blue-700 shadow-lg"
+            className="w-14 h-20 rounded-lg bg-linear-to-br from-amber-400 to-orange-500 dark:from-amber-600 dark:to-orange-700 shadow-lg"
             animate={{ y: [0, -8, 0], rotateZ: [0, 3, -3, 0] }}
             transition={{
               duration: 1.5,
@@ -355,10 +355,10 @@ function ContentVisualizer() {
         };
       case 1:
         return {
-          color: 'purple',
+          color: 'amber',
           label: 'QUIZ',
           badge:
-            'bg-purple-100 text-purple-600 border-purple-200 dark:bg-purple-900/40 dark:text-purple-300 dark:border-purple-800',
+            'bg-amber-amber-100 text-amber-amber-600 border-amber-amber-200 dark:bg-amber-amber-900/40 dark:text-amber-amber-300 dark:border-amber-amber-800',
         };
       case 2:
         return {
@@ -389,7 +389,7 @@ function ContentVisualizer() {
         className={cn(
           'absolute inset-0 blur-3xl rounded-full transition-colors duration-1000',
           theme.color === 'blue' && 'bg-blue-500/10',
-          theme.color === 'purple' && 'bg-purple-500/10',
+          theme.color === 'amber' && 'bg-amber-amber-500/10',
           theme.color === 'amber' && 'bg-amber-500/10',
           theme.color === 'emerald' && 'bg-emerald-500/10',
         )}
@@ -404,7 +404,7 @@ function ContentVisualizer() {
           className={cn(
             'absolute border rounded-full transition-colors duration-1000',
             theme.color === 'blue' && 'border-blue-500/10',
-            theme.color === 'purple' && 'border-purple-500/10',
+            theme.color === 'amber' && 'border-amber-amber-500/10',
             theme.color === 'amber' && 'border-amber-500/10',
             theme.color === 'emerald' && 'border-emerald-500/10',
           )}
@@ -436,7 +436,7 @@ function ContentVisualizer() {
             className={cn(
               'absolute inset-0 bg-white dark:bg-slate-800 rounded-xl border shadow-xl overflow-hidden flex flex-col p-3 origin-center',
               theme.color === 'blue' && 'border-blue-200 dark:border-blue-900/30',
-              theme.color === 'purple' && 'border-purple-200 dark:border-purple-900/30',
+              theme.color === 'amber' && 'border-amber-amber-200 dark:border-amber-amber-900/30',
               theme.color === 'amber' && 'border-amber-200 dark:border-amber-900/30',
               theme.color === 'emerald' && 'border-emerald-200 dark:border-emerald-900/30',
             )}
@@ -496,7 +496,7 @@ function ContentVisualizer() {
                   transition={{ delay: 0.2 }}
                   className="flex justify-center mb-1"
                 >
-                  <div className="h-2 w-3/4 bg-purple-500/20 rounded-full" />
+                  <div className="h-2 w-3/4 bg-amber-amber-500/20 rounded-full" />
                 </motion.div>
 
                 <div className="grid grid-cols-2 gap-2">
@@ -509,7 +509,7 @@ function ContentVisualizer() {
                       className={cn(
                         'h-6 rounded border flex items-center px-2',
                         i === 1
-                          ? 'bg-purple-500 text-white border-purple-500'
+                          ? 'bg-amber-amber-500 text-white border-amber-amber-500'
                           : 'bg-slate-50 dark:bg-slate-700/50 border-slate-100 dark:border-slate-700',
                       )}
                     >
@@ -632,37 +632,37 @@ function ActionsVisualizer() {
     {
       icon: MessageSquare,
       label: 'Speech',
-      color: 'text-violet-500',
-      activeBg: 'bg-violet-500/10',
-      activeBorder: 'border-violet-200 dark:border-violet-800',
-    },
-    {
-      icon: Focus,
-      label: 'Spotlight',
       color: 'text-amber-500',
       activeBg: 'bg-amber-500/10',
       activeBorder: 'border-amber-200 dark:border-amber-800',
     },
     {
+      icon: Focus,
+      label: 'Spotlight',
+      color: 'text-orange-500',
+      activeBg: 'bg-orange-500/10',
+      activeBorder: 'border-orange-200 dark:border-orange-800',
+    },
+    {
       icon: MessageSquare,
       label: 'Speech',
-      color: 'text-violet-500',
-      activeBg: 'bg-violet-500/10',
-      activeBorder: 'border-violet-200 dark:border-violet-800',
+      color: 'text-amber-500',
+      activeBg: 'bg-amber-500/10',
+      activeBorder: 'border-amber-200 dark:border-amber-800',
     },
     {
       icon: Play,
       label: 'Interact',
-      color: 'text-emerald-500',
-      activeBg: 'bg-emerald-500/10',
-      activeBorder: 'border-emerald-200 dark:border-emerald-800',
+      color: 'text-amber-600',
+      activeBg: 'bg-amber-600/10',
+      activeBorder: 'border-amber-200 dark:border-amber-800',
     },
     {
       icon: MessageSquare,
       label: 'Speech',
-      color: 'text-violet-500',
-      activeBg: 'bg-violet-500/10',
-      activeBorder: 'border-violet-200 dark:border-violet-800',
+      color: 'text-amber-500',
+      activeBg: 'bg-amber-500/10',
+      activeBorder: 'border-amber-200 dark:border-amber-800',
     },
   ];
 
@@ -681,7 +681,7 @@ function ActionsVisualizer() {
     <div className="size-56 relative flex items-center justify-center">
       {/* Background pulse */}
       <motion.div
-        className="absolute inset-0 blur-3xl rounded-full bg-violet-500/8"
+        className="absolute inset-0 blur-3xl rounded-full bg-amber-500/8"
         animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.5, 0.3] }}
         transition={{ duration: 3.5, repeat: Infinity }}
       />
@@ -690,12 +690,12 @@ function ActionsVisualizer() {
       <div className="w-44 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden relative">
         {/* Header */}
         <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-700 flex items-center gap-2">
-          <Clapperboard className="size-3 text-violet-500" />
+          <Clapperboard className="size-3 text-amber-500" />
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: '50%' }}
             transition={{ delay: 0.2 }}
-            className="h-1.5 bg-violet-500/20 rounded-full"
+            className="h-1.5 bg-amber-500/20 rounded-full"
           />
         </div>
 
@@ -703,7 +703,7 @@ function ActionsVisualizer() {
         <div className="p-2 space-y-1.5 relative">
           {/* Sliding highlight — absolute, animates via y transform, no layout impact */}
           <motion.div
-            className="absolute left-2 right-2 rounded-lg bg-violet-500/6 dark:bg-violet-400/8"
+            className="absolute left-2 right-2 rounded-lg bg-amber-500/6 dark:bg-amber-400/8"
             style={{ height: ROW_H - 6 }}
             animate={{ y: activeIdx * ROW_H }}
             transition={{ type: 'spring', stiffness: 300, damping: 28 }}
@@ -747,7 +747,7 @@ function ActionsVisualizer() {
                 </div>
                 {/* Pulsing dot — always rendered, opacity-controlled, no layout shift */}
                 <motion.div
-                  className="size-1.5 rounded-full bg-violet-500"
+                  className="size-1.5 rounded-full bg-amber-500"
                   animate={{ opacity: isActive ? [1, 0.3, 1] : 0 }}
                   transition={isActive ? { duration: 0.8, repeat: Infinity } : { duration: 0.2 }}
                 />

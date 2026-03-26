@@ -36,7 +36,7 @@ export function UserProfileCard() {
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setHydrated(true); // eslint-disable-line react-hooks/set-state-in-effect -- Store hydration on mount
+    setHydrated(true);
   }, []);
 
   useEffect(() => {
@@ -89,12 +89,12 @@ export function UserProfileCard() {
 
   if (!hydrated) {
     return (
-      <Card className="p-5 gap-0! shadow-xl border-muted/40 backdrop-blur-xl bg-white/80 dark:bg-slate-900/80">
-        <div className="flex items-center gap-3">
-          <div className="size-11 rounded-full bg-muted animate-pulse" />
-          <div className="flex-1 space-y-2">
-            <div className="h-3 w-16 rounded bg-muted animate-pulse" />
-            <div className="h-4 w-24 rounded bg-muted animate-pulse" />
+      <Card className="p-5 border-border/40 backdrop-blur-3xl bg-background/80 shadow-2xl overflow-hidden relative group/slate">
+        <div className="flex items-center gap-4">
+          <div className="size-14 rounded-full bg-muted/20 animate-pulse border border-border/10" />
+          <div className="flex-1 space-y-2.5">
+            <div className="h-4 w-20 rounded bg-muted/20 animate-pulse" />
+            <div className="h-4 w-32 rounded bg-muted/10 animate-pulse" />
           </div>
         </div>
       </Card>
@@ -102,8 +102,28 @@ export function UserProfileCard() {
   }
 
   return (
-    <Card className="p-5 gap-0! shadow-xl border-muted/40 backdrop-blur-xl bg-white/80 dark:bg-slate-900/80">
-      {/* File input — sr-only keeps it in the flow but invisible; label triggers it */}
+    <Card className={cn(
+      "p-6 border-white/20 backdrop-blur-3xl bg-white/5 dark:bg-black/40 shadow-2xl overflow-hidden relative transition-all duration-700 select-none group/slate",
+      "hover:shadow-amber-500/20 hover:border-amber-500/40 hover:-translate-y-1"
+    )}>
+      {/* ── Hyper-Glass Sheen Effect ── */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-0 group-hover/slate:opacity-100 transition-opacity duration-1000">
+        <motion.div 
+          className="absolute inset-[-100%] bg-linear-to-tr from-transparent via-white/5 dark:via-white/10 to-transparent rotate-45"
+          animate={{ x: ['-100%', '200%'] }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+        />
+      </div>
+
+      {/* ── Noise Texture Layer ── */}
+      <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-[0.03] dark:opacity-[0.08]" 
+        style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }} 
+      />
+      
+      {/* ── Floating Atmospheric Glows ── */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/20 blur-[80px] -mr-16 -mt-16 animate-pulse pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-24 h-24 bg-orange-600/10 blur-[60px] -ml-12 -mb-12 pointer-events-none" />
+
       <input
         id={FILE_INPUT_ID}
         type="file"
@@ -112,30 +132,54 @@ export function UserProfileCard() {
         onChange={handleAvatarUpload}
       />
 
-      {/* Row 1: Avatar + Name */}
-      <div className="flex items-center gap-3.5">
-        {/* Avatar — click to toggle picker */}
-        <button
-          onClick={() => setAvatarPickerOpen(!avatarPickerOpen)}
-          className="shrink-0 group/avatar relative cursor-pointer"
-        >
-          <div className="size-11 rounded-full bg-gray-50 dark:bg-gray-800 overflow-hidden ring-2 ring-violet-300/50 dark:ring-violet-600/40 group-hover/avatar:ring-violet-400 dark:group-hover/avatar:ring-violet-500 transition-all">
-            <img src={avatar} alt="" className="size-full object-cover" />
-          </div>
-          <div className="absolute -bottom-0.5 -right-0.5 size-4 rounded-full bg-white dark:bg-slate-800 border border-muted/60 flex items-center justify-center">
-            <ChevronDown
-              className={cn(
-                'size-2.5 text-muted-foreground transition-transform duration-200',
-                avatarPickerOpen && 'rotate-180',
-              )}
-            />
-          </div>
-        </button>
+      {/* Row 1: Avatar + Role Management */}
+      <div className="flex items-start gap-4.5 relative z-10">
+        {/* Avatar Plate with Metal Frame */}
+        <div className="relative shrink-0">
+          <button
+            onClick={() => setAvatarPickerOpen(!avatarPickerOpen)}
+            className="group/avatar relative block"
+          >
+            {/* Outer Glow Ring */}
+            <div className="absolute inset-[-4px] rounded-full bg-linear-to-br from-amber-500/30 via-orange-500/10 to-transparent blur-md opacity-0 group-hover/avatar:opacity-100 transition-opacity duration-500" />
+            
+            <div className={cn(
+              "size-14 rounded-full p-[2px] transition-all duration-700 relative",
+              "bg-linear-to-br from-amber-200 via-amber-600 to-orange-800 shadow-2xl group-hover/avatar:scale-110 group-hover/avatar:rotate-3 active:scale-95"
+            )}>
+              {/* Inner Etched Ring */}
+              <div className="size-full rounded-full bg-background overflow-hidden relative ring-[1px] ring-white/20">
+                <img src={avatar} alt="" className="size-full object-cover transition-transform duration-1000 group-hover/avatar:scale-125" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-white/10 opacity-60" />
+              </div>
+            </div>
+            
+            {/* Command Picker Trigger */}
+            <div className="absolute -bottom-1 -right-1 size-5 rounded-full bg-linear-to-br from-amber-400 to-orange-600 border border-white/40 flex items-center justify-center shadow-xl group-hover/avatar:scale-125 transition-all">
+              <ChevronDown
+                className={cn(
+                  'size-3 text-white transition-transform duration-500',
+                  avatarPickerOpen && 'rotate-180',
+                )}
+              />
+            </div>
+          </button>
+        </div>
 
-        {/* Name */}
-        <div className="flex-1 min-w-0">
+        {/* Identity Details */}
+        <div className="flex-1 min-w-0 pt-0.5">
+          <div className="flex items-center gap-3 mb-1.5">
+            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 shadow-[0_0_10px_-2px_rgba(245,158,11,0.2)]">
+              <span className="size-1.5 rounded-full bg-amber-500 animate-[pulse_1.5s_infinite]" />
+              <span className="text-[8px] font-black uppercase tracking-[0.2em] text-amber-600 dark:text-amber-400">
+                Active Student
+              </span>
+            </div>
+            <div className="h-[1px] flex-1 bg-linear-to-r from-amber-500/30 via-transparent to-transparent" />
+          </div>
+
           {editingName ? (
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2 group/input">
               <input
                 ref={nameInputRef}
                 value={nameDraft}
@@ -147,84 +191,128 @@ export function UserProfileCard() {
                 onBlur={commitName}
                 maxLength={20}
                 placeholder={t('profile.defaultNickname')}
-                className="flex-1 min-w-0 h-7 bg-transparent border-b-2 border-violet-400 dark:border-violet-500 text-sm font-semibold text-foreground outline-none placeholder:text-muted-foreground/40"
+                className="flex-1 min-w-0 h-10 bg-amber-500/5 dark:bg-amber-500/10 border-b-2 border-amber-500 text-xl font-bold text-foreground outline-none px-3 rounded-t-lg font-display"
               />
               <button
                 onClick={commitName}
-                className="shrink-0 size-6 rounded-md flex items-center justify-center text-violet-500 hover:bg-violet-100 dark:hover:bg-violet-900/30 transition-colors"
+                className="shrink-0 size-9 rounded-xl flex items-center justify-center bg-linear-to-br from-amber-500 to-orange-600 text-white shadow-xl shadow-amber-500/20 hover:scale-110 active:scale-95 transition-all"
               >
-                <Check className="size-3.5" />
+                <Check className="size-5" />
               </button>
             </div>
           ) : (
             <button
               onClick={startEditName}
-              className="group/name flex items-center gap-1.5 cursor-pointer"
+              className="group/name flex items-center gap-3 cursor-pointer max-w-full hover:px-1 transition-all"
             >
-              <span className="text-sm font-semibold text-foreground truncate">{displayName}</span>
-              <Pencil className="size-3 text-muted-foreground/40 opacity-0 group-hover/name:opacity-100 transition-opacity" />
+              <h2 className="text-2xl font-black text-foreground truncate drop-shadow-md font-display tracking-tight bg-clip-text text-transparent bg-linear-to-b from-foreground to-foreground/80">
+                {displayName}
+              </h2>
+              <div className="p-2 rounded-xl bg-amber-500/0 group-hover/name:bg-amber-500/10 text-muted-foreground/40 group-hover/name:text-amber-500/80 transition-all border border-transparent group-hover/name:border-amber-500/20">
+                <Pencil className="size-4" />
+              </div>
             </button>
           )}
-          <p className="text-[10px] text-muted-foreground/50 mt-0.5">{t('profile.avatarHint')}</p>
         </div>
       </div>
 
-      {/* Avatar picker — collapsible */}
+      {/* Avatar Picker — Liquid Expand */}
       <AnimatePresence>
         {avatarPickerOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
-            className="overflow-hidden"
+            transition={{ type: 'spring', damping: 20, stiffness: 200 }}
+            className="overflow-hidden relative z-20"
           >
-            {/* p-1 gives breathing room so ring-offset / hover-scale aren't clipped */}
-            <div className="pt-3 pb-1 px-1 flex items-center gap-1.5 flex-wrap">
-              {AVATAR_OPTIONS.map((url) => (
-                <button
-                  key={url}
-                  onClick={() => setAvatar(url)}
-                  className={cn(
-                    'size-8 rounded-full overflow-hidden bg-gray-50 dark:bg-gray-800 cursor-pointer transition-all duration-150',
-                    'hover:scale-110 active:scale-95',
-                    avatar === url
-                      ? 'ring-2 ring-violet-400 dark:ring-violet-500 ring-offset-1 ring-offset-white dark:ring-offset-slate-900'
-                      : 'hover:ring-1 hover:ring-muted-foreground/30',
-                  )}
-                >
-                  <img src={url} alt="" className="size-full" />
-                </button>
-              ))}
+            <div className="mt-4 p-3.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-border/10 backdrop-blur-lg">
+              <div className="grid grid-cols-5 gap-3">
+                {AVATAR_OPTIONS.map((url) => (
+                  <button
+                    key={url}
+                    onClick={() => setAvatar(url)}
+                    className={cn(
+                      'aspect-square rounded-full overflow-hidden bg-background cursor-pointer transition-all duration-300 relative',
+                      'hover:scale-110 active:scale-95 shadow-sm',
+                      avatar === url
+                        ? 'ring-2 ring-amber-500 ring-offset-2 ring-offset-background scale-105'
+                        : 'hover:ring-2 hover:ring-amber-500/40 hover:scale-105',
+                    )}
+                  >
+                    <img src={url} alt="" className="size-full object-cover" />
+                  </button>
+                ))}
 
-              {/* Upload — uses <label htmlFor> to natively trigger the file input */}
-              <label
-                htmlFor={FILE_INPUT_ID}
-                className={cn(
-                  'size-8 rounded-full flex items-center justify-center cursor-pointer transition-all duration-150 border border-dashed',
-                  'hover:scale-110 active:scale-95',
-                  isCustomAvatar(avatar)
-                    ? 'ring-2 ring-violet-400 dark:ring-violet-500 ring-offset-1 ring-offset-white dark:ring-offset-slate-900 border-violet-300 dark:border-violet-600 bg-violet-50 dark:bg-violet-900/30'
-                    : 'border-muted-foreground/30 text-muted-foreground/50 hover:border-muted-foreground/50',
-                )}
-                title={t('profile.uploadAvatar')}
-              >
-                <ImagePlus className="size-3.5" />
-              </label>
+                <label
+                  htmlFor={FILE_INPUT_ID}
+                  className={cn(
+                    'aspect-square rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 border-2 border-dashed relative',
+                    'hover:scale-110 active:scale-95',
+                    isCustomAvatar(avatar)
+                      ? 'ring-2 ring-amber-500 ring-offset-2 ring-offset-background border-amber-500 bg-amber-500 shadow-md text-white'
+                      : 'border-muted-foreground/20 text-muted-foreground/40 hover:border-amber-500/50 hover:text-amber-500 hover:bg-amber-500/5',
+                  )}
+                  title={t('profile.uploadAvatar')}
+                >
+                  <ImagePlus className="size-5" />
+                </label>
+              </div>
+              <p className="text-[10px] text-center text-muted-foreground/60 mt-3 italic">
+                {t('profile.avatarHint')}
+              </p>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Bio input */}
-      <Textarea
-        value={bio}
-        onChange={(e) => setBio(e.target.value)}
-        placeholder={t('profile.bioPlaceholder')}
-        maxLength={200}
-        rows={3}
-        className="mt-3 resize-none bg-background/50 min-h-20"
-      />
+      {/* Bio Slated Area */}
+      <div className="mt-8 relative z-10">
+        <div className="flex items-center justify-between mb-3 px-1">
+          <div className="flex items-center gap-2">
+            <span className="text-[9px] font-black uppercase tracking-[0.25em] text-muted-foreground/50">
+              Biometric Profile
+            </span>
+            <span className="h-[1px] w-8 bg-muted-foreground/20" />
+          </div>
+          <div className="flex items-center gap-1.5 bg-background/50 dark:bg-zinc-900/50 px-2 py-0.5 rounded-full border border-border/40">
+            <div className="size-1 rounded-full bg-amber-500/40" />
+            <span className="text-[8px] font-mono text-muted-foreground/60 tabular-nums">
+              {bio.length}c
+            </span>
+          </div>
+        </div>
+        
+        <div className="relative group/bio">
+          {/* Detailed Display Panel Decoration */}
+          <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-amber-500/40 rounded-tl-lg z-20 pointer-events-none" />
+          <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-amber-500/40 rounded-br-lg z-20 pointer-events-none" />
+          
+          <div className="absolute inset-0 rounded-2xl bg-linear-to-b from-black/20 via-transparent to-black/5 pointer-events-none z-0" />
+          
+          {/* Micro-grid overlay inside the textarea area */}
+          <div className="absolute inset-2 pointer-events-none opacity-[0.03] dark:opacity-[0.07] z-0"
+            style={{ backgroundImage: 'radial-gradient(circle, currentColor 0.5px, transparent 0.5px)', backgroundSize: '6px 6px' }}
+          />
+
+          <Textarea
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            placeholder={t('profile.bioPlaceholder')}
+            maxLength={200}
+            rows={4}
+            className={cn(
+              "w-full resize-none transition-all duration-700 relative z-10",
+              "bg-black/10 dark:bg-black/40 border-white/5 rounded-2xl p-4.5 text-sm leading-relaxed",
+              "focus:bg-amber-500/[0.04] dark:focus:bg-amber-500/[0.08] focus:border-amber-500/30 focus:ring-0 shadow-2xl",
+              "placeholder:text-muted-foreground/20 placeholder:italic font-medium text-foreground/90"
+            )}
+          />
+          
+          {/* Interactive Aura */}
+          <div className="absolute inset-[-2px] rounded-[18px] bg-linear-to-br from-amber-500/20 via-orange-500/10 to-transparent opacity-0 group-focus-within/bio:opacity-100 blur-[2px] transition-all duration-700 pointer-events-none" />
+        </div>
+      </div>
     </Card>
   );
 }

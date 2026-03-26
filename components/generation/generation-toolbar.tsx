@@ -123,9 +123,9 @@ export function GenerationToolbar({
 
   // ─── Pill button helper ─────────────────────────────
   const pillCls =
-    'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-all cursor-pointer select-none whitespace-nowrap border';
-  const pillMuted = `${pillCls} border-foreground/10 text-foreground/80 hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10`;
-  const pillActive = `${pillCls} border-amber-300 dark:border-amber-500/50 bg-amber-500/20 text-amber-900 dark:text-amber-200`;
+    'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold transition-all duration-300 cursor-pointer select-none whitespace-nowrap border active:scale-95';
+  const pillMuted = `${pillCls} border-border/40 text-muted-foreground/80 hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:border-border/60`;
+  const pillActive = `${pillCls} border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400 shadow-[0_0_15px_-3px_rgba(245,158,11,0.2)]`;
 
   return (
     <div className="flex items-center gap-1 flex-wrap">
@@ -160,7 +160,7 @@ export function GenerationToolbar({
       )}
 
       {/* ── Separator ── */}
-      <div className="w-px h-4 bg-border/60 mx-1" />
+      <div className="w-px h-5 bg-border/20 mx-1.5" />
 
       {/* ── PDF (parser + upload) combined Popover ── */}
       <Popover>
@@ -480,10 +480,10 @@ function ModelSelectorPopover({
           <PopoverTrigger asChild>
             <button
               className={cn(
-                'inline-flex items-center justify-center size-7 rounded-full transition-all cursor-pointer select-none',
-                'ring-1 ring-border/60 hover:ring-border hover:bg-muted/60',
-                currentModelId &&
-                  'ring-amber-300 dark:ring-amber-700 bg-amber-50 dark:bg-amber-950/20',
+                'inline-flex items-center justify-center size-8 rounded-full transition-all duration-300 cursor-pointer select-none border active:scale-90',
+                currentModelId 
+                  ? 'border-amber-500/30 bg-amber-500/10 shadow-[0_0_12px_-2px_rgba(245,158,11,0.15)] ring-1 ring-amber-500/20'
+                  : 'border-border/40 hover:border-border/60 hover:bg-muted/60',
               )}
             >
               {currentProviderConfig?.icon ? (
@@ -508,16 +508,16 @@ function ModelSelectorPopover({
       <PopoverContent
         align="start"
         side="top"
-        sideOffset={-8}
-        className="w-72 p-0 flex flex-col max-h-[400px]"
+        sideOffset={12}
+        className="w-72 p-0 flex flex-col max-h-[400px] bg-background/80 backdrop-blur-xl border-border/40 shadow-2xl rounded-2xl overflow-hidden"
       >
         {/* Search */}
-        <div className="p-3 border-b sticky top-0 bg-popover z-10">
-          <div className="relative">
-            <Bot className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
+        <div className="p-3 border-b border-border/10 sticky top-0 bg-transparent z-10">
+          <div className="relative group">
+            <Bot className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground transition-colors group-focus-within:text-amber-500" />
             <input
               autoFocus
-              className="w-full bg-muted/50 border-none rounded-md py-1.5 pl-8 pr-3 text-xs focus:ring-1 focus:ring-amber-400 focus:outline-none"
+              className="w-full bg-black/5 dark:bg-white/5 border-border/10 rounded-xl py-2 pl-8 pr-3 text-xs focus:ring-2 focus:ring-amber-500/20 focus:outline-none transition-all"
               placeholder={t('settings.searchModels') || 'Search models...'}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -538,17 +538,17 @@ function ModelSelectorPopover({
             filteredProviders.map((provider) => (
               <div key={provider.id} className="mb-0.5">
                 {/* Provider Header */}
-                <div className="px-3 py-1.5 bg-muted/40 sticky top-0 flex items-center gap-1.5 border-y border-border/10">
+                <div className="px-3 py-2 bg-muted/20 sticky top-0 flex items-center gap-2 border-y border-border/10 backdrop-blur-md">
                   {provider.icon ? (
-                    <img src={provider.icon} alt="" className="size-3.5 rounded-sm" />
+                    <img src={provider.icon} alt="" className="size-4 rounded-sm shadow-sm" />
                   ) : (
-                    <Bot className="size-3.5 text-muted-foreground/60" />
+                    <Bot className="size-4 text-muted-foreground/60" />
                   )}
-                  <span className="text-[10px] font-bold tracking-wider uppercase text-muted-foreground/80">
+                  <span className="text-[10px] font-bold tracking-[0.1em] uppercase text-muted-foreground/80">
                     {provider.name}
                   </span>
                   {provider.isServerConfigured && (
-                    <span className="text-[8px] px-1 py-0 rounded border border-border/50 text-muted-foreground ml-auto bg-background/50">
+                    <span className="text-[8px] px-1.5 py-0 rounded-full border border-amber-500/20 text-amber-600/70 dark:text-amber-400/70 ml-auto bg-amber-500/5">
                       {t('settings.serverConfigured')}
                     </span>
                   )}

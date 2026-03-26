@@ -30,6 +30,7 @@ import { cn } from '@/lib/utils';
 import { useI18n } from '@/lib/hooks/use-i18n';
 import { useSettingsStore } from '@/lib/store/settings';
 import { useTTSPreview } from '@/lib/audio/use-tts-preview';
+import { LiquidMetalButton } from '@/components/liquid-metal-button';
 import { IMAGE_PROVIDERS } from '@/lib/media/image-providers';
 import { VIDEO_PROVIDERS } from '@/lib/media/video-providers';
 import { TTS_PROVIDERS, getTTSVoices } from '@/lib/audio/constants';
@@ -317,24 +318,26 @@ export function MediaPopover({ onSettingsOpen }: MediaPopoverProps) {
       <PopoverTrigger asChild>
         <button
           className={cn(
-            'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-all cursor-pointer select-none whitespace-nowrap border',
+            'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-300 cursor-pointer select-none whitespace-nowrap border active:scale-95',
             enabledCount > 0
-              ? 'bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 border-violet-200/60 dark:border-violet-700/50'
-              : 'text-muted-foreground/70 hover:text-foreground hover:bg-muted/60 border-border/50',
+              ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30 dark:border-amber-500/20 shadow-[0_0_15px_-3px_rgba(245,158,11,0.2)]'
+              : 'text-muted-foreground/60 hover:text-foreground hover:bg-muted/60 border-border/40 hover:border-border/60',
           )}
         >
-          <SlidersHorizontal className="size-3.5" />
-          {imageGenerationEnabled && <ImageIcon className="size-3.5" />}
-          {videoGenerationEnabled && <Video className="size-3.5" />}
-          {ttsEnabled && <Volume2 className="size-3.5" />}
-          {asrEnabled && <Mic className="size-3.5" />}
+          <SlidersHorizontal className={cn("size-3.5 transition-transform duration-500", open && "rotate-180")} />
+          <div className="flex items-center -space-x-1.5 ml-0.5">
+            {imageGenerationEnabled && <ImageIcon className="size-3 border-2 border-background rounded-full bg-background" />}
+            {videoGenerationEnabled && <Video className="size-3 border-2 border-background rounded-full bg-background" />}
+            {ttsEnabled && <Volume2 className="size-3 border-2 border-background rounded-full bg-background" />}
+            {asrEnabled && <Mic className="size-3 border-2 border-background rounded-full bg-background" />}
+          </div>
         </button>
       </PopoverTrigger>
 
-      <PopoverContent align="start" side="bottom" avoidCollisions={false} className="w-80 p-0">
-        {/* ── Tab bar (segmented control) ── */}
-        <div className="p-2 pb-0">
-          <div className="flex gap-0.5 p-0.5 bg-muted/60 rounded-lg">
+      <PopoverContent align="start" side="bottom" sideOffset={8} avoidCollisions={false} className="w-[340px] p-0 overflow-hidden border-border/40 bg-background/80 backdrop-blur-xl shadow-2xl rounded-2xl">
+        {/* ── Tab bar (premium glass control) ── */}
+        <div className="p-3 bg-gradient-to-b from-muted/30 to-transparent">
+          <div className="flex gap-1 p-1 bg-black/5 dark:bg-white/5 rounded-xl border border-border/10">
             {TABS.map((tab) => {
               const isActive = activeTab === tab.id;
               const isEnabled = enabledMap[tab.id];
@@ -344,16 +347,22 @@ export function MediaPopover({ onSettingsOpen }: MediaPopoverProps) {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    'flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md text-[11px] font-medium transition-all relative',
+                    'flex-1 flex flex-col items-center justify-center gap-1 py-2 rounded-lg text-[10px] font-semibold transition-all relative overflow-hidden',
                     isActive
-                      ? 'bg-background text-foreground shadow-sm'
-                      : 'text-muted-foreground hover:text-foreground/80',
+                      ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 shadow-[inset_0_0_10px_rgba(245,158,11,0.05)] border border-amber-500/20'
+                      : 'text-muted-foreground/60 hover:text-foreground/80 hover:bg-black/5 dark:hover:bg-white/5 border border-transparent',
                   )}
                 >
-                  <Icon className="size-3.5" />
-                  <span className="hidden sm:inline">{tab.label}</span>
-                  {isEnabled && !isActive && (
-                    <span className="absolute top-1 right-1 size-1.5 rounded-full bg-violet-500" />
+                  <Icon className={cn("size-4 transition-transform duration-300", isActive && "scale-110")} />
+                  <span className="opacity-80 tracking-tight uppercase text-[9px]">{tab.label}</span>
+                  {isEnabled && (
+                    <span className={cn(
+                      "absolute top-1 right-1 size-1.5 rounded-full transition-all duration-300",
+                      isActive ? "bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]" : "bg-muted-foreground/30"
+                    )} />
+                  )}
+                  {isActive && (
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500/50 blur-[2px]" />
                   )}
                 </button>
               );
@@ -409,42 +418,37 @@ export function MediaPopover({ onSettingsOpen }: MediaPopoverProps) {
               onToggle={setTTSEnabled}
             >
               {/* Provider + Voice grouped select + preview */}
-              <div className="flex items-center gap-2">
-                <div className="flex-1 min-w-0">
-                  <GroupedSelect
-                    groups={ttsGroups}
-                    selectedGroupId={ttsProviderId}
-                    selectedItemId={ttsVoice}
-                    onSelect={(gid, iid) => {
-                      if (gid !== ttsProviderId) {
-                        setTTSProvider(gid as TTSProviderId);
-                      }
-                      setTTSVoice(iid);
-                    }}
+              <div className="space-y-3">
+                <GroupedSelect
+                  groups={ttsGroups}
+                  selectedGroupId={ttsProviderId}
+                  selectedItemId={ttsVoice}
+                  onSelect={(gid, iid) => {
+                    if (gid !== ttsProviderId) {
+                      setTTSProvider(gid as TTSProviderId);
+                    }
+                    setTTSVoice(iid);
+                  }}
+                />
+                
+                <div className="flex justify-center">
+                  <LiquidMetalButton 
+                    label={previewing ? t('toolbar.ttsPreviewing') : t('toolbar.ttsPreview')}
+                    onClick={handlePreview}
+                    width={180}
                   />
                 </div>
-                <button
-                  onClick={handlePreview}
-                  className={cn(
-                    'inline-flex items-center gap-1 rounded-md px-2 py-1.5 text-[11px] font-medium transition-all shrink-0',
-                    previewing
-                      ? 'bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300'
-                      : 'bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground',
-                  )}
-                >
-                  {previewing ? (
-                    <Loader2 className="size-3 animate-spin" />
-                  ) : (
-                    <Play className="size-3" />
-                  )}
-                  {previewing ? t('toolbar.ttsPreviewing') : t('toolbar.ttsPreview')}
-                </button>
               </div>
               {ttsSpeedRange && (
-                <div className="flex items-center gap-2.5 mt-2.5">
-                  <span className="text-[10px] text-muted-foreground/60 shrink-0">
-                    {t('media.speed')}
-                  </span>
+                <div className="bg-black/5 dark:bg-white/5 rounded-xl p-3 border border-border/10 space-y-1.5 mt-3">
+                  <div className="flex items-center justify-between px-0.5">
+                    <span className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground/60">
+                      {t('media.speed')}
+                    </span>
+                    <span className="text-[10px] font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded">
+                      {ttsSpeed.toFixed(1)}x
+                    </span>
+                  </div>
                   <Slider
                     value={[ttsSpeed]}
                     onValueChange={(value) => setTTSSpeed(value[0])}
@@ -453,9 +457,6 @@ export function MediaPopover({ onSettingsOpen }: MediaPopoverProps) {
                     step={0.1}
                     className="flex-1"
                   />
-                  <span className="text-[10px] text-muted-foreground tabular-nums w-7 text-right">
-                    {ttsSpeed.toFixed(1)}x
-                  </span>
                 </div>
               )}
             </TabPanel>
@@ -482,16 +483,16 @@ export function MediaPopover({ onSettingsOpen }: MediaPopoverProps) {
         </div>
 
         {/* ── Footer ── */}
-        <div className="border-t border-border/40">
+        <div className="border-t border-border/10 bg-muted/20">
           <button
             onClick={() => {
               setOpen(false);
               onSettingsOpen(activeTab);
             }}
-            className="w-full flex items-center justify-between px-3.5 py-2.5 text-[11px] text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+            className="w-full flex items-center justify-between px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-500/5 transition-all group"
           >
             <span>{t('toolbar.advancedSettings')}</span>
-            <ChevronRight className="size-3" />
+            <ChevronRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
           </button>
         </div>
       </PopoverContent>
@@ -514,29 +515,37 @@ function TabPanel({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="space-y-2.5">
-      <div className="flex items-center gap-2.5">
-        <Icon
-          className={cn(
-            'size-4 shrink-0 transition-colors',
-            enabled ? 'text-violet-600 dark:text-violet-400' : 'text-muted-foreground/50',
-          )}
-        />
-        <span
-          className={cn(
-            'flex-1 text-sm font-medium transition-colors',
-            !enabled && 'text-muted-foreground',
-          )}
-        >
-          {label}
-        </span>
+    <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+      <div className="flex items-center justify-between gap-3 px-1">
+        <div className="flex items-center gap-2.5">
+          <div className={cn(
+            'size-8 rounded-xl flex items-center justify-center transition-all duration-500',
+            enabled 
+              ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.1)] border border-amber-500/20' 
+              : 'bg-muted/50 text-muted-foreground/40 border border-transparent'
+          )}>
+            <Icon className="size-4.5" />
+          </div>
+          <span
+            className={cn(
+              'text-[15px] font-bold tracking-tight transition-colors',
+              enabled ? 'text-foreground' : 'text-muted-foreground/60',
+            )}
+          >
+            {label}
+          </span>
+        </div>
         <Switch
           checked={enabled}
           onCheckedChange={onToggle}
-          className="scale-[0.85] origin-right"
+          className="data-[state=checked]:bg-amber-600 dark:data-[state=checked]:bg-amber-500"
         />
       </div>
-      {enabled && children}
+      {enabled && (
+        <div className="pt-1">
+          {children}
+        </div>
+      )}
     </div>
   );
 }
@@ -578,14 +587,14 @@ function GroupedSelect({
         onSelect(v.slice(0, sep), v.slice(sep + 2));
       }}
     >
-      <SelectTrigger className="h-8 w-full rounded-lg border-border/40 bg-background/80 hover:bg-muted/40 shadow-none text-xs focus:ring-1 focus:ring-ring/30 px-2.5">
-        <span className="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
+      <SelectTrigger className="h-10 w-full rounded-xl border-border/20 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 shadow-none text-xs focus:ring-2 focus:ring-amber-500/20 px-3 transition-all duration-300">
+        <span className="flex items-center gap-2.5 min-w-0 flex-1 overflow-hidden">
           {selectedGroup?.groupIcon && (
-            <img src={selectedGroup.groupIcon} alt="" className="size-4 rounded-sm shrink-0" />
+            <img src={selectedGroup.groupIcon} alt="" className="size-4.5 rounded-md shrink-0 shadow-sm" />
           )}
-          <span className="font-medium truncate">{selectedGroup?.groupName}</span>
-          <span className="text-muted-foreground/40">/</span>
-          <span className="text-muted-foreground truncate">
+          <span className="font-semibold truncate text-[13px]">{selectedGroup?.groupName}</span>
+          <span className="text-muted-foreground/30 font-light translate-y-[0.5px]">/</span>
+          <span className="text-muted-foreground font-medium truncate italic translate-y-[0.5px]">
             <SelectValue />
           </span>
         </span>

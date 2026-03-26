@@ -81,43 +81,32 @@ export function AgentBar() {
 
   /* ── Shared avatar row — always visible on the right side ── */
   const avatarRow = (
-    <div className="flex items-center gap-1.5 shrink-0">
+    <div className="flex items-center gap-2 shrink-0">
       {/* Teacher avatar — always shown */}
       {teacherAgent && (
-        <div className="size-8 rounded-full overflow-hidden ring-2 ring-blue-400/40 dark:ring-blue-500/30 shrink-0">
+        <div className="size-8 rounded-full overflow-hidden ring-2 ring-amber-500/30 dark:ring-amber-400/20 shrink-0 shadow-[0_0_10px_rgba(245,158,11,0.2)]">
           <img
             src={teacherAgent.avatar}
             alt={getAgentName(teacherAgent)}
-            className="size-full object-cover"
+            className="size-full object-cover scale-105"
           />
         </div>
       )}
 
       {agentMode === 'auto' ? (
-        <>
-          {/* In auto mode: show assistant avatar + shuffle indicator */}
-          <div className="flex -space-x-2">
-            {agents.find((a) => a.role === 'assistant') && (
-              <div className="size-6 rounded-full overflow-hidden ring-[1.5px] ring-background">
-                <img
-                  src={agents.find((a) => a.role === 'assistant')!.avatar}
-                  alt=""
-                  className="size-full object-cover"
-                />
-              </div>
-            )}
-          </div>
-          <Shuffle className="size-4 text-violet-400 dark:text-violet-500" />
-        </>
+        <div className="flex items-center gap-1.5 bg-black/5 dark:bg-white/5 px-2 py-1 rounded-full border border-border/10">
+          <Sparkles className="size-3 text-amber-500 animate-pulse" />
+          <Shuffle className="size-3 text-amber-500/60" />
+        </div>
       ) : (
         <>
           {/* In preset mode: show selected non-teacher agents */}
           {nonTeacherSelected.length > 0 && (
-            <div className="flex -space-x-2">
+            <div className="flex -space-x-2.5">
               {nonTeacherSelected.slice(0, 4).map((agent) => (
                 <div
                   key={agent.id}
-                  className="size-6 rounded-full overflow-hidden ring-[1.5px] ring-background"
+                  className="size-7 rounded-full overflow-hidden ring-2 ring-background shadow-sm transition-transform hover:scale-110 hover:z-10"
                 >
                   <img
                     src={agent.avatar}
@@ -127,7 +116,7 @@ export function AgentBar() {
                 </div>
               ))}
               {nonTeacherSelected.length > 4 && (
-                <div className="size-6 rounded-full bg-muted ring-[1.5px] ring-background flex items-center justify-center">
+                <div className="size-7 rounded-full bg-muted ring-2 ring-background flex items-center justify-center shadow-sm">
                   <span className="text-[9px] font-bold text-muted-foreground">
                     +{nonTeacherSelected.length - 4}
                   </span>
@@ -147,25 +136,26 @@ export function AgentBar() {
         <TooltipTrigger asChild>
           <button
             className={cn(
-              'group flex items-center gap-2 cursor-pointer rounded-full px-2.5 py-2 transition-all w-full',
-              'border border-foreground/30 dark:border-white/30 text-foreground/80 hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10',
+              'group flex items-center gap-2.5 cursor-pointer rounded-full p-1.5 pr-3.5 transition-all w-full active:scale-95 duration-500',
+              open
+                 ? 'bg-amber-500/10 border-amber-500/30 dark:border-amber-500/20 text-foreground ring-4 ring-amber-500/5'
+                 : 'border-border/40 hover:border-border/60 text-foreground/80 hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5',
+              'border'
             )}
             onClick={() => setOpen(!open)}
           >
-            {/* Left side — text changes based on open/close */}
-            <span className="text-xs text-muted-foreground/60 group-hover:text-muted-foreground transition-colors hidden sm:block font-medium flex-1 text-left">
+            {/* Left side — avatars (swapped for balance) */}
+            {avatarRow}
+
+            {/* Middle side — label */}
+            <span className="text-xs group-hover:text-foreground transition-colors hidden sm:block font-bold tracking-tight flex-1 text-left ml-1">
               {open ? t('agentBar.expandedTitle') : t('agentBar.readyToLearn')}
             </span>
 
-            {/* Right side — avatars always visible */}
-            {avatarRow}
-
             {/* Chevron */}
-            {open ? (
-              <ChevronUp className="size-3 text-muted-foreground/40 group-hover:text-muted-foreground/70 transition-colors" />
-            ) : (
-              <ChevronDown className="size-3 text-muted-foreground/40 group-hover:text-muted-foreground/70 transition-colors" />
-            )}
+            <div className={cn("transition-transform duration-500", open && "rotate-180")}>
+              <ChevronDown className="size-4 text-muted-foreground/60 transition-colors" />
+            </div>
           </button>
         </TooltipTrigger>
         {!open && (
@@ -179,43 +169,49 @@ export function AgentBar() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -4, scale: 0.97 }}
+            initial={{ opacity: 0, y: -12, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -4, scale: 0.97 }}
-            transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-            className="absolute right-0 top-full mt-1 z-50 w-80"
+            exit={{ opacity: 0, y: -8, scale: 0.95 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute right-0 top-full mt-2.5 z-50 w-[340px]"
           >
-            <div className="rounded-2xl bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border border-black/10 dark:border-white/30 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_24px_-4px_rgba(0,0,0,0.4)] px-2.5 py-2">
-              {/* Mode tabs — full width, 50/50 */}
-              <div className="flex rounded-lg border bg-muted/30 p-0.5 mb-2.5">
+            <div className="rounded-3xl bg-background/80 backdrop-blur-xl border border-border/40 shadow-2xl px-1.5 py-1.5 overflow-hidden">
+              {/* Premium Tab switcher */}
+              <div className="bg-black/5 dark:bg-white/5 rounded-2xl p-1 mb-2 border border-border/10 flex gap-1">
                 <button
                   onClick={() => handleModeChange('preset')}
                   className={cn(
-                    'flex-1 py-1.5 text-xs font-medium rounded-md transition-all text-center',
+                    'flex-1 py-2.5 text-[11px] font-bold uppercase tracking-widest rounded-xl transition-all duration-300 relative overflow-hidden',
                     agentMode === 'preset'
-                      ? 'bg-background shadow-sm text-foreground'
-                      : 'text-muted-foreground hover:text-foreground',
+                      ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shadow-sm'
+                      : 'text-muted-foreground/60 hover:text-foreground/80 hover:bg-black/5 dark:hover:bg-white/5 border border-transparent',
                   )}
                 >
                   {t('settings.agentModePreset')}
+                  {agentMode === 'preset' && (
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500/50 shadow-[0_0_10px_rgba(245,158,11,0.5)]" />
+                  )}
                 </button>
                 <button
                   onClick={() => handleModeChange('auto')}
                   className={cn(
-                    'flex-1 py-1.5 text-xs font-medium rounded-md transition-all text-center flex items-center justify-center gap-1',
+                    'flex-1 py-2.5 text-[11px] font-bold uppercase tracking-widest rounded-xl transition-all duration-300 flex items-center justify-center gap-2 relative overflow-hidden',
                     agentMode === 'auto'
-                      ? 'bg-background shadow-sm text-foreground'
-                      : 'text-muted-foreground hover:text-foreground',
+                      ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shadow-sm'
+                      : 'text-muted-foreground/60 hover:text-foreground/80 hover:bg-black/5 dark:hover:bg-white/5 border border-transparent',
                   )}
                 >
-                  <Sparkles className="h-3 w-3" />
+                  <Sparkles className={cn("size-3.5", agentMode === 'auto' ? "text-amber-500 animate-pulse" : "text-muted-foreground/40")} />
                   {t('settings.agentModeAuto')}
+                  {agentMode === 'auto' && (
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500/50 shadow-[0_0_10px_rgba(245,158,11,0.5)]" />
+                  )}
                 </button>
               </div>
 
               {agentMode === 'preset' ? (
-                /* Agent list — teacher is always selected, no need to show */
-                <div className="max-h-80 overflow-y-auto pr-1 -mx-1 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-foreground/30 [&::-webkit-scrollbar-thumb]:rounded-full">
+                /* Agent list — higher contrast card-like design */
+                <div className="max-h-[420px] overflow-y-auto px-1 group/list scrollbar-hide">
                   {agents
                     .filter((a) => a.role !== 'teacher')
                     .map((agent) => {
@@ -225,15 +221,29 @@ export function AgentBar() {
                           key={agent.id}
                           onClick={() => toggleAgent(agent.id)}
                           className={cn(
-                            'w-full flex items-center gap-3 px-3 py-2 text-left transition-colors cursor-pointer rounded-lg',
-                            isSelected ? 'bg-primary/5' : 'hover:bg-muted/50',
+                            'w-full flex items-center gap-3.5 px-3 py-3 text-left transition-all duration-300 cursor-pointer rounded-2xl mb-1.5 group/item active:scale-[0.98]',
+                            isSelected 
+                               ? 'bg-black/5 dark:bg-white/5 border border-border/10 ring-1 ring-white/5' 
+                               : 'hover:bg-muted/10 border border-transparent',
                           )}
                         >
-                          <Checkbox checked={isSelected} className="pointer-events-none" />
+                          <div className="relative">
+                            <Checkbox 
+                                checked={isSelected} 
+                                className="pointer-events-none data-[state=checked]:bg-amber-500 data-[state=checked]:border-amber-500 shadow-sm"
+                            />
+                            {isSelected && (
+                                <div className="absolute inset-0 bg-amber-500/20 blur-[8px] rounded animate-pulse" />
+                            )}
+                          </div>
+                          
                           <div
-                            className="size-8 rounded-full overflow-hidden shrink-0 ring-1 ring-border/40"
+                            className={cn(
+                                "size-10 rounded-2xl overflow-hidden shrink-0 transition-all duration-500 border border-border/20 shadow-sm",
+                                isSelected ? "scale-105" : "grayscale-[40%] opacity-80 group-hover/item:grayscale-0 group-hover/item:opacity-100"
+                            )}
                             style={{
-                              boxShadow: isSelected ? `0 0 0 2px ${agent.color}30` : undefined,
+                              boxShadow: isSelected ? `0 8px 16px -4px ${agent.color}40, 0 0 0 2px ${agent.color}20` : undefined,
                             }}
                           >
                             <img
@@ -243,9 +253,14 @@ export function AgentBar() {
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="text-sm font-medium flex items-center gap-1.5">
-                              {getAgentName(agent)}
-                              <span className="text-[10px] text-muted-foreground/50 font-normal">
+                            <div className="flex items-center justify-between gap-1.5">
+                              <span className={cn(
+                                  "text-[13px] font-bold tracking-tight transition-colors",
+                                  isSelected ? "text-foreground" : "text-muted-foreground group-hover/item:text-foreground"
+                              )}>
+                                {getAgentName(agent)}
+                              </span>
+                              <span className="text-[9px] font-black uppercase tracking-[0.1em] text-muted-foreground/30 px-1.5 py-0.5 rounded-full border border-border/10">
                                 {getAgentRole(agent)}
                               </span>
                             </div>
@@ -253,7 +268,10 @@ export function AgentBar() {
                               const descKey = `settings.agentDescriptions.${agent.id}`;
                               const desc = t(descKey);
                               return desc !== descKey ? (
-                                <p className="text-xs text-muted-foreground/60 mt-0.5 leading-relaxed">
+                                <p className={cn(
+                                    "text-[11px] leading-relaxed mt-1 line-clamp-2 transition-colors",
+                                    isSelected ? "text-muted-foreground" : "text-muted-foreground/50"
+                                )}>
                                   {desc}
                                 </p>
                               ) : null;
@@ -264,36 +282,49 @@ export function AgentBar() {
                     })}
                 </div>
               ) : (
-                /* Auto-generate mode */
-                <div className="flex flex-col items-center pt-6 pb-2 gap-8">
-                  {/* Shuffle icon with ambient animation */}
+                <div className="flex flex-col items-center pt-10 pb-6 gap-8 animate-in fade-in zoom-in-95 duration-500">
+                  {/* Shuffle icon with high-end ambient animation */}
                   <div className="relative flex items-center justify-center">
-                    {/* Ping ripple */}
-                    <div className="absolute size-12 rounded-full bg-violet-400/10 dark:bg-violet-400/15 animate-ping animation-duration-[3s]" />
-                    {/* Soft glow ring */}
-                    <div className="absolute size-14 rounded-full bg-violet-400/5 dark:bg-violet-400/10 animate-pulse animation-duration-[2.5s]" />
-                    {/* Icon */}
-                    <Shuffle className="relative size-7 text-violet-400 dark:text-violet-500" />
+                    {/* Multi-layered ripples */}
+                    <div className="absolute size-16 rounded-full bg-amber-500/10 animate-ping animation-duration-[3s]" />
+                    <div className="absolute size-20 rounded-full bg-amber-500/5 animate-pulse animation-duration-[2.5s] delay-300" />
+                    <div className="absolute size-24 rounded-full border border-amber-500/10 animate-pulse animation-duration-[4s]" />
+                    
+                    {/* Central Icon with glow */}
+                    <div className="relative size-14 rounded-3xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20 shadow-[0_0_20px_rgba(245,158,11,0.1)]">
+                      <Shuffle className="size-6 text-amber-600 dark:text-amber-400" />
+                    </div>
                   </div>
-                  <p className="text-xs text-muted-foreground text-center">
-                    {t('settings.agentModeAutoDesc')}
-                  </p>
+                  <div className="text-center px-4">
+                    <p className="text-[13px] font-bold text-foreground mb-1">
+                      Dynamic Orchestration
+                    </p>
+                    <p className="text-[11px] text-muted-foreground/60 leading-relaxed max-w-[200px] mx-auto">
+                      {t('settings.agentModeAutoDesc')}
+                    </p>
+                  </div>
                 </div>
               )}
 
-              {/* Max turns — always visible */}
-              <div className="pt-2.5 mt-2.5 border-t flex items-center gap-3">
-                <span className="text-xs text-muted-foreground shrink-0">
-                  {t('settings.maxTurns')}
-                </span>
-                <Input
-                  type="number"
-                  min="1"
-                  max="20"
-                  value={maxTurns}
-                  onChange={(e) => setMaxTurns(e.target.value)}
-                  className="w-16 h-7 text-xs"
-                />
+              {/* Max turns — premium footer control */}
+              <div className="mt-1 bg-muted/20 rounded-2xl p-3 flex items-center justify-between border-t border-border/10">
+                <div className="flex items-center gap-2">
+                  <div className="size-1.5 rounded-full bg-amber-500/50" />
+                  <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
+                    {t('settings.maxTurns')}
+                  </span>
+                </div>
+                <div className="relative group/input">
+                  <Input
+                    type="number"
+                    min="1"
+                    max="20"
+                    value={maxTurns}
+                    onChange={(e) => setMaxTurns(e.target.value)}
+                    className="w-20 h-9 rounded-xl border-border/20 bg-background/50 text-center font-bold text-xs focus:ring-2 focus:ring-amber-500/20 transition-all group-hover/input:border-border/40"
+                  />
+                  <div className="absolute -right-1 -top-1 size-3 bg-amber-500/10 rounded-full blur-[4px] opacity-0 group-hover/input:opacity-100 transition-opacity" />
+                </div>
               </div>
             </div>
           </motion.div>

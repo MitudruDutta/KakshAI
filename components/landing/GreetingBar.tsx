@@ -107,11 +107,11 @@ export function GreetingBar() {
           onClick={() => setOpen(true)}
         >
           <div className="shrink-0 relative">
-            <div className="size-8 rounded-full overflow-hidden ring-[1.5px] ring-foreground/20 group-hover:ring-amber-500/60 transition-all duration-300">
-              <img src={avatar} alt="" className="size-full object-cover" />
+            <div className="size-8 rounded-full overflow-hidden ring-[2px] ring-amber-500/40 group-hover:ring-amber-500 shadow-lg transition-all duration-500">
+              <img src={avatar} alt="" className="size-full object-cover group-hover:scale-110 transition-transform duration-700" />
             </div>
-            <div className="absolute -bottom-0.5 -right-0.5 size-3.5 rounded-full bg-white dark:bg-slate-800 border border-border/40 flex items-center justify-center opacity-60 group-hover:opacity-100 transition-opacity">
-              <Pencil className="size-[7px] text-foreground/70" />
+            <div className="absolute -bottom-1 -right-1 size-3.5 rounded-full bg-linear-to-br from-amber-400 to-orange-600 border border-white/40 flex items-center justify-center shadow-xl opacity-0 group-hover:opacity-100 transition-opacity">
+              <Pencil className="size-[6px] text-white" />
             </div>
           </div>
           <div className="flex-1 min-w-0">
@@ -147,7 +147,9 @@ export function GreetingBar() {
             transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
             className="absolute left-4 top-3.5 z-50 w-64"
           >
-            <div className="rounded-2xl bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm ring-1 ring-black/[0.04] dark:ring-white/[0.06] shadow-[0_1px_8px_-2px_rgba(0,0,0,0.06)] dark:shadow-[0_1px_8px_-2px_rgba(0,0,0,0.3)] px-2.5 py-2">
+            <div className="rounded-2xl bg-white/10 dark:bg-black/60 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)] px-3 py-2.5 relative overflow-hidden group/panel">
+              {/* Internal Sheen */}
+              <div className="absolute inset-0 pointer-events-none bg-linear-to-tr from-transparent via-white/5 to-transparent -translate-x-full group-hover/panel:translate-x-full transition-transform duration-1000" />
               {/* ── Row: avatar + name ── */}
               <div
                 className="flex items-center gap-2.5 cursor-pointer transition-all duration-200"
@@ -165,7 +167,7 @@ export function GreetingBar() {
                     setAvatarPickerOpen(!avatarPickerOpen);
                   }}
                 >
-                  <div className="size-8 rounded-full overflow-hidden ring-[1.5px] ring-violet-300/70 dark:ring-violet-500/40 transition-all duration-300">
+                  <div className="size-8 rounded-full overflow-hidden ring-[1.5px] ring-amber-500/70 dark:ring-amber-500/40 transition-all duration-300">
                     <img src={avatar} alt="" className="size-full object-cover" />
                   </div>
                   <motion.div
@@ -203,7 +205,7 @@ export function GreetingBar() {
                       />
                       <button
                         onClick={commitName}
-                        className="shrink-0 size-5 rounded flex items-center justify-center text-violet-500 hover:bg-violet-100 dark:hover:bg-violet-900/30"
+                        className="shrink-0 size-5 rounded flex items-center justify-center text-amber-500 hover:bg-amber-500 dark:hover:bg-amber-500/30"
                       >
                         <Check className="size-3" />
                       </button>
@@ -255,7 +257,7 @@ export function GreetingBar() {
                               'size-7 rounded-full overflow-hidden bg-gray-50 dark:bg-gray-800 cursor-pointer transition-all duration-150',
                               'hover:scale-110 active:scale-95',
                               avatar === url
-                                ? 'ring-2 ring-violet-400 dark:ring-violet-500 ring-offset-0'
+                                ? 'ring-2 ring-amber-500 dark:ring-amber-500 ring-offset-0'
                                 : 'hover:ring-1 hover:ring-muted-foreground/30',
                             )}
                           >
@@ -267,7 +269,7 @@ export function GreetingBar() {
                             'size-7 rounded-full flex items-center justify-center cursor-pointer transition-all duration-150 border border-dashed',
                             'hover:scale-110 active:scale-95',
                             isCustomAvatar(avatar)
-                              ? 'ring-2 ring-violet-400 dark:ring-violet-500 ring-offset-0 border-violet-300 dark:border-violet-600 bg-violet-50 dark:bg-violet-900/30'
+                              ? 'ring-2 ring-amber-500 dark:ring-amber-500 ring-offset-0 border-amber-500 dark:border-amber-500 bg-amber-500 dark:bg-amber-500/30'
                               : 'border-muted-foreground/30 text-muted-foreground/50 hover:border-muted-foreground/50',
                           )}
                           onClick={() => avatarInputRef.current?.click()}

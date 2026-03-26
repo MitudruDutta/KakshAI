@@ -91,7 +91,7 @@ const MessageBubble = memo(function MessageBubble({
           className={cn(
             'w-1.5 h-1.5 rounded-full animate-pulse',
             isTeacher
-              ? 'bg-purple-400/70 dark:bg-purple-500/70'
+              ? 'bg-amber-400/70 dark:bg-amber-500/70'
               : 'bg-indigo-400/70 dark:bg-indigo-500/70',
           )}
         />
@@ -99,7 +99,7 @@ const MessageBubble = memo(function MessageBubble({
           className={cn(
             'w-1.5 h-1.5 rounded-full animate-pulse',
             isTeacher
-              ? 'bg-purple-400/70 dark:bg-purple-500/70'
+              ? 'bg-amber-400/70 dark:bg-amber-500/70'
               : 'bg-indigo-400/70 dark:bg-indigo-500/70',
           )}
           style={{ animationDelay: '200ms' }}
@@ -108,7 +108,7 @@ const MessageBubble = memo(function MessageBubble({
           className={cn(
             'w-1.5 h-1.5 rounded-full animate-pulse',
             isTeacher
-              ? 'bg-purple-400/70 dark:bg-purple-500/70'
+              ? 'bg-amber-400/70 dark:bg-amber-500/70'
               : 'bg-indigo-400/70 dark:bg-indigo-500/70',
           )}
           style={{ animationDelay: '400ms' }}
@@ -129,7 +129,7 @@ const MessageBubble = memo(function MessageBubble({
       className={cn(
         'inline-block px-2.5 py-1.5 rounded-xl text-[12px] leading-relaxed max-w-full text-left transition-shadow duration-300',
         isUser
-          ? 'bg-linear-to-br from-purple-600 to-purple-700 dark:from-purple-500 dark:to-purple-600 text-white rounded-tr-sm shadow-sm shadow-purple-300/30 dark:shadow-purple-900/50 ring-1 ring-purple-500/20'
+          ? 'bg-linear-to-br from-amber-600 to-amber-700 dark:from-amber-500 dark:to-amber-600 text-white rounded-tr-sm shadow-sm shadow-amber-300/30 dark:shadow-amber-900/50 ring-1 ring-amber-500/20'
           : isTeacher
             ? 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-100 dark:border-gray-700 rounded-tl-sm shadow-sm'
             : 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-900 dark:text-indigo-200 border border-indigo-100/50 dark:border-indigo-800/50 rounded-tl-sm',
@@ -296,7 +296,7 @@ export function ChatSessionComponent({
                 'flex gap-2 px-1.5 py-1 rounded-lg border-l-[3px] border-l-transparent transition-[background-color,border-color] duration-300',
                 isUser && 'flex-row-reverse',
                 isActiveBubble &&
-                  'border-l-violet-500 dark:border-l-violet-400 bg-violet-50/50 dark:bg-violet-900/20',
+                  'border-l-amber-500 dark:border-l-amber-500 bg-amber-500/50 dark:bg-amber-500/20',
               )}
             >
               {/* Mini Avatar */}
@@ -310,9 +310,9 @@ export function ChatSessionComponent({
                   className={cn(
                     'text-[9px] font-bold uppercase tracking-wider block mb-0.5',
                     isUser
-                      ? 'text-purple-500 dark:text-purple-400'
+                      ? 'text-amber-500 dark:text-amber-400'
                       : isTeacher
-                        ? 'text-purple-400 dark:text-purple-300'
+                        ? 'text-amber-400 dark:text-amber-300'
                         : 'text-indigo-400 dark:text-indigo-300',
                   )}
                 >

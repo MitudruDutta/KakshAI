@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowUp, Loader2, X, Link2 } from 'lucide-react';
+import { LiquidMetalButton } from '@/components/liquid-metal-button';
 import { useI18n } from '@/lib/hooks/use-i18n';
 import { cn } from '@/lib/utils';
 import { GenerationToolbar } from '@/components/generation/generation-toolbar';
@@ -99,14 +100,20 @@ export function HeroSection({
               '0 8px 32px rgba(234,179,8,0.18), 0 2px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -1px 0 rgba(234,179,8,0.1)',
           }}
         >
-          {/* Yellow inner highlight */}
+          {/* ── Hyper-Glass Layering ── */}
           <div
-            className="absolute inset-0 rounded-2xl pointer-events-none"
+            className="absolute inset-0 rounded-2xl pointer-events-none overflow-hidden"
             style={{
-              background:
-                'radial-gradient(ellipse 70% 45% at 50% 0%, rgba(254,240,138,0.3) 0%, transparent 70%)',
+              background: 'radial-gradient(ellipse at 50% -20%, rgba(254,240,138,0.15) 0%, transparent 80%)',
             }}
-          />
+          >
+            {/* Moving Light Highlight */}
+            <motion.div 
+              className="absolute inset-[-100%] bg-linear-to-tr from-transparent via-white/[0.03] to-transparent rotate-45"
+              animate={{ x: ['-50%', '150%'] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
+            />
+          </div>
 
           {/* ── Greeting + Profile + Agents ── */}
           <div className="relative z-20 flex items-start justify-between">
@@ -156,28 +163,23 @@ export function HeroSection({
             />
 
             {/* Send button */}
-            <button
-              onClick={onGenerate}
-              disabled={!canGenerate || scraping}
-              className={cn(
-                'shrink-0 h-8 rounded-lg flex items-center justify-center gap-1.5 transition-all px-3',
-                canGenerate && !scraping
-                  ? 'bg-amber-500 text-black hover:bg-amber-400 font-semibold shadow-md shadow-amber-500/20 cursor-pointer'
-                  : 'bg-black/10 dark:bg-black/30 text-foreground/50 cursor-not-allowed',
-              )}
-            >
-              {scraping ? (
-                <>
-                  <Loader2 className="size-3.5 animate-spin" />
-                  <span className="text-xs font-medium">{t('upload.scraping')}</span>
-                </>
-              ) : (
-                <>
-                  <span className="text-xs font-medium">{t('toolbar.enterClassroom')}</span>
-                  <ArrowUp className="size-3.5" />
-                </>
-              )}
-            </button>
+            {scraping ? (
+              <button
+                disabled
+                className="shrink-0 h-8 rounded-lg flex items-center justify-center gap-1.5 px-3 bg-black/10 dark:bg-black/30 text-foreground/50 cursor-not-allowed"
+              >
+                <Loader2 className="size-3.5 animate-spin" />
+                <span className="text-xs font-medium">{t('upload.scraping')}</span>
+              </button>
+            ) : (
+              <div className={cn('mt-2', !canGenerate && 'opacity-50 pointer-events-none')}>
+                <LiquidMetalButton
+                  label={t('toolbar.enterClassroom')}
+                  onClick={onGenerate}
+                  width={120}
+                />
+              </div>
+            )}
           </div>
         </div>
       </motion.div>
