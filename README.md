@@ -1,399 +1,458 @@
 # KakshAI
 
-An AI-powered interactive classroom generation platform that transforms educational content into immersive, multi-agent learning experiences.
+<p align="center">
+  <img src="public/kakshailogo.png" alt="KakshAI logo" width="128" />
+</p>
+
+<p align="center">
+  <strong>Voice-first AI classroom for turning topics, PDFs, and URLs into live lessons.</strong>
+</p>
+
+<p align="center">
+  KakshAI transforms raw learning input into a generated classroom session with slides, voice teaching,
+  live chat, web search, whiteboard support, quizzes, and export tools.
+</p>
+
+<p align="center">
+  <img alt="Next.js" src="https://img.shields.io/badge/Next.js-16-black?logo=next.js" />
+  <img alt="React" src="https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white" />
+  <img alt="License" src="https://img.shields.io/badge/License-MIT-green.svg" />
+</p>
 
 ## Overview
 
-KakshAI (कक्षा AI, where "कक्षा" means "classroom" in Hindi) is a next-generation educational platform that leverages artificial intelligence to create dynamic, interactive classroom environments. It converts educational materials — PDFs, URLs, topics, or user requirements — into engaging learning experiences featuring AI-generated scenes, virtual teaching agents, voice interactions, interactive presentations, and real-time chat tutoring.
+KakshAI is a local-first learning runtime built with Next.js, React, TypeScript, ElevenLabs, Firecrawl,
+the Vercel AI SDK, and LangGraph.
 
-## Features
+It supports the full lesson flow:
 
-### Content Generation Pipeline
-- **PDF Processing**: Extract text and images from uploaded PDF documents using multiple provider backends
-- **Web Scraping**: Automatically scrape and process content from URLs via Firecrawl integration
-- **AI Outlining**: Generate structured lesson outlines from raw content using LLM providers
-- **Scene Generation**: Create rich, multi-scene classrooms with automated content generation
+`topic / PDF / URL -> outline generation -> scene generation -> interactive classroom -> export`
 
-### Interactive Classroom Runtime
-- **Stage-Based Learning**: Sequential scene navigation with playback controls
-- **Multi-Agent System**: Virtual teaching agents with distinct personalities, avatars, and teaching styles
-- **Voice Integration**: High-quality text-to-speech using ElevenLabs with multiple voice options
-- **Voice Agents**: Real-time voice conversations with AI agents powered by ElevenLabs Conversational AI
-- **Chat Interface**: Context-aware tutoring with streaming responses and action support
+The product is strongest when used as a live teaching surface:
 
-### Presentation & Content Types
-- **Slide Renderer**: Full-featured slide editor with support for:
-  - Text elements with rich formatting
-  - Images and shapes
-  - Tables and charts
-  - Mathematical expressions (LaTeX via KaTeX/Temml)
-  - Alignment, layering, and grouping
-- **Interactive Scenes**: HTML-based interactive learning modules
-- **Quiz Generation**: Auto-generated assessments with multiple question types
-- **PBL Mode**: Project-Based Learning with collaborative workspaces and issue tracking
+- start with a topic, uploaded PDF, or webpage
+- generate a lesson plan and scene sequence
+- launch a classroom with slides, an AI teacher, and voice/chat interaction
+- use search, whiteboard, and scene tools during the lesson
+- export the classroom as PPTX or a resource pack
 
-### AI Capabilities
-- **Multi-Provider Support**: OpenAI, Anthropic, Google Gemini, Groq, Ollama
-- **Streaming Responses**: Real-time token streaming for chat and generation
-- **Tool Use**: Function calling for actions like navigation, canvas operations, and scene control
-- **LangGraph Orchestration**: State-machine based conversation flow with director graph
-- **Media Generation**: AI-powered image and video generation for classroom content
+## Table of Contents
 
-### Technical Highlights
-- **Local-First Architecture**: IndexedDB persistence via Dexie for offline capability
-- **Provider-Agnostic**: Configurable AI providers with runtime resolution
-- **Rate Limiting**: Built-in protection via Upstash Redis
-- **Type-Safe**: Full TypeScript coverage with strict type checking
-- **Responsive Design**: Mobile-friendly UI with Tailwind CSS and shadcn/ui
+- [Why KakshAI](#why-kakshai)
+- [Feature Overview](#feature-overview)
+- [How It Works](#how-it-works)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [Configuration](#configuration)
+- [Project Structure](#project-structure)
+- [API Surface](#api-surface)
+- [Project Status](#project-status)
+- [Documentation](#documentation)
+- [Scripts](#scripts)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Why KakshAI
+
+Most AI learning apps either generate static content or give you a generic chatbot.
+KakshAI takes a different path: it turns source material into a classroom session that can be taught,
+navigated, interrupted, questioned, and extended in real time.
+
+Key product characteristics:
+
+- `Voice-first`: designed to feel like being taught live, not just reading generated text
+- `Classroom-native`: slides, narration, chat, roundtable agents, and whiteboard live in one runtime
+- `Source-driven`: supports topics, PDFs, and URLs as starting points
+- `Provider-flexible`: works with multiple LLM, TTS, ASR, PDF, image, video, and search providers
+- `Local-first`: core classroom data is stored in the browser for fast iteration and offline resilience
+
+## Feature Overview
+
+### 1. Source Ingestion
+
+KakshAI can start from multiple entry points:
+
+- free-form topic or learning goal
+- uploaded PDF documents
+- webpage URLs scraped through Firecrawl
+- optional language and duration constraints
+
+Relevant capabilities:
+
+- PDF parsing with `unpdf` and `pdf-parse`
+- URL scrape endpoint backed by Firecrawl
+- live web search during generation and runtime
+
+### 2. Lesson Generation Pipeline
+
+The generation flow turns raw input into a classroom session:
+
+- requirement parsing and outline generation
+- scene planning with duration control
+- slide content generation
+- action generation for spoken teaching and runtime behavior
+- optional quizzes, interactive scenes, and PBL scenes
+
+Supported scene types:
+
+- `slide`
+- `quiz`
+- `interactive`
+- `pbl`
+
+### 3. Interactive Classroom Runtime
+
+The classroom runtime is more than a slide viewer. It includes:
+
+- scene-by-scene playback
+- AI teacher narration
+- in-session chat
+- roundtable discussion mode
+- whiteboard controls
+- scene sidebar and navigation
+- playback and audio controls
+
+This runtime is centered in the classroom page and the `Stage` system.
+
+### 4. Voice Teaching with ElevenLabs
+
+KakshAI includes both text-to-speech and live voice interaction:
+
+- high-quality TTS for lecture playback
+- ElevenLabs Conversational AI integration
+- signed URL route for voice sessions
+- runtime voice agent panel
+- classroom-aware client tools for live assistance
+
+The voice agent can use:
+
+- web search
+- slide navigation
+- whiteboard writing
+- whiteboard clearing
+
+### 5. Multi-Agent Classroom
+
+KakshAI ships with a built-in teaching team:
+
+- `Lead Tutor`
+- `Learning Guide`
+- `Challenger`
+- `Curious Explorer`
+- `Notekeeper`
+- `Critical Thinker`
+
+These agents power classroom discussion, teaching variation, and roundtable-style interactions.
+
+### 6. Whiteboard and Visual Teaching Tools
+
+The classroom includes a structured whiteboard system, not just a freehand overlay.
+
+It supports:
+
+- opening and closing a dedicated whiteboard surface
+- adding text, shapes, charts, tables, arrows, and LaTeX
+- whiteboard history and restore
+- AI-driven whiteboard actions through the action engine
+
+### 7. Assessment and Project-Based Learning
+
+KakshAI supports more than lecture scenes.
+
+- generated quizzes with AI grading
+- short-answer grading via API
+- interactive learning scenes
+- project-based learning scenes with roles, issues, and chat workflows
+
+### 8. Export and Asset Packaging
+
+Generated classrooms can be turned into shareable outputs:
+
+- PPTX export
+- resource pack export
+- media proxying and packaging for generated assets
+
+### 9. Provider and Model Flexibility
+
+The app supports configurable providers across major categories:
+
+- LLM: OpenAI, Anthropic, Google Gemini, Groq, Ollama Cloud
+- TTS: ElevenLabs, OpenAI, Azure
+- ASR: OpenAI
+- PDF: unpdf, pdf-parse
+- Image: Nano Banana
+- Video: Veo, Sora
+- Web Search: Firecrawl
+
+Providers can be configured:
+
+- in the frontend settings UI
+- through `.env.local`
+- through root-level `server-providers.yml`
+
+## How It Works
+
+```text
+1. Input
+   Topic / PDF / URL / requirements
+
+2. Processing
+   PDF parse / URL scrape / optional web search
+
+3. Planning
+   AI-generated outline + scene structure
+
+4. Generation
+   Slide / quiz / interactive / PBL content + actions
+
+5. Runtime
+   Classroom stage + voice teacher + chat + whiteboard + roundtable
+
+6. Output
+   Local persistence + PPTX / resource pack export
+```
 
 ## Tech Stack
 
-| Category | Technologies |
-|----------|-------------|
-| **Framework** | Next.js 16.1.2, React 19.2.3 |
-| **Language** | TypeScript 5.x |
-| **Styling** | Tailwind CSS v4, shadcn/ui, Radix UI primitives |
-| **State Management** | Zustand 5.x with persistence |
-| **Database** | IndexedDB via Dexie 4.x (local-first) |
-| **AI/ML SDKs** | Vercel AI SDK 6.x, LangChain Core, LangGraph |
-| **Voice** | ElevenLabs SDK, Azure TTS |
-| **PDF** | unpdf, pdf-parse |
-| **Web Search** | Firecrawl |
-| **Animation** | Motion (Framer Motion successor), Animate.css |
-| **Charts** | ECharts 6.x |
-| **Package Manager** | pnpm 10.x |
+| Category | Stack |
+| --- | --- |
+| Framework | Next.js 16, React 19, App Router |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4, Radix UI, shadcn/ui |
+| State | Zustand |
+| Local Persistence | Dexie + IndexedDB |
+| AI Runtime | Vercel AI SDK, LangChain Core, LangGraph |
+| Voice | ElevenLabs, Azure TTS, OpenAI TTS/ASR |
+| PDF | unpdf, pdf-parse |
+| Search / Crawl | Firecrawl |
+| Export | pptxgenjs workspace package |
+| Media | Nano Banana, Veo, Sora adapters |
+| Package Manager | pnpm workspaces |
 
 ## Getting Started
 
 ### Prerequisites
 
-- **Node.js**: >= 20.9.0
-- **pnpm**: 10.28.0+ (project uses pnpm workspaces)
+- Node.js `>= 20.9.0`
+- pnpm `10.28.0+`
 
 ### Installation
 
 ```bash
-# Clone the repository
-git clone <repo-url>
+git clone https://github.com/MitudruDutta/KakshAI.git
 cd KakshAI
-
-# Install dependencies (includes postinstall build for workspace packages)
 pnpm install
-
-# Configure environment variables
 cp .env.example .env.local
-# Edit .env.local with your API keys
-
-# Run development server
 pnpm dev
 ```
 
-The application will be available at `http://localhost:3000`.
+The app will be available at `http://localhost:3000`.
 
-### Quick Start
+### Recommended First Run
 
-1. **Configure AI Providers**: Open settings (gear icon) and add your API keys for at least one LLM provider
-2. **Create a Classroom**: Enter a topic or upload a PDF on the landing page
-3. **Generate Content**: Review the AI-generated outline and confirm to start scene generation
-4. **Launch Classroom**: Navigate to the classroom to experience the interactive learning environment
-
-## Project Structure
-
-```
-KakshAI/
-├── app/                          # Next.js App Router
-│   ├── api/                      # API route handlers
-│   │   ├── chat/                 # Chat API with streaming SSE
-│   │   ├── generate-*/           # Content generation endpoints
-│   │   ├── parse-pdf/            # PDF parsing service
-│   │   ├── scrape-url/           # Web scraping via Firecrawl
-│   │   └── server-providers/     # Provider configuration
-│   ├── classroom/[id]/           # Classroom runtime page
-│   ├── generation-preview/       # Content generation UI
-│   ├── layout.tsx                # Root layout with providers
-│   └── page.tsx                  # Landing page
-│
-├── components/                   # React components
-│   ├── agent/                    # Voice agent components
-│   ├── ai-elements/              # Reusable AI UI primitives
-│   │   ├── artifact.tsx          # Content artifact display
-│   │   ├── chain-of-thought.tsx  # Reasoning visualization
-│   │   ├── checkpoint.tsx        # Confirmation dialogs
-│   │   ├── code-block.tsx        # Syntax-highlighted code
-│   │   └── ...                   # 20+ UI primitives
-│   ├── chat/                     # Chat interface
-│   ├── generation/               # Generation UI components
-│   ├── landing/                  # Landing page sections
-│   ├── roundtable/               # Multi-agent discussion
-│   ├── scene-renderers/          # Scene type renderers
-│   │   ├── interactive-renderer.tsx
-│   │   ├── pbl-renderer.tsx
-│   │   └── quiz-renderer.tsx
-│   ├── settings/                 # Settings panels
-│   ├── slide-renderer/           # Presentation editor
-│   ├── stage.tsx                 # Main stage component
-│   └── ui/                       # shadcn/ui components
-│
-├── lib/                          # Core utilities
-│   ├── ai/                       # AI utilities
-│   ├── api/                      # Client API abstractions
-│   │   └── stage-api*.ts         # Stage API methods
-│   ├── audio/                    # TTS/ASR utilities
-│   ├── export/                   # Export functionality
-│   ├── generation/               # Generation pipeline
-│   │   ├── prompts/              # Prompt templates
-│   │   ├── action-parser.ts
-│   │   └── generation-pipeline.ts
-│   ├── hooks/                    # Custom React hooks
-│   ├── i18n/                     # Internationalization
-│   ├── media/                    # Media generation
-│   ├── orchestration/            # AI orchestration
-│   │   ├── director-graph.ts     # LangGraph workflow
-│   │   ├── stateless-generate.ts
-│   │   └── prompt-builder.ts
-│   ├── pbl/                      # PBL/MCP utilities
-│   ├── playback/                 # Playback engine
-│   ├── prosemirror/              # Rich text editor
-│   ├── server/                   # Server-side utilities
-│   ├── storage/                  # Storage abstractions
-│   ├── store/                    # Zustand stores
-│   │   ├── canvas.ts             # Canvas state
-│   │   ├── settings.ts           # App settings
-│   │   └── stage.ts              # Stage state
-│   └── types/                    # TypeScript types
-│
-├── packages/                     # Workspace packages
-│   ├── mathml2omml/              # MathML to OMML converter
-│   └── pptxgenjs/                # PowerPoint generation
-│
-├── configs/                      # Configuration files
-├── skills/                       # Claude Code skills
-├── public/                       # Static assets
-└── ...
-```
-
-## Architecture
-
-### High-Level Flow
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                         KAKSHAI ARCHITECTURE                        │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                     │
-│  LANDING PAGE          GENERATION PREVIEW         CLASSROOM         │
-│  (app/page.tsx)        (app/generation-         (app/classroom/    │
-│                        preview/page.tsx)          [id]/page.tsx)    │
-│       │                        │                        │          │
-│       ▼                        ▼                        ▼          │
-│  ┌─────────┐            ┌─────────────┐          ┌─────────────┐   │
-│  │  Form   │            │   Pipeline  │          │    Stage    │   │
-│  │ Input   │───────────▶│   Runner    │─────────▶│   Runtime   │   │
-│  │         │            │             │          │             │   │
-│  │ - Topic │            │ - Parse PDF │          │ - Playback  │   │
-│  │ - PDF   │            │ - Web Search│          │ - Chat      │   │
-│  │ - URL   │            │ - Agents    │          │ - Voice     │   │
-│  │ - Lang  │            │ - Outlines  │          │ - Canvas    │   │
-│  └─────────┘            │ - Scenes    │          │ - Whiteboard│   │
-│                         └─────────────┘          └─────────────┘   │
-│                                │                        │          │
-│                                ▼                        ▼          │
-│                         ┌─────────────┐          ┌─────────────┐   │
-│                         │   IndexedDB │◀─────────│   Dexie     │   │
-│                         │   (Dexie)   │          │   Stores    │   │
-│                         └─────────────┘          └─────────────┘   │
-│                                                                     │
-│  ┌─────────────────────────────────────────────────────────────┐   │
-│  │                      API ROUTES                              │   │
-│  │  /api/chat              /api/generate/tts                     │   │
-│  │  /api/generate-classroom        /api/generate/video         │   │
-│  │  /api/parse-pdf         /api/scrape-url                     │   │
-│  │  /api/server-providers  /api/elevenlabs/*                   │   │
-│  └─────────────────────────────────────────────────────────────┘   │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
-### Runtime Layers
-
-1. **Input Layer**: Landing page collects user requirements, topic, PDF, URL, and provider preferences
-2. **Generation Pipeline**: Client-side orchestration of content generation with progress tracking
-3. **Classroom Runtime**: Interactive stage with playback, chat, voice, and collaboration
-4. **Persistence Layer**: Dexie-based IndexedDB storage with optional server fallback
-5. **Orchestration**: LangGraph-driven conversation flow with tool use capabilities
-
-### Key Design Patterns
-
-- **Local-First**: All data stored in IndexedDB; server is optional for persistence
-- **Provider-Agnostic**: Runtime resolution of AI providers with configurable fallbacks
-- **Streaming-First**: SSE-based streaming for chat and generation progress
-- **Stateless Chat**: Each chat request includes full context; no server-side session state
-- **Component Composition**: Reusable AI UI primitives for consistent experience
+1. Open the app and go to Settings.
+2. Configure at least one LLM provider.
+3. Configure ElevenLabs if you want live voice teaching.
+4. Configure Firecrawl if you want URL ingestion or live web search.
+5. Start with a topic, PDF, or webpage from the landing page.
 
 ## Configuration
 
-### Environment Variables
+### Option A: Frontend Settings
 
-Create a `.env.local` file with the following variables:
+You can configure providers directly in the app settings UI.
+
+This is the fastest way to get running for single-user development.
+
+### Option B: `.env.local`
+
+Copy `.env.example` to `.env.local` and configure only the providers you want to use.
+
+Example:
 
 ```env
-# --- LLM Providers (at least one required) ---
-OPENAI_API_KEY=sk-...
-ANTHROPIC_API_KEY=sk-ant-...
-GOOGLE_API_KEY=...
-GROQ_API_KEY=...
-OLLAMA_API_KEY=...
+OPENAI_API_KEY=
+ANTHROPIC_API_KEY=
+GOOGLE_API_KEY=
+GROQ_API_KEY=
+OLLAMA_API_KEY=
 
-# --- TTS Providers ---
-TTS_ELEVENLABS_API_KEY=...
-TTS_AZURE_API_KEY=...
+ELEVENLABS_API_KEY=
+ELEVENLABS_AGENT_ID=
 
-# --- Voice Agents (ElevenLabs) ---
-ELEVENLABS_API_KEY=...
-ELEVENLABS_AGENT_ID=...
+FIRECRAWL_API_KEY=
 
-# --- Web Search ---
-FIRECRAWL_API_KEY=...
-
-# --- Image/Video Generation ---
-IMAGE_NANO_BANANA_API_KEY=...
-VIDEO_VEO_API_KEY=...
-
-# --- Optional: Server-side Rate Limiting ---
-UPSTASH_REDIS_REST_URL=https://...
-UPSTASH_REDIS_REST_TOKEN=...
-
-# --- Optional: Default Model ---
 DEFAULT_MODEL=openai:gpt-5.4-mini
 ```
 
-See `.env.example` for all available options.
+### Option C: `server-providers.yml`
 
-### Provider Configuration
+For controlled server-side defaults, create a root-level `server-providers.yml`.
 
-Providers can also be configured via a root-level `server-providers.yml` file:
+Example:
 
 ```yaml
-# server-providers.yml
 providers:
   openai:
     apiKey: ${OPENAI_API_KEY}
     baseUrl: https://api.openai.com/v1
     models:
       - gpt-5.4-mini
-      - gpt-4.1
+      - gpt-5.4
 
   anthropic:
     apiKey: ${ANTHROPIC_API_KEY}
     models:
       - claude-sonnet-4-6
+
+  firecrawl:
+    apiKey: ${FIRECRAWL_API_KEY}
 ```
 
-## Available Scripts
+### Security Note
+
+KakshAI is currently a local-first, single-user project.
+
+Important implications:
+
+- provider credentials entered through the frontend settings UI are stored locally in the browser
+- there is no auth system or server-side secret vault in this repo
+- use `server-providers.yml` or environment variables if you want server-owned defaults on a trusted deployment
+
+## Project Structure
+
+```text
+app/
+  page.tsx                     Landing page and input flow
+  generation-preview/          Review and generation pipeline UI
+  classroom/[id]/              Classroom runtime
+  api/                         App Router API routes
+
+components/
+  agent/                       Voice agent UI and panels
+  chat/                        Chat runtime
+  generation/                  Generation UI
+  roundtable/                  Multi-agent discussion UI
+  scene-renderers/             Slide, quiz, interactive, and PBL renderers
+  settings/                    Provider and runtime configuration
+  slide-renderer/              Slide editing and presentation runtime
+  whiteboard/                  Whiteboard UI and history
+
+lib/
+  ai/                          Provider registry and model resolution
+  audio/                       TTS and ASR integrations
+  elevenlabs/                  Conversational AI integration and tools
+  export/                      PPTX and resource pack export
+  generation/                  Outline, scene, and prompt pipeline
+  media/                       Image and video adapters
+  orchestration/               LangGraph director and tool orchestration
+  pbl/                         Project-based learning generation/runtime
+  playback/                    Playback engine
+  store/                       Zustand stores
+  utils/                       Dexie database and storage helpers
+
+packages/
+  mathml2omml/                 Math conversion package
+  pptxgenjs/                   PPTX generation workspace package
+```
+
+## API Surface
+
+Key API routes in this repo:
+
+| Route | Purpose |
+| --- | --- |
+| `/api/chat` | Streaming classroom chat |
+| `/api/classroom` | Server-side classroom persistence fallback |
+| `/api/classroom-media/[classroomId]/[...path]` | Classroom media asset serving |
+| `/api/parse-pdf` | PDF extraction |
+| `/api/scrape-url` | URL ingestion via Firecrawl |
+| `/api/web-search` | Firecrawl search |
+| `/api/elevenlabs/signed-url` | Signed voice session URL |
+| `/api/transcription` | Speech-to-text |
+| `/api/quiz-grade` | Quiz grading |
+| `/api/pbl/chat` | PBL runtime chat |
+| `/api/generate/agent-profiles` | Teaching agent profile generation |
+| `/api/generate/scene-outlines-stream` | Outline generation |
+| `/api/generate/scene-content` | Scene content generation |
+| `/api/generate/scene-actions` | Runtime action generation |
+| `/api/generate/tts` | Generated TTS audio |
+| `/api/generate/image` | Image generation |
+| `/api/generate/video` | Video generation |
+| `/api/generate-classroom` | Background classroom generation jobs |
+| `/api/server-providers` | Expose server-configured providers |
+| `/api/verify-model` | Provider/model connectivity checks |
+| `/api/health` | Health check |
+
+## Project Status
+
+KakshAI is currently best understood as an advanced single-user prototype / hackathon build.
+
+What is strong today:
+
+- end-to-end lesson generation flow
+- classroom runtime
+- voice integration
+- search and URL ingestion
+- export functionality
+- provider flexibility
+
+What is not in scope yet:
+
+- authentication
+- shared backend persistence
+- team collaboration
+- multi-device sync
+- server-owned user accounts or course ownership
+
+This honesty matters: the repo is impressive and feature-rich, but it is not yet a production SaaS platform.
+
+## Documentation
+
+Additional project docs:
+
+- [ARCHITECTURE.md](./ARCHITECTURE.md) - codebase architecture review
+- [AI_CODEBASE_KNOWLEDGE.md](./AI_CODEBASE_KNOWLEDGE.md) - repo-specific implementation notes
+- [SUBMISSION_VIDEO_PLAYBOOK.md](./SUBMISSION_VIDEO_PLAYBOOK.md) - demo and submission guidance
+- [.env.example](./.env.example) - full configuration template
+
+## Scripts
 
 | Script | Description |
-|--------|-------------|
-| `pnpm dev` | Start development server with hot reload |
-| `pnpm build` | Create production build |
-| `pnpm start` | Start production server |
-| `pnpm lint` | Run ESLint checks |
-| `pnpm check` | Check Prettier formatting |
-| `pnpm format` | Format code with Prettier |
-
-## Development
-
-### Adding a New Scene Type
-
-1. Create a new renderer component in `components/scene-renderers/`
-2. Add type definitions in `lib/types/scene.ts`
-3. Update the scene switcher in `components/stage.tsx`
-4. Add generation prompt in `lib/generation/prompts/templates/`
-
-### Adding an AI Provider
-
-1. Add provider configuration in `lib/server/resolve-model.ts`
-2. Update settings store in `lib/store/settings.ts`
-3. Add UI configuration panel in `components/settings/`
-
-### Working with Prompts
-
-Prompts are stored in `lib/generation/prompts/templates/` as Markdown files:
-
-```markdown
----
-id: my-prompt
-description: My custom prompt
-variables:
-  - topic
-  - language
----
-
-Generate content about {{topic}} in {{language}}.
-```
-
-Load and use:
-
-```typescript
-import { buildPrompt, PROMPT_IDS } from '@/lib/generation/prompts';
-
-const prompt = await buildPrompt(PROMPT_IDS.SLIDE_CONTENT, {
-  topic: 'Physics',
-  language: 'English'
-});
-```
-
-## Deployment
-
-### Vercel (Recommended)
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel --prod
-```
-
-### Docker
-
-```bash
-# Build image
-docker build -t kakshai .
-
-# Run container
-docker run -p 3000:3000 --env-file .env.local kakshai
-```
-
-### Self-Hosted
-
-```bash
-# Build
-pnpm build
-
-# Start
-pnpm start
-```
+| --- | --- |
+| `pnpm dev` | Start the Next.js development server |
+| `pnpm build` | Build for production |
+| `pnpm start` | Start the production server |
+| `pnpm lint` | Run ESLint |
+| `pnpm check` | Run Prettier in check mode |
+| `pnpm format` | Format the codebase with Prettier |
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+Contributions are welcome.
+
+Suggested workflow:
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Make focused changes with clear commit messages.
+4. Run `pnpm lint` and `pnpm check`.
+5. Open a pull request with a concise description of the change.
 
 ## License
 
-MIT License - see [LICENSE](./LICENSE) for details.
+This project is licensed under the [MIT License](./LICENSE).
 
 ## Acknowledgments
 
-- [Vercel AI SDK](https://sdk.vercel.ai/) for the excellent AI abstractions
-- [ElevenLabs](https://elevenlabs.io/) for voice synthesis and conversational AI
-- [Firecrawl](https://firecrawl.dev/) for web scraping capabilities
-- [shadcn/ui](https://ui.shadcn.com/) for the beautiful component primitives
-- [LangChain](https://langchain.com/) for orchestration tools
+KakshAI builds on top of several excellent tools and ecosystems:
 
----
-
-Built with ❤️ by the KakshAI team
+- [Next.js](https://nextjs.org/)
+- [Vercel AI SDK](https://sdk.vercel.ai/)
+- [ElevenLabs](https://elevenlabs.io/)
+- [Firecrawl](https://firecrawl.dev/)
+- [LangChain](https://www.langchain.com/)
+- [LangGraph](https://www.langchain.com/langgraph)
+- [Dexie](https://dexie.org/)
+- [shadcn/ui](https://ui.shadcn.com/)
