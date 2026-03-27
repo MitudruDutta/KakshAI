@@ -8,7 +8,6 @@ import { BotOff } from 'lucide-react';
 
 import { createLogger } from '@/lib/logger';
 import { useI18n } from '@/lib/hooks/use-i18n';
-import { useTheme } from '@/lib/hooks/use-theme';
 import { useDraftCache } from '@/lib/hooks/use-draft-cache';
 import { useSettingsStore } from '@/lib/store/settings';
 import { useUserProfileStore } from '@/lib/store/user-profile';
@@ -39,8 +38,7 @@ import {
 const log = createLogger('Home');
 
 function HomePage() {
-  const { t, locale, setLocale } = useI18n();
-  const { theme, setTheme } = useTheme();
+  const { t } = useI18n();
   const router = useRouter();
   const [form, setForm] = useState<FormState>(initialFormState);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -314,7 +312,13 @@ function HomePage() {
 
   return (
     <>
-      <TopToolbar needsSetup={needsSetup} />
+      <TopToolbar
+        needsSetup={needsSetup}
+        settingsOpen={settingsOpen}
+        onSettingsOpenChange={setSettingsOpen}
+        settingsSection={settingsSection}
+        onSettingsSectionChange={setSettingsSection}
+      />
 
       <div className="relative h-[100dvh] w-full flex flex-col items-center p-4 pt-16 md:p-8 md:pt-16 overflow-hidden">
         <BackgroundVideo />

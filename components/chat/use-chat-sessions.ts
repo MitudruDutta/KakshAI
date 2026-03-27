@@ -19,6 +19,7 @@ import { useAgentRegistry } from '@/lib/orchestration/registry/store';
 import { useI18n } from '@/lib/hooks/use-i18n';
 import { getCurrentModelConfig } from '@/lib/utils/model-config';
 import { USER_AVATAR } from '@/lib/types/roundtable';
+import { WEB_SEARCH_PROVIDERS } from '@/lib/web-search/constants';
 import { processSSEStream } from './process-sse-stream';
 import { StreamBuffer } from '@/lib/buffer/stream-buffer';
 import type { AgentStartItem, ActionItem } from '@/lib/buffer/stream-buffer';
@@ -27,6 +28,23 @@ import { toast } from 'sonner';
 import { createLogger } from '@/lib/logger';
 
 const log = createLogger('ChatSessions');
+
+function getCurrentWebSearchConfig(): { apiKey?: string; baseUrl?: string } | undefined {
+  const settings = useSettingsStore.getState();
+  const providerId = settings.webSearchProviderId;
+  const provider = WEB_SEARCH_PROVIDERS[providerId];
+  const providerConfig = settings.webSearchProvidersConfig[providerId];
+
+  if (!provider || !providerConfig?.enabled) return undefined;
+  if (provider.requiresApiKey && !providerConfig.apiKey && !providerConfig.isServerConfigured) {
+    return undefined;
+  }
+
+  return {
+    apiKey: providerConfig.apiKey || undefined,
+    baseUrl: providerConfig.baseUrl || undefined,
+  };
+}
 
 interface UseChatSessionsOptions {
   onLiveSpeech?: (text: string | null, agentId?: string | null) => void;
@@ -350,6 +368,7 @@ export function useChatSessions(options: UseChatSessionsOptions = {}) {
           [key: string]: unknown;
         };
         userProfile?: { nickname?: string; bio?: string };
+        webSearch?: { apiKey?: string; baseUrl?: string };
         apiKey: string;
         baseUrl?: string;
         model?: string;
@@ -743,6 +762,7 @@ export function useChatSessions(options: UseChatSessionsOptions = {}) {
 
         const userProfileState = useUserProfileStore.getState();
         const mc = getCurrentModelConfig();
+        const webSearch = getCurrentWebSearchConfig();
 
         const agentIds =
           useSettingsStore.getState().selectedAgentIds?.length > 0
@@ -768,6 +788,7 @@ export function useChatSessions(options: UseChatSessionsOptions = {}) {
               nickname: userProfileState.nickname || undefined,
               bio: userProfileState.bio || undefined,
             },
+            ...(webSearch && { webSearch }),
             apiKey: mc.apiKey,
             baseUrl: mc.baseUrl,
             model: mc.modelString,
@@ -983,6 +1004,7 @@ export function useChatSessions(options: UseChatSessionsOptions = {}) {
 
         const userProfileState = useUserProfileStore.getState();
         const mc = getCurrentModelConfig();
+        const webSearch = getCurrentWebSearchConfig();
 
         await runAgentLoop(
           sessionId!,
@@ -1003,6 +1025,7 @@ export function useChatSessions(options: UseChatSessionsOptions = {}) {
               nickname: userProfileState.nickname || undefined,
               bio: userProfileState.bio || undefined,
             },
+            ...(webSearch && { webSearch }),
             apiKey: mc.apiKey,
             baseUrl: mc.baseUrl,
             model: mc.modelString,
@@ -1136,6 +1159,7 @@ export function useChatSessions(options: UseChatSessionsOptions = {}) {
       try {
         const userProfileState = useUserProfileStore.getState();
         const mc = getCurrentModelConfig();
+        const webSearch = getCurrentWebSearchConfig();
 
         await runAgentLoop(
           sessionId,
@@ -1159,6 +1183,7 @@ export function useChatSessions(options: UseChatSessionsOptions = {}) {
               nickname: userProfileState.nickname || undefined,
               bio: userProfileState.bio || undefined,
             },
+            ...(webSearch && { webSearch }),
             apiKey: mc.apiKey,
             baseUrl: mc.baseUrl,
             model: mc.modelString,

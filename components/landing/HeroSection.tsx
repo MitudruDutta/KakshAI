@@ -1,8 +1,8 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowUp, Loader2, X, Link2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { LiquidMetalButton } from '@/components/liquid-metal-button';
 import { useI18n } from '@/lib/hooks/use-i18n';
 import { cn } from '@/lib/utils';

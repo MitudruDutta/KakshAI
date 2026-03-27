@@ -10,13 +10,21 @@ import type { SettingsSection } from '@/lib/types/settings';
 
 interface TopToolbarProps {
   needsSetup: boolean;
+  settingsOpen: boolean;
+  onSettingsOpenChange: (open: boolean) => void;
+  settingsSection?: SettingsSection;
+  onSettingsSectionChange: (section?: SettingsSection) => void;
 }
 
-export function TopToolbar({ needsSetup }: TopToolbarProps) {
+export function TopToolbar({
+  needsSetup,
+  settingsOpen,
+  onSettingsOpenChange,
+  settingsSection,
+  onSettingsSectionChange,
+}: TopToolbarProps) {
   const { t, locale, setLocale } = useI18n();
   const [languageOpen, setLanguageOpen] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const [settingsSection, setSettingsSection] = useState<SettingsSection | undefined>(undefined);
   const toolbarRef = useRef<HTMLDivElement>(null);
 
   // Close dropdowns when clicking outside
@@ -96,7 +104,10 @@ export function TopToolbar({ needsSetup }: TopToolbarProps) {
         {/* Settings Button */}
         <div className="relative">
           <button
-            onClick={() => setSettingsOpen(true)}
+            onClick={() => {
+              onSettingsSectionChange(undefined);
+              onSettingsOpenChange(true);
+            }}
             className={cn(
               'p-2 rounded-full text-foreground/60 hover:bg-white/25 dark:hover:bg-white/15 hover:text-foreground transition-all group active:scale-90',
               needsSetup && 'animate-setup-glow',
@@ -125,8 +136,8 @@ export function TopToolbar({ needsSetup }: TopToolbarProps) {
       <SettingsDialog
         open={settingsOpen}
         onOpenChange={(open) => {
-          setSettingsOpen(open);
-          if (!open) setSettingsSection(undefined);
+          onSettingsOpenChange(open);
+          if (!open) onSettingsSectionChange(undefined);
         }}
         initialSection={settingsSection}
       />

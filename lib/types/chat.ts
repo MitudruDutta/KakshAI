@@ -275,6 +275,21 @@ export interface StatelessChatRequest {
     nickname?: string;
     bio?: string;
   };
+  /** Web search configuration forwarded from client settings */
+  webSearch?: {
+    apiKey?: string;
+    baseUrl?: string;
+  };
+  /** Server-generated Firecrawl context attached to the current request */
+  webSearchContext?: {
+    mode: 'search' | 'scrape';
+    query: string;
+    context: string;
+    sources: Array<{
+      title: string;
+      url: string;
+    }>;
+  };
   /** OpenAI-compatible API credentials */
   apiKey: string;
   baseUrl?: string;

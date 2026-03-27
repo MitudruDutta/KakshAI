@@ -1,17 +1,7 @@
 'use client';
 
 import { useState, useRef, useMemo } from 'react';
-import {
-  Bot,
-  Check,
-  ChevronLeft,
-  Globe,
-  Paperclip,
-  FileText,
-  X,
-  Globe2,
-  Link2,
-} from 'lucide-react';
+import { Bot, Check, Globe, Paperclip, FileText, X, Globe2, Link2 } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
   Select,
@@ -137,7 +127,6 @@ export function GenerationToolbar({
           currentModelId={currentModelId}
           currentProviderConfig={currentProviderConfig}
           setModel={setModel}
-          onSettingsOpen={onSettingsOpen}
           t={t}
         />
       ) : (
@@ -432,7 +421,6 @@ function ModelSelectorPopover({
   currentModelId,
   currentProviderConfig,
   setModel,
-  onSettingsOpen,
   t,
 }: {
   configuredProviders: ConfiguredProvider[];
@@ -440,7 +428,6 @@ function ModelSelectorPopover({
   currentModelId: string;
   currentProviderConfig: { name: string; icon?: string } | undefined;
   setModel: (providerId: ProviderId, modelId: string) => void;
-  onSettingsOpen: (section?: SettingsSection) => void;
   t: (key: string) => string;
 }) {
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -461,11 +448,6 @@ function ModelSelectorPopover({
       }))
       .filter((p) => p.models.length > 0);
   }, [configuredProviders, search]);
-
-  const totalModels = useMemo(
-    () => configuredProviders.reduce((acc, p) => acc + p.models.length, 0),
-    [configuredProviders],
-  );
 
   return (
     <Popover

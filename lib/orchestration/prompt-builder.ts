@@ -99,6 +99,7 @@ export function buildStructuredPrompt(
   whiteboardLedger?: WhiteboardActionRecord[],
   userProfile?: { nickname?: string; bio?: string },
   agentResponses?: AgentTurnSummary[],
+  webSearchContext?: StatelessChatRequest['webSearchContext'],
 ): string {
   // Determine current scene type for action filtering
   const currentScene = storeState.currentSceneId
@@ -115,6 +116,8 @@ export function buildStructuredPrompt(
 
   // Build virtual whiteboard context from ledger (shows changes by other agents this round)
   const virtualWbContext = buildVirtualWhiteboardContext(storeState, whiteboardLedger);
+
+  const liveWebContext = buildLiveWebContext(webSearchContext);
 
   // Build student profile section (only when nickname or bio is present)
   const studentProfileSection =
@@ -233,6 +236,7 @@ ${mutualExclusionNote}
 # Current State
 ${stateContext}
 ${virtualWbContext}
+${liveWebContext}
 Remember: Speak naturally as a teacher. Effects fire concurrently with your speech.${
     discussionContext
       ? agentResponses && agentResponses.length > 0
@@ -252,6 +256,32 @@ ${discussionContext.prompt ? `Guiding prompt: ${discussionContext.prompt}` : ''}
 IMPORTANT: As you are starting this discussion, begin by introducing the topic naturally to the students. Engage them and invite their thoughts. Do not wait for user input - you speak first.`
       : ''
   }`;
+}
+
+function buildLiveWebContext(webSearchContext?: StatelessChatRequest['webSearchContext']): string {
+  if (!webSearchContext?.context) return '';
+
+  const sourceLines =
+    webSearchContext.sources.length > 0
+      ? webSearchContext.sources.map((src) => `- ${src.title}: ${src.url}`).join('\n')
+      : '- No source URLs captured';
+
+  const modeLabel = webSearchContext.mode === 'scrape' ? 'scraped webpage' : 'web search';
+
+  return `
+## Live Firecrawl Context
+Fresh Firecrawl ${modeLabel} context is available for the student's latest request.
+Use it when relevant instead of relying only on prior model knowledge, especially for current facts,
+external references, or URL-specific questions.
+
+Query: ${webSearchContext.query}
+
+Context:
+${webSearchContext.context}
+
+Sources:
+${sourceLines}
+`;
 }
 
 // ==================== Length Guidelines ====================

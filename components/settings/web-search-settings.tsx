@@ -102,7 +102,7 @@ export function WebSearchSettings({ selectedProviderId }: WebSearchSettingsProps
               provider.defaultBaseUrl ||
               '';
             if (!effectiveBaseUrl) return null;
-            const fullUrl = effectiveBaseUrl + '/search';
+            const fullUrl = effectiveBaseUrl.replace(/\/+$/, '') + '/v2/search';
             return (
               <p className="text-xs text-muted-foreground break-all">
                 {t('settings.requestUrl')}: {fullUrl}

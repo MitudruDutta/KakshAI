@@ -15,16 +15,65 @@
 import { NextRequest } from 'next/server';
 import { statelessGenerate } from '@/lib/orchestration/stateless-generate';
 import { getModel, parseModelString } from '@/lib/ai/providers';
-import { resolveApiKey, resolveBaseUrl, resolveProxy } from '@/lib/server/provider-config';
+import {
+  resolveApiKey,
+  resolveBaseUrl,
+  resolveProxy,
+  resolveWebSearchApiKey,
+  resolveWebSearchBaseUrl,
+} from '@/lib/server/provider-config';
 import type { StatelessChatRequest, StatelessEvent } from '@/lib/types/chat';
 import type { ThinkingConfig } from '@/lib/types/provider';
 import { apiError } from '@/lib/server/api-response';
 import { createLogger } from '@/lib/logger';
 import { validateUrlForSSRF } from '@/lib/server/ssrf-guard';
+import {
+  formatSearchResultsAsContext,
+  scrapeWithFirecrawl,
+  searchWithFirecrawl,
+} from '@/lib/web-search/firecrawl';
 const log = createLogger('Chat API');
 
 // Allow streaming responses up to 60 seconds
 export const maxDuration = 60;
+
+const URL_PATTERN = /\b(?:https?:\/\/|www\.)[^\s<>()]+/i;
+const WEB_SEARCH_HINT_PATTERN =
+  /\b(search|web|internet|online|look up|lookup|find|latest|current|recent|today|news|update|updated|source|sources)\b/i;
+
+function extractLatestUserMessageText(messages: StatelessChatRequest['messages']): string {
+  for (let index = messages.length - 1; index >= 0; index--) {
+    const message = messages[index];
+    if (message.role !== 'user') continue;
+
+    const text = message.parts
+      .map((part) =>
+        part.type === 'text' && typeof (part as { text?: string }).text === 'string'
+          ? (part as { text: string }).text
+          : '',
+      )
+      .join('\n')
+      .trim();
+
+    if (text) return text;
+  }
+
+  return '';
+}
+
+function extractFirstUrl(text: string): string | null {
+  const match = text.match(URL_PATTERN);
+  if (!match?.[0]) return null;
+
+  const candidate = match[0];
+  return candidate.startsWith('http://') || candidate.startsWith('https://')
+    ? candidate
+    : `https://${candidate}`;
+}
+
+function shouldRunFirecrawlSearch(text: string): boolean {
+  return WEB_SEARCH_HINT_PATTERN.test(text);
+}
 
 /**
  * POST /api/chat
@@ -59,6 +108,63 @@ export async function POST(req: NextRequest) {
 
     if (!body.config || !body.config.agentIds || body.config.agentIds.length === 0) {
       return apiError('MISSING_REQUIRED_FIELD', 400, 'Missing required field: config.agentIds');
+    }
+
+    const latestUserText = extractLatestUserMessageText(body.messages);
+
+    if (body.webSearch && latestUserText) {
+      const firecrawlApiKey = resolveWebSearchApiKey(body.webSearch.apiKey);
+      const firecrawlBaseUrl = resolveWebSearchBaseUrl(body.webSearch.baseUrl);
+
+      if (firecrawlApiKey) {
+        const directUrl = extractFirstUrl(latestUserText);
+
+        try {
+          if (directUrl) {
+            const scrape = await scrapeWithFirecrawl({
+              url: directUrl,
+              apiKey: firecrawlApiKey,
+              baseUrl: firecrawlBaseUrl,
+            });
+            const context = scrape.markdown.slice(0, 4000).trim();
+            if (context) {
+              body.webSearchContext = {
+                mode: 'scrape',
+                query: directUrl,
+                context,
+                sources: [
+                  {
+                    title: scrape.metadata.title || scrape.url,
+                    url: scrape.url,
+                  },
+                ],
+              };
+              log.info(`Attached Firecrawl scrape context for chat: ${directUrl}`);
+            }
+          } else if (shouldRunFirecrawlSearch(latestUserText)) {
+            const searchResult = await searchWithFirecrawl({
+              query: latestUserText,
+              apiKey: firecrawlApiKey,
+              baseUrl: firecrawlBaseUrl,
+              maxResults: 4,
+            });
+            const context = formatSearchResultsAsContext(searchResult).slice(0, 4000).trim();
+            if (context) {
+              body.webSearchContext = {
+                mode: 'search',
+                query: latestUserText,
+                context,
+                sources: searchResult.sources
+                  .slice(0, 4)
+                  .map((source) => ({ title: source.title, url: source.url })),
+              };
+              log.info(`Attached Firecrawl search context for chat: ${latestUserText}`);
+            }
+          }
+        } catch (error) {
+          log.warn('Firecrawl enrichment failed for chat request:', error);
+        }
+      }
     }
 
     // Resolve API key: client > server > empty
