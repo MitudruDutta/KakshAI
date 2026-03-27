@@ -9,6 +9,7 @@ import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
 import { createLogger } from '@/lib/logger';
+import { normalizeFirecrawlBaseUrl } from '@/lib/web-search/url';
 
 const log = createLogger('ServerProviderConfig');
 
@@ -386,6 +387,7 @@ export function resolveWebSearchApiKey(clientKey?: string): string {
 
 /** Resolve Firecrawl base URL: client > server > undefined */
 export function resolveWebSearchBaseUrl(clientBaseUrl?: string): string | undefined {
-  if (clientBaseUrl) return clientBaseUrl;
-  return getConfig().webSearch.firecrawl?.baseUrl;
+  if (clientBaseUrl) return normalizeFirecrawlBaseUrl(clientBaseUrl);
+  const serverBaseUrl = getConfig().webSearch.firecrawl?.baseUrl;
+  return serverBaseUrl ? normalizeFirecrawlBaseUrl(serverBaseUrl) : undefined;
 }

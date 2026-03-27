@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { useI18n } from '@/lib/hooks/use-i18n';
 import { useSettingsStore } from '@/lib/store/settings';
 import { WEB_SEARCH_PROVIDERS } from '@/lib/web-search/constants';
+import { buildFirecrawlUrl, normalizeFirecrawlBaseUrl } from '@/lib/web-search/url';
 import type { WebSearchProviderId } from '@/lib/web-search/types';
 import { Eye, EyeOff } from 'lucide-react';
 
@@ -97,16 +98,22 @@ export function WebSearchSettings({ selectedProviderId }: WebSearchSettingsProps
 
           {/* Request URL Preview */}
           {(() => {
-            const effectiveBaseUrl =
+            const rawBaseUrl =
               webSearchProvidersConfig[selectedProviderId]?.baseUrl ||
               provider.defaultBaseUrl ||
               '';
-            if (!effectiveBaseUrl) return null;
-            const fullUrl = effectiveBaseUrl.replace(/\/+$/, '') + '/v2/search';
+            if (!rawBaseUrl) return null;
+            const normalizedBaseUrl = normalizeFirecrawlBaseUrl(rawBaseUrl);
+            const fullUrl = buildFirecrawlUrl(rawBaseUrl, '/v2/search');
             return (
-              <p className="text-xs text-muted-foreground break-all">
-                {t('settings.requestUrl')}: {fullUrl}
-              </p>
+              <div className="space-y-1 text-xs text-muted-foreground break-all">
+                <p>
+                  {t('settings.requestUrl')}: {fullUrl}
+                </p>
+                {normalizedBaseUrl !== rawBaseUrl.replace(/\/+$/, '') && (
+                  <p>Normalized base URL: {normalizedBaseUrl}</p>
+                )}
+              </div>
             );
           })()}
         </>

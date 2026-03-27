@@ -1,7 +1,7 @@
 import { proxyFetch } from '@/lib/server/proxy-fetch';
 import type { WebSearchResult, WebSearchSource } from '@/lib/web-search/types';
+import { buildFirecrawlUrl } from '@/lib/web-search/url';
 
-const FIRECRAWL_DEFAULT_BASE_URL = 'https://api.firecrawl.dev';
 const FIRECRAWL_SEARCH_PATH = '/v2/search';
 const FIRECRAWL_SCRAPE_PATH = '/v2/scrape';
 
@@ -38,11 +38,6 @@ interface FirecrawlScrapeResponse {
     markdown?: string;
     metadata?: FirecrawlDocumentMetadata;
   };
-}
-
-function buildFirecrawlUrl(baseUrl: string | undefined, path: string): string {
-  const normalizedBaseUrl = (baseUrl || FIRECRAWL_DEFAULT_BASE_URL).replace(/\/+$/, '');
-  return `${normalizedBaseUrl}${path}`;
 }
 
 function mapSearchItemToSource(item: FirecrawlSearchItem): WebSearchSource | null {
