@@ -19,10 +19,6 @@
 </p>
 
 
-<p align="center">
-  <img src="public/demo.png" alt="KakshAI" width="180" />
-</p>
-
 ## Overview
 
 KakshAI is a local-first learning runtime built with Next.js, React, TypeScript, ElevenLabs, Firecrawl,
