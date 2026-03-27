@@ -17,6 +17,7 @@ import { IMAGE_PROVIDERS } from '@/lib/media/image-providers';
 import { VIDEO_PROVIDERS } from '@/lib/media/video-providers';
 import { WEB_SEARCH_PROVIDERS } from '@/lib/web-search/constants';
 import type { WebSearchProviderId } from '@/lib/web-search/types';
+import { normalizeFirecrawlBaseUrl } from '@/lib/web-search/url';
 import { createLogger } from '@/lib/logger';
 
 const log = createLogger('Settings');
@@ -468,6 +469,23 @@ function ensureValidProviderSelections(state: Partial<SettingsState>): void {
   }
 }
 
+function normalizeWebSearchProviderConfig(state: Partial<SettingsState>): void {
+  if (!state.webSearchProvidersConfig) return;
+
+  for (const key of Object.keys(state.webSearchProvidersConfig) as WebSearchProviderId[]) {
+    const config = state.webSearchProvidersConfig[key];
+    if (!config) continue;
+
+    if (config.baseUrl?.trim()) {
+      config.baseUrl = normalizeFirecrawlBaseUrl(config.baseUrl);
+    }
+
+    if (config.serverBaseUrl?.trim()) {
+      config.serverBaseUrl = normalizeFirecrawlBaseUrl(config.serverBaseUrl);
+    }
+  }
+}
+
 /**
  * Ensure providersConfig includes all built-in providers and their latest models.
  * Called on every rehydrate (not just version migrations) so new providers
@@ -808,6 +826,13 @@ export const useSettingsStore = create<SettingsState>()(
               [providerId]: {
                 ...state.webSearchProvidersConfig[providerId],
                 ...config,
+                ...(typeof config.baseUrl === 'string'
+                  ? {
+                      baseUrl: config.baseUrl.trim()
+                        ? normalizeFirecrawlBaseUrl(config.baseUrl)
+                        : config.baseUrl,
+                    }
+                  : {}),
               },
             },
           })),
@@ -995,7 +1020,9 @@ export const useSettingsStore = create<SettingsState>()(
                     newWebSearchConfig[key] = {
                       ...newWebSearchConfig[key],
                       isServerConfigured: true,
-                      serverBaseUrl: info.baseUrl,
+                      serverBaseUrl: info.baseUrl
+                        ? normalizeFirecrawlBaseUrl(info.baseUrl)
+                        : undefined,
                     };
                   }
                 }
@@ -1253,6 +1280,7 @@ export const useSettingsStore = create<SettingsState>()(
         }
 
         ensureValidProviderSelections(state);
+        normalizeWebSearchProviderConfig(state);
         ensureValidModelSelection(state);
 
         return state;
@@ -1264,6 +1292,7 @@ export const useSettingsStore = create<SettingsState>()(
         ensureBuiltInProviders(merged as Partial<SettingsState>);
         sanitizeProvidersConfig(merged as Partial<SettingsState>);
         ensureValidProviderSelections(merged as Partial<SettingsState>);
+        normalizeWebSearchProviderConfig(merged as Partial<SettingsState>);
         ensureValidModelSelection(merged as Partial<SettingsState>);
         return merged as SettingsState;
       },
