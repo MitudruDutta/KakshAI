@@ -1,7 +1,5 @@
-# KakshAI
-
 <p align="center">
-  <img src="public/kakshailogo.png" alt="KakshAI logo" width="128" />
+  <img src="public/kakshailogo.png" alt="KakshAI logo" width="180" />
 </p>
 
 <p align="center">
@@ -19,6 +17,7 @@
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white" />
   <img alt="License" src="https://img.shields.io/badge/License-MIT-green.svg" />
 </p>
+
 
 ## Overview
 

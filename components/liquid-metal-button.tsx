@@ -4,16 +4,16 @@ import type React from 'react';
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { Sparkles } from 'lucide-react';
 
+interface ShaderController {
+  destroy?: () => void;
+  setSpeed?: (speed: number) => void;
+}
+
 interface LiquidMetalButtonProps {
   label?: string;
   onClick?: () => void;
   viewMode?: 'text' | 'icon';
   width?: number;
-}
-
-interface ShaderController {
-  destroy?: () => void;
-  setSpeed?: (speed: number) => void;
 }
 
 export function LiquidMetalButton({
